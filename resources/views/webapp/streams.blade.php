@@ -2,193 +2,152 @@
     {{-- 1. Library Search & Stats --}}
     <section class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12 px-2">
         <div class="flex-1">
-            <h1 class="font-brand text-3xl font-black text-white uppercase tracking-tighter">
-                MUSIC <span class="text-amber-500 italic">Library</span>
+            <h1 class="font-brand text-4xl font-black text-white uppercase tracking-tighter">
+                MUSIC <span class="text-amber-500 italic">Vault</span>
             </h1>
-            <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">
-                Explore Official High-Fidelity Hindi NCS Assets
+            <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">
+                Official Studio-Grade Hindi NCS Assets
             </p>
         </div>
 
-        <div class="flex items-center gap-4 bg-zinc-900/30 p-2 rounded-2xl border border-zinc-800">
-            <div class="px-4 py-2 border-r border-zinc-800 text-center">
-                <p class="text-lg font-black text-white leading-none">{{ $stems->total() }}</p>
-                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-tighter mt-1">Available</p>
+        <div class="flex items-center gap-4 bg-zinc-900/40 p-3 rounded-[24px] border border-zinc-800 backdrop-blur-md">
+            <div class="px-6 py-1 border-r border-zinc-800 text-center">
+                <p class="text-2xl font-black text-white leading-none">{{ $stems->total() }}</p>
+                <p class="text-[8px] text-zinc-500 uppercase font-black tracking-tighter mt-1">Tracks</p>
             </div>
-            <div class="px-4 py-2 text-center">
-                <p class="text-lg font-black text-red-600 leading-none">Studio</p>
-                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-tighter mt-1">Quality</p>
+            <div class="px-6 py-1 text-center">
+                <p class="text-2xl font-black text-amber-500 leading-none">320</p>
+                <p class="text-[8px] text-zinc-500 uppercase font-black tracking-tighter mt-1">KBPS</p>
             </div>
         </div>
     </section>
 
     {{-- 2. Technical Filtering System --}}
-    <form action="{{ route('webapp.streams') }}" method="GET" class="flex flex-wrap gap-3 mb-10">
-        <div class="relative flex-1 min-w-[280px]">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 text-xs"></i>
+    <form action="{{ url()->current() }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-12">
+        <div class="md:col-span-6 relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
             <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="Search by title or artist..."
-                class="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-3 pl-12 pr-4 text-xs text-white focus:border-amber-600 outline-none transition">
+                placeholder="Search by title, artist, or album..."
+                class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 text-xs text-white focus:border-amber-500 outline-none transition-all">
         </div>
 
-        <select name="category" onchange="this.form.submit()"
-            class="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-zinc-400 focus:border-red-600 outline-none cursor-pointer">
-            <option value="">All Categories</option>
-            @foreach (\App\Models\Category::where('is_active', 1)->get() as $cat)
-                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
-                    {{ $cat->name }}</option>
-            @endforeach
-        </select>
+        <div class="md:col-span-3">
+            <select name="category" onchange="this.form.submit()"
+                class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-4 py-4 text-xs text-zinc-400 focus:border-amber-500 outline-none cursor-pointer appearance-none">
+                <option value="">All Categories</option>
+                @foreach (\App\Models\Category::where('is_active', 1)->get() as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-        <select name="sort" onchange="this.form.submit()"
-            class="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-zinc-400 focus:border-red-600 outline-none cursor-pointer">
-            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest First</option>
-            <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-        </select>
+        <div class="md:col-span-3">
+            <select name="sort" onchange="this.form.submit()"
+                class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-4 py-4 text-xs text-zinc-400 focus:border-amber-500 outline-none cursor-pointer appearance-none">
+                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest Releases</option>
+                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
+            </select>
+        </div>
     </form>
 
-    {{-- 3. Stems List --}}
-    <section class="space-y-4">
+    {{-- 3. Stems Grid --}}
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse($stems as $stem)
-            <div
-                class="forum-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-[#121215] transition-all border border-transparent hover:border-zinc-800 rounded-2xl">
-                <div class="flex items-center gap-5">
-                    {{-- Visual Indicator & Audio Preview --}}
-                    <div
-                        class="w-14 h-14 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center overflow-hidden relative group/play">
-                        @if ($stem->featured_image)
-                            <img src="{{ $stem->featured_image }}"
-                                class="w-full h-full object-cover group-hover:opacity-40 transition"
-                                alt="{{ $stem->title }}">
-                        @else
-                            <div
-                                class="w-full h-full flex items-center justify-center group-hover:opacity-20 transition text-zinc-600">
-                                <i class="fa-solid fa-music text-xl"></i>
-                            </div>
-                        @endif
+            <div class="group bg-zinc-900/30 border border-zinc-800/60 rounded-[32px] overflow-hidden hover:border-amber-500/40 transition-all duration-500">
 
-                        <button type="button"
-                            class="js-play-btn absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 outline-none"
-                            data-url="{{ asset('storage/' . $stem->file_path) }}" data-id="{{ $stem->id }}">
-                            <i class="fa-solid fa-play text-xl play-icon"></i>
-                            <i class="fa-solid fa-pause text-xl pause-icon hidden"></i>
-                        </button>
-                    </div>
-
-                    <div class="overflow-hidden">
-                        <h4 class="font-bold text-white group-hover:text-amber-500 transition text-truncate">
-                            {{ $stem->title }}</h4>
-                        <div class="flex items-center gap-3 mt-1">
-                            <span
-                                class="text-[9px] font-black text-zinc-600 uppercase tracking-widest bg-black px-2 py-0.5 rounded">
-                                {{ $stem->category->name ?? 'NCS Release' }}
-                            </span>
-                            <span class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
-                                {{ $stem->file_size }}
-                            </span>
+                {{-- Artwork --}}
+                <div class="relative aspect-square m-3 overflow-hidden rounded-[24px] bg-zinc-800">
+                    @if ($stem->featured_image)
+                        <img src="{{ $stem->featured_image }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            alt="{{ $stem->title }}">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fa-solid fa-music text-4xl text-zinc-700"></i>
                         </div>
+                    @endif
+
+                    {{-- Status Badges --}}
+                    <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                        @if($stem->bpm)
+                            <span class="px-2 py-1 bg-black/70 backdrop-blur-md rounded-lg text-[8px] font-black text-white border border-white/10">
+                                {{ $stem->bpm }} BPM
+                            </span>
+                        @endif
+                        @if($stem->music_key)
+                            <span class="px-2 py-1 bg-amber-500/90 backdrop-blur-md rounded-lg text-[8px] font-black text-black border border-amber-400/20">
+                                KEY: {{ $stem->music_key }}
+                            </span>
+                        @endif
                     </div>
                 </div>
 
-                {{-- Dynamic Stats Area --}}
-                <div class="flex flex-wrap items-center gap-6 lg:gap-12 px-2">
-                    <div class="text-center min-w-[45px]">
-                        <p class="text-xs font-black text-zinc-300">{{ number_format($stem->like_count ?? 0) }}</p>
-                        <p class="text-[8px] font-bold text-zinc-600 uppercase tracking-tighter">Likes</p>
+                {{-- Content --}}
+                <div class="p-5 pt-1">
+                    <div class="mb-4">
+                        <div class="flex justify-between items-start gap-2">
+                            <h4 class="font-brand text-lg font-bold text-white uppercase tracking-tighter truncate">
+                                {{ $stem->title }}
+                            </h4>
+                            @if($stem->language)
+                                <span class="text-[8px] text-zinc-500 font-bold uppercase border border-zinc-800 px-1.5 rounded mt-1">
+                                    {{ $stem->language }}
+                                </span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-zinc-500 font-bold truncate">
+                            {{ $stem->artist_name ?: 'Official NCS Asset' }}
+                        </p>
                     </div>
-                    <div class="text-center min-w-[45px]">
-                        <p class="text-xs font-black text-zinc-300">{{ number_format($stem->view_count ?? 0) }}</p>
-                        <p class="text-[8px] font-bold text-zinc-600 uppercase tracking-tighter">Views</p>
-                    </div>
-                    <div class="text-center hidden sm:block">
-                        <p class="text-xs font-black text-zinc-300">{{ $stem->created_at->format('d M Y') }}</p>
-                        <p class="text-[8px] font-bold text-zinc-600 uppercase tracking-tighter">Uploaded</p>
-                    </div>
-                </div>
 
-                {{-- Action Buttons --}}
-                <div class="flex items-center gap-3 ml-auto lg:ml-0">
-                    <button type="button" onclick="window.location.href='{{ route('webapp.stems.show', $stem->id) }}'"
-                        class="p-3 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-400 hover:text-white transition group/btn">
-                        <i class="fa-solid fa-circle-info group-hover/btn:scale-110 transition"></i>
-                    </button>
+                    {{-- Stats --}}
+                    <div class="flex items-center justify-between py-3 border-y border-zinc-800/50">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
+                                <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-download text-[10px] text-zinc-600"></i>
+                                <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->download_count) }}</span>
+                            </div>
+                        </div>
+                        <span class="text-[9px] font-bold text-zinc-600 uppercase">
+                            {{ $stem->file_size ?: 'Studio' }}
+                        </span>
+                    </div>
 
-                    <a href="{{ route('webapp.stems.download', $stem->id) }}"
-                        class="btn-vault px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-download"></i> GET STEMS
-                    </a>
+                    {{-- Actions --}}
+                    <div class="grid grid-cols-2 gap-3 mt-5">
+                        <a href="{{ route('webapp.stems.show', $stem->id) }}"
+                            class="py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-zinc-400 text-[10px] font-black uppercase text-center hover:bg-zinc-800 hover:text-white transition-all">
+                            View Details
+                        </a>
+
+                        @if($stem->mega_link)
+                            <a href="{{ $stem->mega_link }}" target="_blank"
+                                class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
+                                <i class="fa-solid fa-external-link mr-1"></i> Mega Link
+                            </a>
+                        @else
+                            <a href="{{ route('webapp.stems.download', $stem->id) }}"
+                                class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
+                                <i class="fa-solid fa-download mr-1"></i> Download
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         @empty
-            <div class="py-20 text-center bg-zinc-900/20 rounded-[32px] border border-dashed border-zinc-800">
-                <i class="fa-solid fa-music-slash text-4xl text-zinc-800 mb-4"></i>
-                <h5 class="text-zinc-500 font-bold uppercase tracking-widest text-xs">No studio assets match your
-                    criteria</h5>
+            <div class="col-span-full py-20 text-center border border-dashed border-zinc-800 rounded-[40px]">
+                <i class="fa-solid fa-box-open text-4xl text-zinc-800 mb-4"></i>
+                <h5 class="text-zinc-500 font-bold uppercase tracking-widest text-xs">No assets found</h5>
             </div>
         @endforelse
     </section>
 
-    <div class="mt-10">
+    <div class="mt-12">
         {{ $stems->links() }}
     </div>
 </x-webapp-layout>
-
-@push('scripts')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            let currentAudio = new Audio();
-            let $currentBtn = null;
-
-            $(document).on('click', '.js-play-btn', function() {
-                const $btn = $(this);
-                const url = $btn.data('url');
-
-                // Toggle logic if same button clicked
-                if ($currentBtn && $currentBtn[0] === $btn[0]) {
-                    if (currentAudio.paused) {
-                        currentAudio.play();
-                        updateUI($btn, true);
-                    } else {
-                        currentAudio.pause();
-                        updateUI($btn, false);
-                    }
-                    return;
-                }
-
-                // Stop and reset previous track
-                if ($currentBtn) {
-                    updateUI($currentBtn, false);
-                }
-
-                // Setup and play new track
-                currentAudio.src = url;
-                currentAudio.play();
-                $currentBtn = $btn;
-                updateUI($btn, true);
-
-                // Reset UI when track ends
-                currentAudio.onended = function() {
-                    updateUI($btn, false);
-                    $currentBtn = null;
-                };
-            });
-
-            function updateUI($btn, isPlaying) {
-                const $container = $btn.closest('.w-14');
-                const $playIcon = $btn.find('.play-icon');
-                const $pauseIcon = $btn.find('.pause-icon');
-
-                if (isPlaying) {
-                    $playIcon.addClass('hidden');
-                    $pauseIcon.removeClass('hidden');
-                    $container.addClass('border-amber-500 ring-2 ring-amber-500/20');
-                } else {
-                    $playIcon.removeClass('hidden');
-                    $pauseIcon.addClass('hidden');
-                    $container.removeClass('border-amber-500 ring-2 ring-amber-500/20');
-                }
-            }
-        });
-    </script>
-@endpush

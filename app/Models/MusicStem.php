@@ -32,7 +32,8 @@ class MusicStem extends Model
         'seo_title',
         'seo_description',
         'slug',
-        'is_public'
+        'is_public',
+        'mega_link'
     ];
 
     /**

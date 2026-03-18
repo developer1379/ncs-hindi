@@ -16,7 +16,7 @@
                         </ol>
                     </nav>
                     <h3 class="fw-bold text-dark">Initialize Official Release</h3>
-                    <p class="text-muted mb-0">Fill in the metadata and deploy .mp3 assets to the vault.</p>
+                    <p class="text-muted mb-0">Fill in metadata and provide an .mp3 or a cloud storage link.</p>
                 </div>
             </div>
 
@@ -39,7 +39,6 @@
                                             class="form-control form-control-lg bg-light border-0"
                                             placeholder="e.g., Baarishein - Lo-Fi" required>
                                     </div>
-
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold small text-uppercase text-secondary">Artist
                                             Name</label>
@@ -53,7 +52,6 @@
                                         <input type="text" name="album_movie_name"
                                             class="form-control bg-light border-0" placeholder="e.g., Indie Hits 2026">
                                     </div>
-
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold small text-uppercase text-secondary">Category
                                             <span class="text-danger">*</span></label>
@@ -71,6 +69,21 @@
                                             placeholder="e.g., Hindi">
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-white border-bottom py-3">
+                                <h5 class="card-title mb-0 fw-bold text-dark"><iconify-icon icon="mdi:cloud-link"
+                                        class="me-2 text-primary"></iconify-icon>External Storage</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <label class="form-label fw-bold small text-uppercase text-secondary">Mega.nz
+                                    Link</label>
+                                <input type="url" name="mega_link" id="mega_link"
+                                    class="form-control bg-light border-0" placeholder="https://mega.nz/file/...">
+                                <small class="text-muted mt-2 d-block">Provide a link if you aren't uploading a file
+                                    directly.</small>
                             </div>
                         </div>
 
@@ -109,35 +122,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card border-0 shadow-sm rounded-4 mb-4">
-                            <div class="card-header bg-white border-bottom py-3">
-                                <h5 class="card-title mb-0 fw-bold text-dark"><iconify-icon icon="mdi:google"
-                                        class="me-2 text-primary"></iconify-icon>SEO & Tags</h5>
-                            </div>
-                            <div class="card-body p-4">
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold small text-uppercase text-secondary">Tags /
-                                        Keywords</label>
-                                    <input type="text" name="tags_keywords" class="form-control bg-light border-0"
-                                        placeholder="lofi, stems, ncs">
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold small text-uppercase text-secondary">SEO
-                                            Title</label>
-                                        <input type="text" name="seo_title"
-                                            class="form-control bg-light border-0">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold small text-uppercase text-secondary">SEO
-                                            Description</label>
-                                        <input type="text" name="seo_description"
-                                            class="form-control bg-light border-0">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-lg-4">
@@ -155,17 +139,16 @@
                             </div>
                             <div class="p-3">
                                 <input type="file" name="featured_image" id="featured_image"
-                                    class="form-control form-control-sm border-0 bg-light"
-                                    accept="image/png, image/jpeg, image/jpg, image/webp">
+                                    class="form-control form-control-sm border-0 bg-light" accept="image/*">
                             </div>
                         </div>
 
                         <div class="card border-0 shadow-sm rounded-4 mb-4 text-center">
                             <div class="card-body p-4">
-                                <h6 class="fw-bold text-uppercase small mb-3">Audio (.mp3) <span
-                                        class="text-danger">*</span></h6>
+                                <h6 class="fw-bold text-uppercase small mb-3">Audio (.mp3)</h6>
                                 <input type="file" name="stem_file" id="stem_file"
-                                    class="form-control border-0 bg-light" accept=".mp3" required>
+                                    class="form-control border-0 bg-light" accept=".mp3">
+                                <p class="text-muted small mt-2 mb-0">Optional if Mega Link is provided.</p>
                             </div>
                         </div>
 
@@ -197,6 +180,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script>
             $(document).ready(function() {
+                // Image Preview
                 $('#featured_image').on('change', function() {
                     const file = this.files[0];
                     if (file) {
@@ -209,25 +193,27 @@
                     }
                 });
 
-                $.validator.addMethod("mp3Only", function(value, element) {
-                    return this.optional(element) || /.mp3$/i.test(value);
-                }, "Please upload a valid .mp3 file");
-
-                $.validator.addMethod("isImage", function(value, element) {
-                    return this.optional(element) || /.(jpg|jpeg|png|webp)$/i.test(value);
-                }, "Please upload a valid image (jpg, png, webp)");
-
+                // Custom validation: Must have either a file OR a mega link
                 $("#stemUploadForm").validate({
                     rules: {
                         title: "required",
                         category_id: "required",
-                        stem_file: {
-                            required: true,
-                            mp3Only: true
+                        mega_link: {
+                            url: true,
+                            required: function(element) {
+                                return $("#stem_file").val() === "";
+                            }
                         },
-                        featured_image: {
-                            isImage: true
+                        stem_file: {
+                            required: function(element) {
+                                return $("#mega_link").val() === "";
+                            },
+                            extension: "mp3"
                         }
+                    },
+                    messages: {
+                        mega_link: "Please provide either a Mega link or upload an MP3 file.",
+                        stem_file: "Please upload an MP3 file or provide a Mega link."
                     },
                     errorElement: 'span',
                     errorClass: 'text-danger small d-block mt-1',
@@ -237,14 +223,19 @@
                     unhighlight: function(element) {
                         $(element).removeClass('border border-danger');
                     },
+
                     submitHandler: function(form, event) {
                         event.preventDefault();
                         let formData = new FormData(form);
                         let $btn = $('#btnSubmit');
                         let $progress = $('#uploadProgressContainer');
 
-                        $btn.prop('disabled', true).text('Uploading...');
-                        $progress.show();
+                        $btn.prop('disabled', true).text('Processing...');
+
+                        // Only show progress bar if a file is actually being uploaded
+                        if ($('#stem_file').val() || $('#featured_image').val()) {
+                            $progress.show();
+                        }
 
                         $.ajax({
                             url: $(form).attr('action'),
@@ -270,7 +261,9 @@
                                     "{{ route('admin.stems.index') }}", 1500);
                             },
                             error: function(xhr) {
-                                $btn.prop('disabled', false).text('Publish Music');
+                                $btn.prop('disabled', false).html(
+                                    '<iconify-icon icon="mdi:cloud-upload" class="me-2"></iconify-icon> Publish Music'
+                                    );
                                 $progress.hide();
                                 if (xhr.status === 422) {
                                     $.each(xhr.responseJSON.errors, (k, v) => toastr.error(v[
@@ -280,18 +273,9 @@
                                 }
                             }
                         });
-                        return false;
                     }
                 });
             });
         </script>
-        <style>
-            .form-control:focus,
-            .form-select:focus {
-                background-color: #fff !important;
-                border: 1px solid #0d6efd !important;
-                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1) !important;
-            }
-        </style>
     @endpush
 </x-app-layout>
