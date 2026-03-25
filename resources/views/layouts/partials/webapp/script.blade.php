@@ -2,6 +2,7 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.4/dist/echo.iife.js"></script>
 
+@stack('scripts')
 <script>
     // Initialize Laravel Echo for WebSocket communication
     @if(config('broadcasting.default') !== 'null' && config('broadcasting.default') !== 'log')

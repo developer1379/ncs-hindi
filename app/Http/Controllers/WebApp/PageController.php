@@ -4,11 +4,13 @@ namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\ForumThread;
 use App\Models\User;
 use App\Repositories\Contracts\ForumRepositoryInterface;
 use App\Repositories\Contracts\ProfileRepositoryInterface;
 use App\Repositories\Contracts\StemRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -72,6 +74,16 @@ class PageController extends Controller
 
         return redirect()->route('webapp.profile')
             ->with('success', 'Studio updated successfully!');
+    }
+
+    public function show($slug)
+    {
+        // Eager load 'author' and the author's 'profile' relationship
+        $post = ForumThread::with(['author.profile'])
+            ->where('slug', $slug)
+            ->firstOrFail(); // Automatically throws a 404 if not found
+
+        return view('webapp.forum.show', compact('post'));
     }
 
     public function showForum($id)

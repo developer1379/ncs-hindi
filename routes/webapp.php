@@ -6,6 +6,7 @@ use App\Http\Controllers\WebApp\CommunityMessageController;
 use App\Http\Controllers\WebApp\ForumReplyController;
 use App\Http\Controllers\WebApp\LikeController;
 use App\Http\Controllers\WebApp\PageController;
+use App\Http\Controllers\Webapp\SearchController;
 use App\Http\Controllers\WebApp\StemController;
 
 /*
@@ -43,6 +44,10 @@ Route::prefix('community')->middleware('auth')->group(function () {
 });
 
 Route::get('/vault/download/{id}', [StemController::class, 'download'])->name('webapp.stems.download');
+Route::get('/search', [SearchController::class, 'search'])->name('webapp.search');
+Route::get('/search-all', [SearchController::class, 'index'])->name('webapp.search.index');
+// Ensure this exists
+Route::get('/forum/thread/{slug}', [PageController::class, 'show'])->name('forum.show');
 
 /*
 |--------------------------------------------------------------------------
