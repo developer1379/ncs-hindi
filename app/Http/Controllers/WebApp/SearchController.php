@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Webapp;
+namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
 use App\Models\ForumThread;
