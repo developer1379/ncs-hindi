@@ -62,16 +62,19 @@ class StemController extends Controller
             'language'         => 'nullable|string|max:100',
             'description'      => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
-            'stem_file'        => 'required|file|mimes:mp3|max:51200',
+            // UPDATED: Changed from file to string/url because JS sends the Mega link here
+            'stem_file'        => 'required|string',
+            'mega_link'        => 'required|url',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'bpm'              => 'nullable|integer',
             'music_key'        => 'nullable|string|max:10',
             'is_public'        => 'boolean',
             'seo_title'        => 'nullable|string|max:70',
             'seo_description'  => 'nullable|string|max:160',
+            // bpm removed from validation as it's hidden/removed from UI
         ]);
 
         try {
+            // The Repository should handle saving the string URL into the file path column
             $this->stemRepo->uploadStem($data['category_id'], $data);
 
             if ($request->ajax()) {
@@ -109,13 +112,15 @@ class StemController extends Controller
             'language'         => 'nullable|string|max:100',
             'description'      => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
-            'stem_file'        => 'nullable|file|mimes:mp3|max:51200',
+            // UPDATED: stem_file is now an optional string/url for updates
+            'stem_file'        => 'nullable|string',
+            'mega_link'        => 'nullable|url',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'bpm'              => 'nullable|integer',
             'music_key'        => 'nullable|string|max:10',
             'is_public'        => 'boolean',
             'seo_title'        => 'nullable|string|max:70',
             'seo_description'  => 'nullable|string|max:160',
+            // bpm removed
         ]);
 
         try {

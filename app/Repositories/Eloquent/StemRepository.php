@@ -22,16 +22,16 @@ class StemRepository implements StemRepositoryInterface
     public function uploadStem($categoryId, array $data)
     {
         try {
-            $audioFile = $data['stem_file'];
-            $audioName = time() . '_' . Str::slug($data['title']) . '.' . $audioFile->getClientOriginalExtension();
-            $audioPath = $audioFile->storeAs('uploads/stems', $audioName, 'public');
+            // Since jQuery sends the Mega Link as a string in 'stem_file'
+            $audioPath = $data['stem_file'];
 
             $imageUrl = null;
-            if (isset($data['featured_image'])) {
+            if (isset($data['featured_image']) && $data['featured_image'] instanceof \Illuminate\Http\UploadedFile) {
                 $imageUrl = $this->imgBB->upload($data['featured_image']);
             }
 
             $stem = MusicStem::create([
+                'id'               => (string) Str::uuid(), // Ensure UUID is generated if not in boot
                 'category_id'      => $categoryId,
                 'title'            => $data['title'],
                 'artist_name'      => $data['artist_name'] ?? null,
@@ -39,12 +39,13 @@ class StemRepository implements StemRepositoryInterface
                 'language'         => $data['language'] ?? null,
                 'description'      => $data['description'] ?? null,
                 'tags_keywords'    => $data['tags_keywords'] ?? null,
-                'file_name'        => $audioFile->getClientOriginalName(),
-                'file_path'        => $audioPath,
+                'file_name'        => 'External Link',
+                'file_path'        => $audioPath, // This saves the Mega Link
                 'featured_image'   => $imageUrl,
-                'file_size'        => $this->formatBytes($audioFile->getSize()),
+                'file_size'        => '0 KB', // URL doesn't have a local file size
                 'bpm'              => $data['bpm'] ?? null,
                 'music_key'        => $data['music_key'] ?? null,
+                'mega_link'        => $data['mega_link'] ?? $audioPath,
                 'seo_title'        => $data['seo_title'] ?? $data['title'],
                 'seo_description'  => $data['seo_description'] ?? Str::limit($data['description'] ?? '', 150),
                 'is_public'        => $data['is_public'] ?? true,
@@ -64,21 +65,13 @@ class StemRepository implements StemRepositoryInterface
         try {
             $stem = MusicStem::findOrFail($stemId);
 
+            // Update Audio path if a new link/string is provided
             if (isset($data['stem_file'])) {
-                if ($stem->file_path) {
-                    Storage::disk('public')->delete($stem->file_path);
-                }
-
-                $audioFile = $data['stem_file'];
-                $audioName = time() . '_' . Str::slug($data['title'] ?? $stem->title) . '.' . $audioFile->getClientOriginalExtension();
-                $audioPath = $audioFile->storeAs('uploads/stems', $audioName, 'public');
-
-                $stem->file_name = $audioFile->getClientOriginalName();
-                $stem->file_path = $audioPath;
-                $stem->file_size = $this->formatBytes($audioFile->getSize());
+                $stem->file_path = $data['stem_file'];
+                $stem->mega_link = $data['mega_link'] ?? $data['stem_file'];
             }
 
-            if (isset($data['featured_image'])) {
+            if (isset($data['featured_image']) && $data['featured_image'] instanceof \Illuminate\Http\UploadedFile) {
                 $imageUrl = $this->imgBB->upload($data['featured_image']);
                 if ($imageUrl) {
                     $stem->featured_image = $imageUrl;
@@ -93,7 +86,6 @@ class StemRepository implements StemRepositoryInterface
                 'language'         => $data['language'] ?? $stem->language,
                 'description'      => $data['description'] ?? $stem->description,
                 'tags_keywords'    => $data['tags_keywords'] ?? $stem->tags_keywords,
-                'bpm'              => $data['bpm'] ?? $stem->bpm,
                 'music_key'        => $data['music_key'] ?? $stem->music_key,
                 'seo_title'        => $data['seo_title'] ?? $stem->seo_title,
                 'seo_description'  => $data['seo_description'] ?? $stem->seo_description,
@@ -108,7 +100,6 @@ class StemRepository implements StemRepositoryInterface
             throw $e;
         }
     }
-
     public function getLibraryStems($filters = [])
     {
         $query = MusicStem::with('category');
