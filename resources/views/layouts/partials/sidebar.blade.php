@@ -63,6 +63,34 @@
                     </li>
                 @endcan
 
+
+                @can('categories.view')
+                    <li>
+                        <a href="#sidebarCategories" data-bs-toggle="collapse"
+                            class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                            <span class="nav-icon">
+                                <iconify-icon icon="tabler:category"></iconify-icon>
+                            </span>
+                            <span class="sidebar-text"> Categories </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ request()->routeIs('admin.categories.*') ? 'show' : '' }}"
+                            id="sidebarCategories">
+                            <ul class="nav-second-level">
+                                <li><a href="{{ route('admin.categories.index') }}"
+                                        class="tp-link {{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">All
+                                        Categories</a></li>
+                                @can('categories.create')
+                                    <li><a href="{{ route('admin.categories.create') }}"
+                                            class="tp-link {{ request()->routeIs('admin.categories.create') ? 'active' : '' }}">Add
+                                            Category</a></li>
+                                @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+
+
                 @if (auth()->user()->can('coaches.view') ||
                         auth()->user()->can('seekers.view') ||
                         auth()->user()->can('categories.view') ||
