@@ -23,7 +23,7 @@
                 <a href="{{ route('home') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all {{ request()->routeIs('home') ? 'bg-gradient-to-r from-amber-600/10 to-transparent text-amber-500 font-bold border-l-2 border-amber-600' : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50' }}">
                     <i class="fa-solid fa-layer-group text-sm"></i>
-                    <span class="text-sm">Vault Feed</span>
+                    <span class="text-sm">Thread Feed</span>
                 </a>
 
                 {{-- Added: Community Chat Route --}}
