@@ -6,7 +6,7 @@ use App\Http\Controllers\WebApp\CommunityMessageController;
 use App\Http\Controllers\WebApp\ForumReplyController;
 use App\Http\Controllers\WebApp\LikeController;
 use App\Http\Controllers\WebApp\PageController;
-use App\Http\Controllers\Webapp\SearchController;
+use App\Http\Controllers\WebApp\SearchController;
 use App\Http\Controllers\WebApp\StemController;
 
 /*
