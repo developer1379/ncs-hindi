@@ -64,6 +64,16 @@
                 @endcan
 
 
+
+                @if (auth()->user()->can('coaches.view') ||
+                        auth()->user()->can('seekers.view') ||
+                        auth()->user()->can('categories.view') ||
+                        auth()->user()->can('blogs.view'))
+                    <li class="menu-title mt-2">Platform Management</li>
+                @endif
+
+
+
                 @can('categories.view')
                     <li>
                         <a href="#sidebarCategories" data-bs-toggle="collapse"
@@ -90,13 +100,6 @@
                     </li>
                 @endcan
 
-
-                @if (auth()->user()->can('coaches.view') ||
-                        auth()->user()->can('seekers.view') ||
-                        auth()->user()->can('categories.view') ||
-                        auth()->user()->can('blogs.view'))
-                    <li class="menu-title mt-2">Platform Management</li>
-                @endif
 
                 <li>
                     <a href="{{ route('community-channels.index') }}"
