@@ -68,19 +68,19 @@
                 <div class="inline-flex items-center gap-2 px-3 py-2 rounded-full glass-panel text-[9px] font-black uppercase tracking-[0.22em] text-amber-400">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                     Trending now
-                    <span class="text-zinc-500">/ dynamic vault chart</span>
+                    <span class="text-zinc-500">/ dynamic music chart</span>
                 </div>
 
                 <div>
                     <h1 class="font-brand text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white leading-[0.92]">
-                        Discover what the vault is
+                        Discover what music is
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-red-500">
                             playing most
                         </span>
                     </h1>
                     <p class="mt-3 max-w-xl text-zinc-300 leading-relaxed text-xs md:text-sm">
                         Live rankings, creator highlights, and instant access to the releases driving the most downloads,
-                        likes, and views across the NCS Hindi vault.
+                        likes, and views across NCS Hindi music.
                     </p>
                 </div>
 
@@ -185,7 +185,7 @@
                             @endif
 
                             <div class="mt-4 flex flex-wrap gap-2">
-                                <a href="{{ route('webapp.stems.show', $featuredStem->id) }}"
+                                <a href="{{ route('webapp.stems.show', $featuredStem->slug) }}"
                                     class="btn-vault px-4 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
                                     View release
                                 </a>
@@ -263,6 +263,10 @@
                             ? $stem->mega_link
                             : route('webapp.stems.download', $stem->id);
                         $heroImage = $stem->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80';
+                        $stemLanguages = collect(explode(',', (string) $stem->language))
+                            ->map(fn ($language) => trim($language))
+                            ->filter()
+                            ->values();
                     @endphp
                     <article class="trend-card group overflow-hidden rounded-[24px]" data-like-card>
                         <div class="relative aspect-[4/3] overflow-hidden">
@@ -282,7 +286,7 @@
                             <div class="absolute right-3 bottom-3 flex gap-2">
                                 <button type="button"
                                     class="copy-link-btn rounded-2xl bg-black/65 soft-border px-2.5 py-2.5 text-zinc-300 hover:text-white transition"
-                                    data-url="{{ route('webapp.stems.show', $stem->id) }}"
+                                    data-url="{{ route('webapp.stems.show', $stem->slug) }}"
                                     aria-label="Copy link">
                                     <i class="fa-solid fa-share-nodes text-[11px]"></i>
                                 </button>
@@ -320,6 +324,14 @@
                                 <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">
                                     {{ $stem->category->name ?? 'Uncategorized' }}
                                 </span>
+                                @if ($stemLanguages->isNotEmpty())
+                                    <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                                        {{ $stemLanguages->first() }}
+                                        @if ($stemLanguages->count() > 1)
+                                            +{{ $stemLanguages->count() - 1 }}
+                                        @endif
+                                    </span>
+                                @endif
                                 <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">
                                     <span data-like-count>{{ number_format($stem->like_count) }}</span> likes
                                 </span>
@@ -330,12 +342,12 @@
 
                             @if ($stem->description)
                                 <p class="mt-3 text-xs md:text-sm leading-relaxed text-zinc-400">
-                                    {{ \Illuminate\Support\Str::limit($stem->description, 95) }}
+                                    {{ \Illuminate\Support\Str::limit($stem->description, 80) }}
                                 </p>
                             @endif
 
                             <div class="mt-4 grid grid-cols-2 gap-2">
-                                <a href="{{ route('webapp.stems.show', $stem->id) }}"
+                                <a href="{{ route('webapp.stems.show', $stem->slug) }}"
                                     class="rounded-2xl px-3 py-2.5 text-center text-[9px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-amber-500 transition">
                                     View details
                                 </a>

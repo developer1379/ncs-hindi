@@ -110,5 +110,74 @@
         });
     });
 
+    $(document).on('click', '[data-stem-share-btn]', function(e) {
+        e.preventDefault();
+
+        const $btn = $(this);
+        const title = $btn.data('share-title') || document.title;
+        const url = $btn.data('share-url') || window.location.href;
+        const message = `${title} - ${url}`;
+        const encodedTitle = encodeURIComponent(title);
+        const encodedUrl = encodeURIComponent(url);
+        const encodedMessage = encodeURIComponent(message);
+        const modalEl = document.getElementById('shareMusicModal');
+
+        if (!modalEl) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url);
+            }
+            return;
+        }
+
+        $('#shareMusicTitle').text(title);
+        $('#shareMusicUrl').text(url);
+
+        const shareLinks = {
+            whatsapp: `https://wa.me/?text=${encodedMessage}`,
+            x: `https://twitter.com/intent/tweet?text=${encodedMessage}`,
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+            linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+            reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+            email: `mailto:?subject=${encodedTitle}&body=${encodedMessage}`,
+        };
+
+        Object.entries(shareLinks).forEach(([channel, href]) => {
+            $(`[data-share-channel="${channel}"]`).attr('href', href);
+        });
+
+        $('[data-share-copy]').data('share-url', url);
+
+        if (window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        } else {
+            modalEl.classList.add('show');
+            modalEl.style.display = 'block';
+        }
+    });
+
+    $(document).on('click', '[data-share-copy]', async function(e) {
+        e.preventDefault();
+
+        const url = $(this).data('share-url') || window.location.href;
+
+        try {
+            await navigator.clipboard.writeText(url);
+            if (window.toastr) {
+                toastr.success('Link copied to clipboard.');
+            }
+        } catch (err) {
+            const $temp = $('<input>');
+            $('body').append($temp);
+            $temp.val(url).select();
+            document.execCommand('copy');
+            $temp.remove();
+
+            if (window.toastr) {
+                toastr.success('Link copied to clipboard.');
+            }
+        }
+    });
+
     console.log('NCS Hindi WebApp Initialized');
 </script>

@@ -33,12 +33,15 @@ class StemController extends Controller
         return view('webapp.streams', compact('stems'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $stem = MusicStem::with('category')->findOrFail($id);
+        $stem = MusicStem::with('category')
+            ->where('slug', $slug)
+            ->orWhere('id', $slug)
+            ->firstOrFail();
 
         if (Auth::check()) {
-            $this->stemRepo->logInteraction($id, Auth::id(), 'view');
+            $this->stemRepo->logInteraction($stem->id, Auth::id(), 'view');
         }
 
         return view('webapp.stems_show', compact('stem'));

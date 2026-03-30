@@ -80,9 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/toggle-like', [LikeController::class, 'toggle'])->name('webapp.like.toggle');
 });
 
-Route::prefix('stems')->name('webapp.')->group(function () {
+Route::prefix('music')->name('webapp.')->group(function () {
     Route::get('/', [StemController::class, 'index'])->name('streams');
-    Route::get('/{id}', [StemController::class, 'show'])->name('stems.show');
+    Route::get('/{slug}', [StemController::class, 'show'])->name('stems.show');
     Route::get('/{id}/download', [StemController::class, 'download'])->name('stems.download');
     Route::post('/{id}/like', [StemController::class, 'toggleLike'])->name('stems.like');
 });

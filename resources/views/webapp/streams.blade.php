@@ -2,8 +2,8 @@
     {{-- 1. Library Search & Stats --}}
     <section class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12 px-2">
         <div class="flex-1">
-            <h1 class="font-brand text-4xl font-black text-white uppercase tracking-tighter">
-                MUSIC <span class="text-amber-500 italic">Vault</span>
+                <h1 class="font-brand text-4xl font-black text-white uppercase tracking-tighter">
+                MUSIC <span class="text-amber-500 italic">Library</span>
             </h1>
             <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">
                 Official Studio-Grade Hindi NCS Assets
@@ -54,6 +54,12 @@
     {{-- 3. Stems Grid --}}
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse($stems as $stem)
+            @php
+                $stemLanguages = collect(explode(',', (string) $stem->language))
+                    ->map(fn ($language) => trim($language))
+                    ->filter()
+                    ->values();
+            @endphp
             <div class="group bg-zinc-900/30 border border-zinc-800/60 rounded-[32px] overflow-hidden hover:border-amber-500/40 transition-all duration-500" data-like-card>
 
                 {{-- Artwork --}}
@@ -90,16 +96,35 @@
                             <h4 class="font-brand text-lg font-bold text-white uppercase tracking-tighter truncate">
                                 {{ $stem->title }}
                             </h4>
-                            @if($stem->language)
-                                <span class="text-[8px] text-zinc-500 font-bold uppercase border border-zinc-800 px-1.5 rounded mt-1">
-                                    {{ $stem->language }}
-                                </span>
-                            @endif
                         </div>
                         <p class="text-xs text-zinc-500 font-bold truncate">
                             {{ $stem->artist_name ?: 'Official NCS Asset' }}
                         </p>
                     </div>
+
+                    @if ($stem->description || $stemLanguages->isNotEmpty())
+                        <div class="mb-4 space-y-2">
+                            @if ($stem->description)
+                                <p class="text-xs leading-relaxed text-zinc-500">
+                                    {{ \Illuminate\Support\Str::limit($stem->description, 95) }}
+                                </p>
+                            @endif
+                            @if ($stemLanguages->isNotEmpty())
+                                <div class="flex flex-wrap gap-1.5">
+                                    @foreach ($stemLanguages->take(3) as $language)
+                                        <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5 text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                                            {{ $language }}
+                                        </span>
+                                    @endforeach
+                                    @if ($stemLanguages->count() > 3)
+                                        <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5 text-[8px] font-black uppercase tracking-[0.2em] text-zinc-500">
+                                            +{{ $stemLanguages->count() - 3 }}
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @endif
 
                     {{-- Stats --}}
                     <div class="flex items-center justify-between py-3 border-y border-zinc-800/50">
@@ -120,7 +145,7 @@
 
                     {{-- Actions --}}
                     <div class="grid grid-cols-2 gap-3 mt-5">
-                        <a href="{{ route('webapp.stems.show', $stem->id) }}"
+                        <a href="{{ route('webapp.stems.show', $stem->slug) }}"
                             class="py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-zinc-400 text-[10px] font-black uppercase text-center hover:bg-zinc-800 hover:text-white transition-all">
                             View Details
                         </a>

@@ -60,9 +60,27 @@ class MusicStem extends Model
 
             // Auto-generate slug from title if not provided
             if (empty($model->slug)) {
-                $model->slug = Str::slug($model->title);
+                $model->slug = static::uniqueSlug($model->title);
             }
         });
+    }
+
+    public static function uniqueSlug(string $title, ?string $ignoreId = null): string
+    {
+        $baseSlug = Str::slug($title);
+        $slug = $baseSlug;
+        $suffix = 2;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $slug = $baseSlug . '-' . $suffix;
+            $suffix++;
+        }
+
+        return $slug;
     }
 
     // --- Relationships ---

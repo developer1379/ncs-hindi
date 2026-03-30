@@ -126,7 +126,7 @@ class StemRepository implements StemRepositoryInterface
                 'seo_title'        => $data['seo_title'] ?? $data['title'],
                 'seo_description'  => $data['seo_description'] ?? Str::limit($data['description'] ?? '', 150),
                 'is_public'        => $data['is_public'] ?? true,
-                'slug'             => Str::slug($data['title']),
+                'slug'             => MusicStem::uniqueSlug($data['title']),
             ]);
 
             Log::info("Stem uploaded successfully", ['id' => $stem->id]);
@@ -167,7 +167,7 @@ class StemRepository implements StemRepositoryInterface
                 'seo_title'        => $data['seo_title'] ?? $stem->seo_title,
                 'seo_description'  => $data['seo_description'] ?? $stem->seo_description,
                 'is_public'        => isset($data['is_public']) ? (bool)$data['is_public'] : $stem->is_public,
-                'slug'             => isset($data['title']) ? Str::slug($data['title']) : $stem->slug,
+                'slug'             => isset($data['title']) ? MusicStem::uniqueSlug($data['title'], $stem->id) : $stem->slug,
             ]);
 
             Log::info("Stem updated successfully", ['id' => $stem->id]);

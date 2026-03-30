@@ -4,6 +4,28 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @endpush
 
+    @php
+        $languageOptions = [
+            'Hindi',
+            'English',
+            'Punjabi',
+            'Bengali',
+            'Tamil',
+            'Telugu',
+            'Marathi',
+            'Gujarati',
+            'Kannada',
+            'Malayalam',
+            'Urdu',
+            'Instrumental',
+        ];
+        $selectedLanguages = collect(explode(',', (string) $stem->language))
+            ->map(fn ($language) => trim($language))
+            ->filter()
+            ->values()
+            ->all();
+    @endphp
+
     <div class="py-4">
         <div class="container-fluid">
             <div class="row mb-4">
@@ -45,6 +67,29 @@
                                             Name</label>
                                         <input type="text" name="artist_name" class="form-control bg-light border-0"
                                             value="{{ $stem->artist_name }}">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold small text-uppercase text-secondary">Description</label>
+                                        <textarea name="description" rows="4" class="form-control bg-light border-0"
+                                            placeholder="Write a short release description, credits, or usage notes...">{{ $stem->description }}</textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold small text-uppercase text-secondary">Languages
+                                            <span class="text-muted">(multi-select)</span></label>
+                                        <div id="language_options" class="d-flex flex-wrap gap-2">
+                                            @foreach ($languageOptions as $language)
+                                                <input type="checkbox" class="btn-check"
+                                                    id="lang_{{ \Illuminate\Support\Str::slug($language) }}"
+                                                    value="{{ $language }}" autocomplete="off"
+                                                    {{ in_array($language, $selectedLanguages, true) ? 'checked' : '' }}>
+                                                <label for="lang_{{ \Illuminate\Support\Str::slug($language) }}"
+                                                    class="btn btn-outline-secondary rounded-pill px-3 py-2 fw-semibold small text-nowrap">
+                                                    {{ $language }}
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                        <input type="hidden" name="language" id="language" value="{{ $stem->language }}">
+                                        <small class="text-muted mt-2 d-block">Pick one or more languages; we’ll store them in the release metadata.</small>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold small text-uppercase text-secondary">Category
@@ -151,8 +196,18 @@
                 });
 
                 // Unified AJAX Submission (Matches Create Logic)
+                const syncLanguageField = () => {
+                    const selectedLanguages = $('#language_options input[type="checkbox"]:checked').map(function() {
+                        return $(this).val();
+                    }).get();
+                    $('#language').val(selectedLanguages.join(', '));
+                };
+
+                $('#language_options').on('change', 'input[type="checkbox"]', syncLanguageField);
+
                 $('#stemUpdateForm').on('submit', function(e) {
                     e.preventDefault();
+                    syncLanguageField();
 
                     const megaLink = $('#mega_link').val();
                     if (!megaLink) {
