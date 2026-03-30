@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
+use App\Models\StemInteraction;
 use App\Repositories\Contracts\StemRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MusicStem;
@@ -50,7 +52,21 @@ class StemController extends Controller
             $this->stemRepo->logInteraction($id, Auth::id(), 'download');
         }
 
-        return Storage::disk('public')->download($stem->file_path, $stem->file_name);
+        if ($stem->mega_link && filter_var($stem->mega_link, FILTER_VALIDATE_URL)) {
+            return redirect()->away($stem->mega_link);
+        }
+
+        if ($stem->file_path && filter_var($stem->file_path, FILTER_VALIDATE_URL)) {
+            return redirect()->away($stem->file_path);
+        }
+
+        if (!$stem->file_path) {
+            abort(404);
+        }
+
+        $downloadName = $stem->file_name ?: basename($stem->file_path);
+
+        return Storage::disk('public')->download($stem->file_path, $downloadName);
     }
 
     public function toggleLike($id)
@@ -59,13 +75,48 @@ class StemController extends Controller
             return response()->json(['error' => 'Authentication required'], 401);
         }
 
-        $interaction = $this->stemRepo->logInteraction($id, Auth::id(), 'like');
+        return DB::transaction(function () use ($id) {
+            $userId = Auth::id();
+            $stem = MusicStem::lockForUpdate()->findOrFail($id);
 
-        if (!$interaction) {
-            return response()->json(['message' => 'Already liked'], 200);
-        }
+            $interaction = StemInteraction::where('user_id', $userId)
+                ->where('stem_id', $id)
+                ->where('type', 'like')
+                ->first();
 
-        return response()->json(['message' => 'Added to your favorites'], 200);
+            if ($interaction) {
+                $interaction->delete();
+
+                if ($stem->like_count > 0) {
+                    $stem->decrement('like_count');
+                }
+
+                $stem->refresh();
+
+                return response()->json([
+                    'liked' => false,
+                    'count' => $stem->like_count,
+                    'message' => 'Removed from your likes.',
+                ]);
+            }
+
+            StemInteraction::create([
+                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'user_id' => $userId,
+                'stem_id' => $id,
+                'type' => 'like',
+                'created_at' => now(),
+            ]);
+
+            $stem->increment('like_count');
+            $stem->refresh();
+
+            return response()->json([
+                'liked' => true,
+                'count' => $stem->like_count,
+                'message' => 'Added to your likes.',
+            ]);
+        });
     }
 
     public function store(Request $request, $threadId)

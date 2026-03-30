@@ -6,6 +6,7 @@ use App\Models\MusicStem;
 use App\Models\StemInteraction;
 use App\Services\ImgBBService;
 use App\Repositories\Contracts\StemRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +18,82 @@ class StemRepository implements StemRepositoryInterface
     public function __construct(ImgBBService $imgBB)
     {
         $this->imgBB = $imgBB;
+    }
+
+    private function buildTrendingQuery(array $filters = []): Builder
+    {
+        $query = MusicStem::with('category')->where('is_public', true);
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('artist_name', 'LIKE', "%{$search}%")
+                    ->orWhere('album_movie_name', 'LIKE', "%{$search}%")
+                    ->orWhere('tags_keywords', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id']);
+        }
+
+        return $query;
+    }
+
+    private function applyTrendingSort(Builder $query, string $sort): Builder
+    {
+        return match ($sort) {
+            'likes' => $query->orderByDesc('like_count')->orderByDesc('download_count'),
+            'views' => $query->orderByDesc('view_count')->orderByDesc('download_count'),
+            'newest', 'latest' => $query->latest(),
+            default => $query->orderByDesc('download_count')->orderByDesc('like_count'),
+        };
+    }
+
+    public function getTrendingStems($filters = [])
+    {
+        $perPage = max(6, min((int) ($filters['per_page'] ?? 12), 24));
+        $sort = $filters['sort'] ?? 'downloads';
+
+        $query = $this->applyTrendingSort($this->buildTrendingQuery($filters), $sort);
+
+        return $query->paginate($perPage)->withQueryString();
+    }
+
+    public function getTrendingSpotlight($filters = [])
+    {
+        $query = $this->applyTrendingSort($this->buildTrendingQuery($filters), $filters['sort'] ?? 'downloads');
+
+        return $query->first();
+    }
+
+    public function getTrendingCreators($filters = [], $limit = 6)
+    {
+        $query = $this->buildTrendingQuery($filters);
+
+        return $query
+            ->selectRaw('artist_name, COUNT(*) as releases, SUM(download_count) as downloads, SUM(like_count) as likes, SUM(view_count) as views, MAX(featured_image) as avatar')
+            ->groupBy('artist_name')
+            ->orderByDesc('downloads')
+            ->limit($limit)
+            ->get()
+            ->map(function ($creator) {
+                $creator->creator_name = blank($creator->artist_name) ? 'Unknown Artist' : $creator->artist_name;
+                return $creator;
+            });
+    }
+
+    public function getTrendingStats($filters = [])
+    {
+        $query = $this->buildTrendingQuery($filters);
+
+        return [
+            'tracks' => (clone $query)->count(),
+            'downloads' => (clone $query)->sum('download_count'),
+            'likes' => (clone $query)->sum('like_count'),
+            'views' => (clone $query)->sum('view_count'),
+        ];
     }
 
     public function uploadStem($categoryId, array $data)
@@ -132,6 +209,7 @@ class StemRepository implements StemRepositoryInterface
                 'user_id' => $userId,
                 'stem_id' => $stemId,
                 'type'    => $type,
+                'created_at' => now(),
             ]);
 
             $column = $type . '_count';
@@ -149,7 +227,7 @@ class StemRepository implements StemRepositoryInterface
         try {
             $stem = MusicStem::findOrFail($stemId);
 
-            if ($stem->file_path) {
+            if ($stem->file_path && !filter_var($stem->file_path, FILTER_VALIDATE_URL)) {
                 Storage::disk('public')->delete($stem->file_path);
             }
 

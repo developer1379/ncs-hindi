@@ -87,7 +87,6 @@ class User extends Authenticatable
     public function likedStems()
     {
         return $this->belongsToMany(MusicStem::class, 'stem_interactions', 'user_id', 'stem_id')
-            ->wherePivot('type', 'like')
-            ->withTimestamps();
+            ->wherePivot('type', 'like');
     }
 }

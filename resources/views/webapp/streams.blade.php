@@ -54,7 +54,7 @@
     {{-- 3. Stems Grid --}}
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse($stems as $stem)
-            <div class="group bg-zinc-900/30 border border-zinc-800/60 rounded-[32px] overflow-hidden hover:border-amber-500/40 transition-all duration-500">
+            <div class="group bg-zinc-900/30 border border-zinc-800/60 rounded-[32px] overflow-hidden hover:border-amber-500/40 transition-all duration-500" data-like-card>
 
                 {{-- Artwork --}}
                 <div class="relative aspect-square m-3 overflow-hidden rounded-[24px] bg-zinc-800">
@@ -104,10 +104,10 @@
                     {{-- Stats --}}
                     <div class="flex items-center justify-between py-3 border-y border-zinc-800/50">
                         <div class="flex items-center gap-4">
-                            <div class="flex items-center gap-1">
-                                <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
-                                <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
-                            </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
+                            <span data-like-count class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
+                        </div>
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-download text-[10px] text-zinc-600"></i>
                                 <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->download_count) }}</span>
@@ -131,10 +131,21 @@
                                 <i class="fa-solid fa-external-link mr-1"></i> Mega Link
                             </a>
                         @else
-                            <a href="{{ route('webapp.stems.download', $stem->id) }}"
-                                class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
-                                <i class="fa-solid fa-download mr-1"></i> Download
-                            </a>
+                            <div class="grid grid-cols-2 gap-3">
+                                <a href="{{ route('webapp.stems.download', $stem->id) }}"
+                                    class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
+                                    <i class="fa-solid fa-download mr-1"></i> Download
+                                </a>
+                                <button type="button"
+                                    data-stem-like-btn
+                                    data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
+                                    data-liked="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 1 : 0 }}"
+                                    aria-pressed="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'true' : 'false' }}"
+                                    class="py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-300 text-[10px] font-black uppercase text-center hover:bg-zinc-700 transition-all {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'text-red-400' : '' }}">
+                                    <i data-stem-like-icon class="fa-heart mr-1 {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'fa-solid' : 'fa-regular' }}"></i>
+                                    Like
+                                </button>
+                            </div>
                         @endif
                     </div>
                 </div>

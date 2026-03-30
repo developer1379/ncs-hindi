@@ -10,7 +10,6 @@ use App\Repositories\Contracts\ForumRepositoryInterface;
 use App\Repositories\Contracts\ProfileRepositoryInterface;
 use App\Repositories\Contracts\StemRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -34,10 +33,43 @@ class PageController extends Controller
         return view('webapp.index', compact('posts'));
     }
 
-    public function trending()
+    public function trending(Request $request)
     {
-        $trendingTracks = $this->forumRepo->getTrendingThreads();
-        return view('webapp.trending', compact('trendingTracks'));
+        $filters = [
+            'search' => $request->get('search'),
+            'category_id' => $request->get('category'),
+            'sort' => $request->get('sort', 'downloads'),
+            'per_page' => $request->get('per_page', 9),
+        ];
+
+        $trendingStems = $this->stemRepo->getTrendingStems($filters);
+        $featuredStem = $this->stemRepo->getTrendingSpotlight($filters);
+        $topCreators = $this->stemRepo->getTrendingCreators($filters);
+        $trendingStats = $this->stemRepo->getTrendingStats($filters);
+        $categories = Category::where('is_active', 1)
+            ->withCount(['stems' => function ($query) use ($filters) {
+                $query->where('is_public', true);
+                if (!empty($filters['search'])) {
+                    $search = $filters['search'];
+                    $query->where(function ($q) use ($search) {
+                        $q->where('title', 'LIKE', "%{$search}%")
+                            ->orWhere('artist_name', 'LIKE', "%{$search}%")
+                            ->orWhere('album_movie_name', 'LIKE', "%{$search}%")
+                            ->orWhere('tags_keywords', 'LIKE', "%{$search}%");
+                    });
+                }
+            }])
+            ->orderBy('name')
+            ->get();
+
+        return view('webapp.trending', compact(
+            'trendingStems',
+            'featuredStem',
+            'topCreators',
+            'trendingStats',
+            'categories',
+            'filters'
+        ));
     }
 
     public function streams()

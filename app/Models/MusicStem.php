@@ -77,6 +77,18 @@ class MusicStem extends Model
         return $this->hasMany(StemInteraction::class, 'stem_id');
     }
 
+    public function isLikedBy($userId): bool
+    {
+        if (!$userId) {
+            return false;
+        }
+
+        return $this->interactions()
+            ->where('user_id', $userId)
+            ->where('type', 'like')
+            ->exists();
+    }
+
     // --- Scopes / Helpers ---
 
     public function scopePublic($query)

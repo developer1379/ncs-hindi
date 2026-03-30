@@ -33,4 +33,9 @@ class Category extends Model
     {
         return $this->hasMany(ForumThread::class);
     }
+
+    public function stems()
+    {
+        return $this->hasMany(MusicStem::class);
+    }
 }

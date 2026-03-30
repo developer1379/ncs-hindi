@@ -58,11 +58,19 @@
                     @endif
 
                     {{-- Secondary Actions --}}
-                    <div class="flex gap-3 w-full sm:w-auto justify-center">
-                        <button onclick="toggleLike('{{ $stem->id }}')"
-                            class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-red-500 hover:border-red-500/50 transition-all group">
-                            <i class="fa-solid fa-heart group-hover:scale-125 transition"></i>
+                    <div class="flex gap-3 w-full sm:w-auto justify-center" data-like-card>
+                        <button type="button"
+                            data-stem-like-btn
+                            data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
+                            data-liked="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 1 : 0 }}"
+                            aria-pressed="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'true' : 'false' }}"
+                            class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-red-500 hover:border-red-500/50 transition-all group {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'text-red-400' : '' }}">
+                            <i data-stem-like-icon class="fa-heart group-hover:scale-125 transition {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'fa-solid' : 'fa-regular' }}"></i>
                         </button>
+                        <div class="flex min-w-[92px] items-center justify-center rounded-2xl bg-zinc-800/60 border border-zinc-700 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                            <span data-like-count>{{ number_format($stem->like_count) }}</span>
+                            <span class="ml-1">likes</span>
+                        </div>
                         <button onclick="shareMusic()"
                             class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-amber-500 hover:border-amber-500/50 transition-all group">
                             <i class="fa-solid fa-share-nodes group-hover:rotate-12 transition"></i>
@@ -151,8 +159,9 @@
             {{-- Community Performance Card --}}
             <div class="bg-zinc-900/40 border border-zinc-800 rounded-[32px] p-8 text-center backdrop-blur-sm">
                 <h4 class="text-[10px] text-zinc-600 font-black uppercase tracking-widest mb-6">Vault Stats</h4>
-                <div class="grid grid-cols-2 gap-8 relative">
-                    <div class="absolute inset-y-4 left-1/2 w-[1px] bg-zinc-800"></div>
+                <div class="grid grid-cols-3 gap-4 relative">
+                    <div class="absolute inset-y-4 left-1/3 w-[1px] bg-zinc-800"></div>
+                    <div class="absolute inset-y-4 left-2/3 w-[1px] bg-zinc-800"></div>
                     <div>
                         <p class="text-3xl font-black text-white">{{ number_format($stem->download_count) }}</p>
                         <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-tighter mt-2">Downloads</p>
@@ -160,6 +169,10 @@
                     <div>
                         <p class="text-3xl font-black text-white">{{ number_format($stem->view_count) }}</p>
                         <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-tighter mt-2">Vault Views</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-black text-white">{{ number_format($stem->like_count) }}</p>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-tighter mt-2">Likes</p>
                     </div>
                 </div>
             </div>

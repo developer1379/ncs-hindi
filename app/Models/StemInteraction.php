@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 
 class StemInteraction extends Model
 {
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      */
