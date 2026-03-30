@@ -56,11 +56,21 @@
                     {{-- Primary Action: Download --}}
                     @if($stem->mega_link)
                         <a href="{{ $stem->mega_link }}" target="_blank"
+                            data-notification-gate
+                            data-music-action="download"
+                            data-music-title="{{ $stem->title }}"
+                            data-action-url="{{ $stem->mega_link }}"
+                            data-action-label="Continue to download"
                             class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-amber-500 hover:text-white transition-all duration-300 shadow-xl shadow-white/5">
                             <i class="fa-solid fa-cloud-arrow-down text-lg"></i> Download via Mega
                         </a>
                     @else
                         <a href="{{ route('webapp.stems.download', $stem->id) }}"
+                            data-notification-gate
+                            data-music-action="download"
+                            data-music-title="{{ $stem->title }}"
+                            data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
+                            data-action-label="Continue to download"
                             class="w-full sm:w-auto btn-vault px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-lg shadow-amber-600/20">
                             <i class="fa-solid fa-download text-lg"></i> Get Stems ({{ $stem->file_size }})
                         </a>
@@ -82,8 +92,6 @@
                         </div>
                         <button type="button"
                             data-stem-share-btn
-                            data-bs-toggle="modal"
-                            data-bs-target="#shareMusicModal"
                             data-share-title="{{ $stem->title }}"
                             data-share-url="{{ url()->current() }}"
                             class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-amber-500 hover:border-amber-500/50 transition-all group">
@@ -226,7 +234,7 @@
             <div class="p-1 rounded-[32px] bg-gradient-to-r from-amber-500/20 to-transparent">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-[30px] p-6">
                     <p class="text-white font-bold text-sm mb-4">Share this Release</p>
-                    <button type="button" data-stem-share-btn data-bs-toggle="modal" data-bs-target="#shareMusicModal" data-share-title="{{ $stem->title }}" data-share-url="{{ url()->current() }}"
+                    <button type="button" data-stem-share-btn data-share-title="{{ $stem->title }}" data-share-url="{{ url()->current() }}"
                         class="w-full bg-black/50 border border-zinc-800 rounded-xl p-3 text-left text-zinc-500 text-xs hover:border-amber-500/40 hover:text-zinc-300 transition-colors">
                         Open share options
                     </button>
@@ -235,65 +243,66 @@
         </div>
     </div>
 
-    <div class="modal fade" id="shareMusicModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 bg-[#101014] text-white rounded-[28px] overflow-hidden">
-                <div class="modal-header border-zinc-800 px-4 md:px-5 py-4">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-black">Share music</p>
-                        <h5 class="modal-title font-brand text-2xl font-black uppercase tracking-tight">Spread the track</h5>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div id="shareMusicModal" class="fixed inset-0 z-[200] hidden items-center justify-center px-4 py-6 bg-black/70 backdrop-blur-sm">
+        <div class="absolute inset-0" data-share-dismiss></div>
+        <div class="relative w-full max-w-2xl rounded-[28px] border border-zinc-800 bg-[#101014] text-white shadow-2xl shadow-black/50 overflow-hidden">
+            <div class="flex items-start justify-between gap-4 border-b border-zinc-800 px-4 md:px-5 py-4">
+                <div>
+                    <p class="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-black">Share music</p>
+                    <h5 class="font-brand text-2xl font-black uppercase tracking-tight">Spread the track</h5>
                 </div>
-                <div class="modal-body p-4 md:p-5">
-                    <div class="rounded-[24px] bg-black/40 border border-zinc-800 p-4 md:p-5 mb-4">
-                        <p class="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-black mb-2">Release</p>
-                        <h6 id="shareMusicTitle" class="text-lg md:text-xl font-black text-white uppercase tracking-tight"></h6>
-                        <p id="shareMusicUrl" class="mt-2 text-xs text-zinc-500 break-all"></p>
-                    </div>
+                <button type="button" class="text-zinc-400 hover:text-white transition" data-share-dismiss aria-label="Close">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 md:p-5">
+                <div class="rounded-[24px] bg-black/40 border border-zinc-800 p-4 md:p-5 mb-4">
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-black mb-2">Release</p>
+                    <h6 id="shareMusicTitle" class="text-lg md:text-xl font-black text-white uppercase tracking-tight"></h6>
+                    <p id="shareMusicUrl" class="mt-2 text-xs text-zinc-500 break-all"></p>
+                </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="whatsapp"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-green-500/50 hover:bg-green-500/10 transition">
-                            <i class="fa-brands fa-whatsapp text-lg text-green-500"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">WhatsApp</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="x"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-white/30 hover:bg-white/5 transition">
-                            <i class="fa-brands fa-x-twitter text-lg text-white"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">X</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="facebook"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-blue-500/50 hover:bg-blue-500/10 transition">
-                            <i class="fa-brands fa-facebook text-lg text-blue-500"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Facebook</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="telegram"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-sky-500/50 hover:bg-sky-500/10 transition">
-                            <i class="fa-brands fa-telegram text-lg text-sky-400"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Telegram</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="linkedin"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-blue-400/50 hover:bg-blue-400/10 transition">
-                            <i class="fa-brands fa-linkedin text-lg text-blue-400"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">LinkedIn</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="reddit"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-orange-500/50 hover:bg-orange-500/10 transition">
-                            <i class="fa-brands fa-reddit text-lg text-orange-500"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Reddit</span>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener" data-share-channel="email"
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-amber-500/50 hover:bg-amber-500/10 transition">
-                            <i class="fa-solid fa-envelope text-lg text-amber-400"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Email</span>
-                        </a>
-                        <button type="button" data-share-copy
-                            class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-amber-500/50 hover:bg-amber-500/10 transition">
-                            <i class="fa-solid fa-link text-lg text-amber-400"></i>
-                            <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Copy link</span>
-                        </button>
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="whatsapp"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-green-500/50 hover:bg-green-500/10 transition">
+                        <i class="fa-brands fa-whatsapp text-lg text-green-500"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">WhatsApp</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="x"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-white/30 hover:bg-white/5 transition">
+                        <i class="fa-brands fa-x-twitter text-lg text-white"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">X</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="facebook"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-blue-500/50 hover:bg-blue-500/10 transition">
+                        <i class="fa-brands fa-facebook text-lg text-blue-500"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Facebook</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="telegram"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-sky-500/50 hover:bg-sky-500/10 transition">
+                        <i class="fa-brands fa-telegram text-lg text-sky-400"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Telegram</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="linkedin"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-blue-400/50 hover:bg-blue-400/10 transition">
+                        <i class="fa-brands fa-linkedin text-lg text-blue-400"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">LinkedIn</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="reddit"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-orange-500/50 hover:bg-orange-500/10 transition">
+                        <i class="fa-brands fa-reddit text-lg text-orange-500"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Reddit</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" data-share-channel="email"
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-amber-500/50 hover:bg-amber-500/10 transition">
+                        <i class="fa-solid fa-envelope text-lg text-amber-400"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Email</span>
+                    </a>
+                    <button type="button" data-share-copy
+                        class="share-target rounded-2xl border border-zinc-800 bg-black/40 px-4 py-4 text-center hover:border-amber-500/50 hover:bg-amber-500/10 transition">
+                        <i class="fa-solid fa-link text-lg text-amber-400"></i>
+                        <span class="mt-2 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Copy link</span>
+                    </button>
                 </div>
             </div>
         </div>

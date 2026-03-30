@@ -13,7 +13,13 @@ class NewMessageNotification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database']; // Stores in your notifications table
+        $channels = ['database'];
+
+        if (!empty($notifiable->routeNotificationForFCM())) {
+            $channels[] = 'fcm';
+        }
+
+        return $channels;
     }
 
     public function toArray($notifiable): array
@@ -23,6 +29,26 @@ class NewMessageNotification extends Notification
             'coach_id'  => $this->messageData->coach_id,
             'message'   => $this->messageData->message,
             'type'      => 'message'
+        ];
+    }
+
+    public function toFCM(): array
+    {
+        $title = $this->messageData->title ?? 'New Message';
+        $body = $this->messageData->message ?? 'You have a new message.';
+
+        return [
+            'title' => $title,
+            'body' => $body,
+        ];
+    }
+
+    public function toData(): array
+    {
+        return [
+            'type' => 'message',
+            'seeker_id' => $this->messageData->seeker_id ?? null,
+            'coach_id' => $this->messageData->coach_id ?? null,
         ];
     }
 }

@@ -3,13 +3,16 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\MusicStem;
+use App\Models\FcmToken;
 use App\Models\StemInteraction;
+use App\Notifications\MusicPublishedNotification;
 use App\Services\ImgBBService;
 use App\Repositories\Contracts\StemRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class StemRepository implements StemRepositoryInterface
 {
@@ -130,6 +133,11 @@ class StemRepository implements StemRepositoryInterface
             ]);
 
             Log::info("Stem uploaded successfully", ['id' => $stem->id]);
+
+            if ($stem->is_public) {
+                $this->notifyMusicPublished($stem);
+            }
+
             return $stem;
         } catch (\Exception $e) {
             Log::error("Failed to upload stem", ['error' => $e->getMessage()]);
@@ -141,6 +149,7 @@ class StemRepository implements StemRepositoryInterface
     {
         try {
             $stem = MusicStem::findOrFail($stemId);
+            $wasPublic = (bool) $stem->is_public;
 
             // Update Audio path if a new link/string is provided
             if (isset($data['stem_file'])) {
@@ -171,6 +180,15 @@ class StemRepository implements StemRepositoryInterface
             ]);
 
             Log::info("Stem updated successfully", ['id' => $stem->id]);
+
+            $isNowPublic = array_key_exists('is_public', $data)
+                ? (bool) $data['is_public']
+                : $wasPublic;
+
+            if (!$wasPublic && $isNowPublic) {
+                $this->notifyMusicPublished($stem);
+            }
+
             return $stem;
         } catch (\Exception $e) {
             Log::error("Failed to update stem", ['error' => $e->getMessage()]);
@@ -247,5 +265,55 @@ class StemRepository implements StemRepositoryInterface
         $pow = min($pow, count($units) - 1);
         $bytes /= pow(1024, $pow);
         return round($bytes, $precision) . ' ' . $units[$pow];
+    }
+
+    private function notifyMusicPublished(MusicStem $stem): void
+    {
+        try {
+            $tokens = FcmToken::query()
+                ->whereNotNull('token')
+                ->where('token', '!=', '')
+                ->pluck('token')
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
+
+            Log::info('Preparing music publish notification', [
+                'stem_id' => $stem->id,
+                'slug' => $stem->slug,
+                'token_count' => count($tokens),
+            ]);
+
+            if (empty($tokens)) {
+                Log::info('Skipping music publish notification because no FCM tokens exist', [
+                    'stem_id' => $stem->id,
+                ]);
+                return;
+            }
+
+            foreach (array_chunk($tokens, 500) as $chunk) {
+                $notifiable = new class($chunk) {
+                    public function __construct(private array $tokens) {}
+
+                    public function routeNotificationForFCM($notification = null)
+                    {
+                        return $this->tokens;
+                    }
+                };
+
+                Notification::sendNow($notifiable, new MusicPublishedNotification($stem));
+            }
+
+            Log::info('Music publish notification dispatched', [
+                'stem_id' => $stem->id,
+                'token_count' => count($tokens),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Failed to dispatch music publish notification', [
+                'stem_id' => $stem->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
 use App\Http\Requests\Auth\LoginRequest as AuthLoginRequest;
+use App\Models\FcmToken;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AdminAuthController extends Controller
@@ -69,34 +71,57 @@ class AdminAuthController extends Controller
 
     public function updateFcm(Request $request)
     {
+        Log::info('FCM token save request received', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'authenticated' => Auth::check(),
+        ]);
+
         $request->validate([
             'fcm' => 'required|string',
+            'device_name' => 'nullable|string|max:255',
         ]);
 
         $user = Auth::user();
 
-        if (!$user) {
-            Log::error('FCM update failed: User unauthenticated');
+        Log::info('Updating FCM token', [
+            'user_id' => $user?->id,
+            'authenticated' => (bool) $user,
+            'device_name' => $request->device_name,
+            'token_prefix' => substr($request->fcm, 0, 18),
+        ]);
+
+        try {
+            DB::transaction(function () use ($user, $request) {
+                FcmToken::updateOrCreate(
+                    ['token' => $request->fcm],
+                    [
+                        'user_id' => $user?->id,
+                        'device_name' => $request->device_name,
+                        'last_used_at' => now(),
+                    ]
+                );
+            });
+        } catch (\Throwable $e) {
+            Log::error('FCM token save failed', [
+                'user_id' => $user?->id,
+                'error' => $e->getMessage(),
+            ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthenticated user.'
-            ], 401);
+                'message' => 'Could not save FCM token.',
+            ], 500);
         }
 
-        Log::info('Updating FCM token for user', ['user_id' => $user->id]);
-
-        $user->fcm = $request->fcm;
-        $user->save();
-
-        Log::info('FCM token updated successfully', ['user_id' => $user->id]);
+        Log::info('FCM token updated successfully', ['user_id' => $user?->id]);
 
         return response()->json([
             'success' => true,
             'message' => 'FCM token updated successfully.',
             'data' => [
-                'user_id' => $user->id,
-                'fcm' => $user->fcm,
+                'user_id' => $user?->id,
+                'fcm' => $request->fcm,
             ]
         ]);
     }

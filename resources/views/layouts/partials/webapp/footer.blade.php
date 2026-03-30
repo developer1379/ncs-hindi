@@ -51,3 +51,54 @@
         <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Studio</span>
     </a>
 </nav>
+
+<div id="notificationGateModal"
+    class="fixed inset-0 z-[200] hidden items-center justify-center px-4 py-6 bg-black/70 backdrop-blur-sm">
+    <div class="absolute inset-0" data-notification-dismiss></div>
+    <div class="relative w-full max-w-lg rounded-[28px] border border-zinc-800 bg-[#0f0f12] text-white shadow-2xl shadow-black/50 overflow-hidden">
+        <div class="flex items-start justify-between gap-4 border-b border-zinc-800 px-4 md:px-5 py-4">
+            <div>
+                <p class="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-black">Notifications</p>
+                <h5 class="font-brand text-2xl font-black uppercase tracking-tight">Stay updated</h5>
+            </div>
+            <button type="button" class="text-zinc-400 hover:text-white transition" data-notification-dismiss aria-label="Close">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div class="p-4 md:p-5">
+            <div class="rounded-[24px] bg-black/40 border border-zinc-800 p-4 md:p-5">
+                <div class="flex items-start gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-bell text-amber-400"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h6 id="notificationGateTitle" class="text-lg font-black text-white uppercase tracking-tight">
+                            Get release alerts
+                        </h6>
+                        <p id="notificationGateDescription" class="mt-2 text-sm text-zinc-400 leading-relaxed">
+                            Allow notifications so you can get updates when new music is added.
+                        </p>
+                        <p id="notificationGateMusic" class="mt-3 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                <button type="button" id="notificationGateAllow"
+                    class="btn-vault flex-1 px-4 py-3 rounded-2xl text-[10px] font-black tracking-[0.2em] uppercase">
+                    Allow notifications
+                </button>
+                <button type="button" id="notificationGateContinue"
+                    class="flex-1 px-4 py-3 rounded-2xl bg-white/5 border border-zinc-800 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-200 hover:border-amber-500/40 hover:text-white transition">
+                    Continue
+                </button>
+            </div>
+
+            <button type="button" id="notificationGateLater"
+                class="mt-3 w-full text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-zinc-300 transition">
+                Not now
+            </button>
+        </div>
+    </div>
+</div>

@@ -17,6 +17,60 @@ use App\Http\Controllers\WebApp\StemController;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
+Route::get('/firebase-messaging-sw.js', function () {
+    $firebaseConfig = [
+        'apiKey' => config('services.firebase.api_key'),
+        'authDomain' => config('services.firebase.auth_domain'),
+        'projectId' => config('services.firebase.project_id'),
+        'storageBucket' => config('services.firebase.storage_bucket'),
+        'messagingSenderId' => config('services.firebase.messaging_sender_id'),
+        'appId' => config('services.firebase.app_id'),
+    ];
+
+    $firebaseConfig = array_filter($firebaseConfig);
+
+$js = <<<JS
+importScripts('https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging-compat.js');
+
+const firebaseConfig = %s;
+
+if (firebaseConfig.projectId) {
+    console.log('[NCS FCM SW] Initializing with project', firebaseConfig.projectId);
+    self.addEventListener('install', function(event) {
+        console.log('[NCS FCM SW] Install event');
+        self.skipWaiting();
+    });
+
+    self.addEventListener('activate', function(event) {
+        console.log('[NCS FCM SW] Activate event');
+        event.waitUntil(self.clients.claim());
+    });
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.onBackgroundMessage(function(payload) {
+        console.log('[NCS FCM SW] Background message received', payload);
+        const title = payload?.notification?.title || 'New music update';
+        const options = {
+            body: payload?.notification?.body || 'A new release is available.',
+            icon: '/assets/images/favicon.ico',
+            data: payload?.data || {},
+        };
+
+        self.registration.showNotification(title, options);
+    });
+} else {
+    console.warn('[NCS FCM SW] Firebase config missing');
+}
+JS;
+
+    return response(sprintf($js, json_encode($firebaseConfig, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)))
+        ->header('Content-Type', 'application/javascript')
+        ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+})->name('firebase.messaging-sw');
+
 /*
 |--------------------------------------------------------------------------
 | Guest Routes (Login / Register)
@@ -54,6 +108,9 @@ Route::get('/forum/thread/{slug}', [PageController::class, 'show'])->name('forum
 | Authenticated Routes
 |--------------------------------------------------------------------------
 */
+Route::post('/notifications/fcm-token', [\App\Http\Controllers\Auth\AdminAuthController::class, 'updateFcm'])
+    ->name('webapp.notifications.fcm');
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

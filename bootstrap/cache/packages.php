@@ -100,6 +100,13 @@
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
     ),
   ),
+  'paxha/laravel-fcm' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'LaravelFCM\\FCMServiceProvider',
+    ),
+  ),
   'pestphp/pest-plugin-laravel' => 
   array (
     'providers' => 

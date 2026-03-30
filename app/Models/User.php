@@ -89,4 +89,14 @@ class User extends Authenticatable
         return $this->belongsToMany(MusicStem::class, 'stem_interactions', 'user_id', 'stem_id')
             ->wherePivot('type', 'like');
     }
+
+    public function routeNotificationForFCM($notification = null)
+    {
+        return $this->fcmTokens()->latest('last_used_at')->value('token');
+    }
+
+    public function fcmTokens()
+    {
+        return $this->hasMany(FcmToken::class);
+    }
 }
