@@ -82,6 +82,8 @@
                         </div>
                         <button type="button"
                             data-stem-share-btn
+                            data-bs-toggle="modal"
+                            data-bs-target="#shareMusicModal"
                             data-share-title="{{ $stem->title }}"
                             data-share-url="{{ url()->current() }}"
                             class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-amber-500 hover:border-amber-500/50 transition-all group">
@@ -224,7 +226,7 @@
             <div class="p-1 rounded-[32px] bg-gradient-to-r from-amber-500/20 to-transparent">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-[30px] p-6">
                     <p class="text-white font-bold text-sm mb-4">Share this Release</p>
-                    <button type="button" data-stem-share-btn data-share-title="{{ $stem->title }}" data-share-url="{{ url()->current() }}"
+                    <button type="button" data-stem-share-btn data-bs-toggle="modal" data-bs-target="#shareMusicModal" data-share-title="{{ $stem->title }}" data-share-url="{{ url()->current() }}"
                         class="w-full bg-black/50 border border-zinc-800 rounded-xl p-3 text-left text-zinc-500 text-xs hover:border-amber-500/40 hover:text-zinc-300 transition-colors">
                         Open share options
                     </button>

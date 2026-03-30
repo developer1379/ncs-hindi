@@ -110,24 +110,15 @@
         });
     });
 
-    $(document).on('click', '[data-stem-share-btn]', function(e) {
-        e.preventDefault();
-
-        const $btn = $(this);
+    $('#shareMusicModal').on('show.bs.modal', function(event) {
+        const trigger = event.relatedTarget || document.querySelector('[data-stem-share-btn]');
+        const $btn = $(trigger);
         const title = $btn.data('share-title') || document.title;
         const url = $btn.data('share-url') || window.location.href;
         const message = `${title} - ${url}`;
         const encodedTitle = encodeURIComponent(title);
         const encodedUrl = encodeURIComponent(url);
         const encodedMessage = encodeURIComponent(message);
-        const modalEl = document.getElementById('shareMusicModal');
-
-        if (!modalEl) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url);
-            }
-            return;
-        }
 
         $('#shareMusicTitle').text(title);
         $('#shareMusicUrl').text(url);
@@ -147,13 +138,6 @@
         });
 
         $('[data-share-copy]').data('share-url', url);
-
-        if (window.bootstrap && bootstrap.Modal) {
-            bootstrap.Modal.getOrCreateInstance(modalEl).show();
-        } else {
-            modalEl.classList.add('show');
-            modalEl.style.display = 'block';
-        }
     });
 
     $(document).on('click', '[data-share-copy]', async function(e) {
