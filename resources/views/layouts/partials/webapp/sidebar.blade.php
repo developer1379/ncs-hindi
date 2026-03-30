@@ -53,19 +53,30 @@
         <div>
             <div class="flex items-center justify-between px-4 mb-4">
                 <p class="text-[10px] font-black text-zinc-700 uppercase tracking-widest">Top Genres</p>
-                <i
-                    class="fa-solid fa-plus text-[10px] text-zinc-700 hover:text-white cursor-pointer transition-colors"></i>
+                <a href="{{ route('webapp.trending') }}" class="text-[10px] text-zinc-700 hover:text-white transition-colors uppercase tracking-widest">
+                    View all
+                </a>
             </div>
+
             <div class="space-y-1">
-                <div
-                    class="flex items-center justify-between px-4 py-2 rounded-xl hover:bg-zinc-900/30 group cursor-pointer transition-all">
-                    <div class="flex items-center gap-3">
-                        <span class="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.5)]"></span>
-                        <span class="text-xs text-zinc-500 group-hover:text-zinc-200 transition-colors">Bollywood
-                            Trap</span>
+                @forelse ($sidebarCategories ?? [] as $category)
+                    <a href="{{ route('webapp.trending', ['category' => $category->id]) }}"
+                        class="flex items-center justify-between px-4 py-2 rounded-xl hover:bg-zinc-900/30 group transition-all {{ request('category') == $category->id ? 'bg-zinc-900/40 border border-amber-500/20' : '' }}">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.5)] shrink-0"></span>
+                            <span class="text-xs text-zinc-500 group-hover:text-zinc-200 transition-colors truncate">
+                                {{ $category->name }}
+                            </span>
+                        </div>
+                        <span class="text-[10px] font-black text-zinc-800 group-hover:text-amber-500 shrink-0">
+                            {{ number_format($category->public_stems_count) }}
+                        </span>
+                    </a>
+                @empty
+                    <div class="px-4 py-3 rounded-xl bg-zinc-900/30 text-[10px] text-zinc-500">
+                        No active categories yet.
                     </div>
-                    <i class="fa-solid fa-arrow-trend-up text-[10px] text-zinc-800 group-hover:text-red-500"></i>
-                </div>
+                @endforelse
             </div>
         </div>
     </nav>

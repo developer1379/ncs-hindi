@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\CoachRepositoryInterface;
 use App\Repositories\Contracts\InteractionRepositoryInterface;
@@ -17,6 +18,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Category;
 use App\Repositories\Contracts\BlogCommentRepositoryInterface;
 use App\Repositories\Contracts\BlogRepositoryInterface;
 use App\Repositories\Contracts\CoachBlogRepositoryInterface;
@@ -77,5 +79,16 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::component('webapp-layout', WebAppLayout::class);
+
+        View::composer('layouts.partials.webapp.sidebar', function ($view) {
+            $view->with('sidebarCategories', Category::where('is_active', true)
+                ->withCount(['stems as public_stems_count' => function ($query) {
+                    $query->where('is_public', true);
+                }])
+                ->orderByDesc('public_stems_count')
+                ->orderBy('name')
+                ->limit(6)
+                ->get());
+        });
     }
 }
