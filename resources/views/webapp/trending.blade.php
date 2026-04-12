@@ -106,10 +106,72 @@
                         <p class="mt-1 text-xl sm:text-2xl md:text-3xl font-black text-white">{{ number_format($trendingStats['views'] ?? 0) }}</p>
                     </div>
                 </div>
+            </div>
 
+            <div class="space-y-3 md:space-y-4">
+                @if ($featuredStem)
+                    <div class="relative overflow-hidden rounded-[26px] soft-border bg-black/40">
+                        <div class="grid md:grid-cols-[1.08fr_0.92fr]">
+                            <div class="relative order-2 md:order-1 min-h-[190px] sm:min-h-[220px] md:min-h-[280px] p-4 md:p-5 flex flex-col justify-end bg-gradient-to-br from-black via-[#0b0b0d] to-[#121214]">
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="rank-badge px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em]">
+                                        Featured #1
+                                    </span>
+                                    @if ($featuredStem->category)
+                                        <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-300">
+                                            {{ $featuredStem->category->name }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <h2 class="font-brand text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tighter text-white leading-[0.95] max-w-[14rem] sm:max-w-[18rem]">
+                                    {{ $featuredStem->title }}
+                                </h2>
+                                <p class="mt-2 text-zinc-300 text-[11px] md:text-sm font-medium">
+                                    {{ $featuredStem->artist_name ?: 'Unknown artist' }}
+                                </p>
+                                @if ($featuredStem->description)
+                                    <p class="mt-2 text-[11px] md:text-sm leading-relaxed text-zinc-400 max-w-md">
+                                        {{ \Illuminate\Support\Str::limit($featuredStem->description, 88) }}
+                                    </p>
+                                @endif
+
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <a href="{{ route('webapp.stems.show', $featuredStem->slug) }}"
+                                        data-notification-gate
+                                        data-music-action="view"
+                                        data-music-title="{{ $featuredStem->title }}"
+                                        data-action-url="{{ route('webapp.stems.show', $featuredStem->slug) }}"
+                                        data-action-label="Continue to view"
+                                        class="btn-vault px-3.5 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
+                                        View release
+                                    </a>
+                                    <a href="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
+                                        target="_blank"
+                                        data-notification-gate
+                                        data-music-action="download"
+                                        data-music-title="{{ $featuredStem->title }}"
+                                        data-action-url="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
+                                        data-action-label="Continue to download"
+                                        class="px-3.5 py-2.5 rounded-2xl bg-white/10 soft-border text-[9px] font-black tracking-[0.2em] uppercase text-white hover:bg-white/15 transition">
+                                        Download
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="relative order-1 md:order-2 min-h-[190px] sm:min-h-[220px] md:min-h-[280px] overflow-hidden">
+                                <img src="{{ $featuredImage }}" alt="{{ $featuredStem->title }}"
+                                    class="absolute inset-0 h-full w-full object-cover opacity-85">
+                                <div class="absolute inset-0 bg-gradient-to-l from-black/10 via-black/15 to-black/55"></div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            <div class="lg:col-span-2 space-y-3 md:space-y-4">
                 <form action="{{ route('webapp.trending') }}" method="GET" class="glass-panel rounded-[18px] p-3 md:p-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.4fr_0.8fr_0.8fr_auto] gap-2.5 md:gap-3">
-                        <div class="relative">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.8fr_0.85fr_0.85fr_auto] gap-2.5 md:gap-3">
+                        <div class="relative sm:col-span-2 xl:col-span-1">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-[11px]"></i>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search title, artist, album, or tags"
                                 class="w-full rounded-2xl bg-black/40 soft-border pl-10 pr-3.5 py-2.5 text-[13px] text-white outline-none focus:border-amber-500/50">
@@ -157,61 +219,6 @@
                         Newest
                     </a>
                 </div>
-            </div>
-
-            <div class="space-y-3 md:space-y-4">
-                @if ($featuredStem)
-                    <div class="relative overflow-hidden rounded-[26px] soft-border bg-black/40">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/25"></div>
-                        <img src="{{ $featuredImage }}" alt="{{ $featuredStem->title }}" class="absolute inset-0 h-full w-full object-cover opacity-70">
-                        <div class="relative min-h-[190px] sm:min-h-[220px] md:min-h-[260px] p-3 md:p-5 flex flex-col justify-end">
-                            <div class="flex flex-wrap items-center gap-2 mb-3">
-                                <span class="rank-badge px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em]">
-                                    Featured #1
-                                </span>
-                                @if ($featuredStem->category)
-                                    <span class="px-2.5 py-1 rounded-full bg-black/50 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-300">
-                                        {{ $featuredStem->category->name }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <h2 class="font-brand text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tighter text-white leading-tight">
-                                {{ $featuredStem->title }}
-                            </h2>
-                            <p class="mt-1 text-zinc-300 text-[11px] md:text-sm">
-                                {{ $featuredStem->artist_name ?: 'Unknown artist' }}
-                            </p>
-                            @if ($featuredStem->description)
-                                <p class="mt-2 text-[11px] md:text-sm leading-relaxed text-zinc-400 max-w-xl">
-                                    {{ \Illuminate\Support\Str::limit($featuredStem->description, 95) }}
-                                </p>
-                            @endif
-
-                            <div class="mt-3 flex flex-wrap gap-2">
-                                <a href="{{ route('webapp.stems.show', $featuredStem->slug) }}"
-                                    data-notification-gate
-                                    data-music-action="view"
-                                    data-music-title="{{ $featuredStem->title }}"
-                                    data-action-url="{{ route('webapp.stems.show', $featuredStem->slug) }}"
-                                    data-action-label="Continue to view"
-                                    class="btn-vault px-3.5 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
-                                    View release
-                                </a>
-                                <a href="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
-                                    target="_blank"
-                                    data-notification-gate
-                                    data-music-action="download"
-                                    data-music-title="{{ $featuredStem->title }}"
-                                    data-action-url="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
-                                    data-action-label="Continue to download"
-                                    class="px-3.5 py-2.5 rounded-2xl bg-white/10 soft-border text-[9px] font-black tracking-[0.2em] uppercase text-white hover:bg-white/15 transition">
-                                    Download
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 <div class="grid grid-cols-3 gap-2">
                     <div class="metric-chip rounded-2xl p-2.5 md:p-3">

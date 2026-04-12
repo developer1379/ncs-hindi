@@ -2,6 +2,75 @@
     {{-- 1. Quill Assets --}}
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
+    @php
+        $youtubeUrlPattern = '/https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=[\w-]+(?:[^\s<"]*)?|shorts\/[\w-]+(?:[^\s<"]*)?|live\/[\w-]+(?:[^\s<"]*)?)|youtu\.be\/[\w-]+(?:[^\s<"]*)?)/i';
+
+        $extractYoutubePreview = function (?string $content) use ($youtubeUrlPattern) {
+            if (!$content || !preg_match($youtubeUrlPattern, $content, $matches)) {
+                return null;
+            }
+
+            $url = rtrim(html_entity_decode($matches[0], ENT_QUOTES | ENT_HTML5), ".,)]}'\"");
+            $parts = parse_url($url);
+            $host = strtolower($parts['host'] ?? '');
+            $videoId = null;
+
+            if (str_contains($host, 'youtu.be')) {
+                $videoId = trim($parts['path'] ?? '', '/');
+            } elseif (str_contains($host, 'youtube.com')) {
+                if (!empty($parts['query'])) {
+                    parse_str($parts['query'], $query);
+                    $videoId = $query['v'] ?? null;
+                }
+
+                if (!$videoId && !empty($parts['path']) && preg_match('#/(shorts|live)/([^/?]+)#', $parts['path'], $pathMatches)) {
+                    $videoId = $pathMatches[2];
+                }
+            }
+
+            if (!$videoId) {
+                return null;
+            }
+
+            return [
+                'url' => $url,
+                'video_id' => $videoId,
+                'thumbnail' => "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg",
+            ];
+        };
+
+        $renderCommunityMessage = function (?string $content) use ($extractYoutubePreview) {
+            $content = $content ?? '';
+            $preview = $extractYoutubePreview($content);
+            $plainText = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($content), ENT_QUOTES | ENT_HTML5)));
+
+            $hideOriginal = $preview
+                && ($plainText === '' || $plainText === $preview['url'] || str_contains($plainText, $preview['url']));
+
+            $html = $hideOriginal ? '' : $content;
+
+            if ($preview) {
+                $url = e($preview['url']);
+                $thumb = e($preview['thumbnail']);
+                $html .= <<<HTML
+<a href="{$url}" target="_blank" rel="noopener noreferrer" class="youtube-preview">
+    <div class="youtube-preview__thumb">
+        <img src="{$thumb}" alt="YouTube thumbnail">
+        <div class="youtube-preview__play"><i class="fa-solid fa-circle-play"></i></div>
+    </div>
+    <div class="youtube-preview__content">
+        <div class="youtube-preview__label">YouTube</div>
+        <div class="youtube-preview__title">Open video in a new tab</div>
+        <div class="youtube-preview__cta">Tap to watch</div>
+    </div>
+</a>
+HTML;
+            }
+
+            return $html;
+        };
+    @endphp
+
     <style>
         /* Studio Dark Chat Theme */
         #chat-container::-webkit-scrollbar {
@@ -69,6 +138,81 @@
             object-fit: cover;
             border-radius: 12px;
             margin-top: 8px;
+        }
+
+        .youtube-preview {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            text-decoration: none;
+        }
+
+        .youtube-preview:hover {
+            border-color: rgba(245, 158, 11, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .youtube-preview__thumb {
+            position: relative;
+            width: 132px;
+            aspect-ratio: 16 / 9;
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 14px;
+            background: #111;
+        }
+
+        .youtube-preview__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .youtube-preview__play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.45));
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .youtube-preview__content {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .youtube-preview__label {
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #f59e0b;
+        }
+
+        .youtube-preview__title {
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            word-break: break-word;
+        }
+
+        .youtube-preview__cta {
+            font-size: 10px;
+            font-weight: 800;
+            color: #d4d4d8;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
         }
 
         /* Responsive design */
@@ -200,7 +344,7 @@
 
                                 <div
                                     class="p-3 md:p-4 rounded-2xl text-xs md:text-sm leading-relaxed {{ Auth::id() == $message->user_id ? 'bg-amber-600 text-black font-semibold rounded-tr-none' : 'bg-zinc-900 text-zinc-300 rounded-tl-none border border-zinc-800' }}">
-                                    {!! $message->message !!}
+                                    {!! $renderCommunityMessage($message->message) !!}
                                 </div>
                             </div>
 
@@ -371,6 +515,112 @@
                     }, 100);
                 };
 
+                const youtubeUrlPattern = /https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=[\w-]+(?:[^\s<"]*)?|shorts\/[\w-]+(?:[^\s<"]*)?|live\/[\w-]+(?:[^\s<"]*)?)|youtu\.be\/[\w-]+(?:[^\s<"]*)?)/i;
+
+                function escapeHtml(value) {
+                    return String(value)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#039;');
+                }
+
+                function parseYouTubeUrl(rawUrl) {
+                    if (!rawUrl) {
+                        return null;
+                    }
+
+                    try {
+                        const url = new URL(String(rawUrl).trim().replace(/[.,)\]\}'"]+$/g, ''), window.location.origin);
+                        const host = url.hostname.toLowerCase();
+                        let videoId = null;
+
+                        if (host.includes('youtu.be')) {
+                            videoId = url.pathname.replace(/^\/+/, '').split('/')[0];
+                        } else if (host.includes('youtube.com')) {
+                            videoId = url.searchParams.get('v');
+
+                            if (!videoId) {
+                                const shortMatch = url.pathname.match(/\/(shorts|live)\/([^/?#]+)/);
+                                if (shortMatch) {
+                                    videoId = shortMatch[2];
+                                }
+                            }
+                        }
+
+                        if (!videoId) {
+                            return null;
+                        }
+
+                        return {
+                            url: url.toString(),
+                            videoId,
+                            thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+                        };
+                    } catch (error) {
+                        return null;
+                    }
+                }
+
+                function extractYouTubePreview(content) {
+                    if (!content) {
+                        return null;
+                    }
+
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = content;
+
+                    const links = wrapper.querySelectorAll('a[href]');
+                    for (const link of links) {
+                        const preview = parseYouTubeUrl(link.href);
+                        if (preview) {
+                            return preview;
+                        }
+                    }
+
+                    const plainText = (wrapper.textContent || '').trim();
+                    const textMatch = plainText.match(youtubeUrlPattern);
+                    if (textMatch) {
+                        return parseYouTubeUrl(textMatch[0]);
+                    }
+
+                    const rawMatch = content.match(youtubeUrlPattern);
+                    if (rawMatch) {
+                        return parseYouTubeUrl(rawMatch[0]);
+                    }
+
+                    return null;
+                }
+
+                function renderMessageBody(content) {
+                    const preview = extractYouTubePreview(content);
+                    if (!preview) {
+                        return content || '';
+                    }
+
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = content || '';
+                    const plainText = (wrapper.textContent || '').trim().replace(/\s+/g, ' ');
+                    const shouldHideOriginal = !plainText || plainText === preview.url || plainText.includes(preview.url);
+
+                    const previewHtml = `
+                        <a href="${escapeHtml(preview.url)}" target="_blank" rel="noopener noreferrer" class="youtube-preview">
+                            <div class="youtube-preview__thumb">
+                                <img src="${escapeHtml(preview.thumbnail)}" alt="YouTube thumbnail">
+                                <div class="youtube-preview__play"><i class="fa-solid fa-circle-play"></i></div>
+                            </div>
+                            <div class="youtube-preview__content">
+                                <div class="youtube-preview__label">YouTube</div>
+                                <div class="youtube-preview__title">Open video in a new tab</div>
+                                <div class="youtube-preview__cta">Tap to watch</div>
+                            </div>
+                        </a>
+                    `;
+
+                    return `${shouldHideOriginal ? '' : content}${previewHtml}`;
+                }
+
                 scrollToBottom();
 
                 // Track messages to prevent duplicates
@@ -440,7 +690,7 @@
                                 <span class="text-[7px] md:text-[8px] text-zinc-700 font-bold">${time}</span>
                             </div>
                             <div class="p-3 md:p-4 rounded-2xl text-xs md:text-sm ${isMe ? 'bg-amber-600 text-black font-medium rounded-tr-none' : 'bg-zinc-900 text-zinc-300 rounded-tl-none border border-zinc-800'}">
-                                ${data.message}
+                                ${renderMessageBody(data.message)}
                                 ${mediaHTML}
                             </div>
                         </div>

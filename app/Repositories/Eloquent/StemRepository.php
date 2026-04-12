@@ -118,6 +118,7 @@ class StemRepository implements StemRepositoryInterface
                 'album_movie_name' => $data['album_movie_name'] ?? null,
                 'language'         => $data['language'] ?? null,
                 'description'      => $data['description'] ?? null,
+                'license_text'     => $data['license_text'] ?? null,
                 'tags_keywords'    => $data['tags_keywords'] ?? null,
                 'file_name'        => 'External Link',
                 'file_path'        => $audioPath, // This saves the Mega Link
@@ -171,6 +172,7 @@ class StemRepository implements StemRepositoryInterface
                 'album_movie_name' => $data['album_movie_name'] ?? $stem->album_movie_name,
                 'language'         => $data['language'] ?? $stem->language,
                 'description'      => $data['description'] ?? $stem->description,
+                'license_text'     => array_key_exists('license_text', $data) ? $data['license_text'] : $stem->license_text,
                 'tags_keywords'    => $data['tags_keywords'] ?? $stem->tags_keywords,
                 'music_key'        => $data['music_key'] ?? $stem->music_key,
                 'seo_title'        => $data['seo_title'] ?? $stem->seo_title,

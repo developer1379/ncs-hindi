@@ -18,6 +18,7 @@ class MusicStem extends Model
         'album_movie_name',
         'language',
         'description',
+        'license_text',
         'tags_keywords',
         'file_name',
         'file_path',

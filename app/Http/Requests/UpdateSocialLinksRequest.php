@@ -22,6 +22,7 @@ class UpdateSocialLinksRequest extends FormRequest
             'whatsapp_url' => 'nullable|url|max:255',
             'youtube_url' => 'nullable|url|max:255',
             'linkedin_url' => 'nullable|url|max:255',
+            'playstore_url' => 'nullable|url|max:255',
         ];
     }
 
@@ -40,6 +41,8 @@ class UpdateSocialLinksRequest extends FormRequest
             'youtube_url.max' => 'The YouTube URL cannot exceed 255 characters.',
             'linkedin_url.url' => 'The LinkedIn URL must be a valid URL.',
             'linkedin_url.max' => 'The LinkedIn URL cannot exceed 255 characters.',
+            'playstore_url.url' => 'The Play Store URL must be a valid URL.',
+            'playstore_url.max' => 'The Play Store URL cannot exceed 255 characters.',
         ];
     }
 

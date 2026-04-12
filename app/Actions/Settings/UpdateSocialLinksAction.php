@@ -13,7 +13,7 @@ class UpdateSocialLinksAction
     {
         $keys = [
             'facebook_url', 'x_url', 'instagram_url', 
-            'whatsapp_url', 'youtube_url', 'linkedin_url'
+            'whatsapp_url', 'youtube_url', 'linkedin_url', 'playstore_url'
         ];
 
         foreach ($keys as $key) {

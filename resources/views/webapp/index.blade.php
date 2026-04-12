@@ -1,40 +1,41 @@
 <x-webapp-layout>
+    @inject('settings', 'App\Services\SettingService')
     {{-- 1. Premium Category Navigation --}}
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        <a href="{{ route('webapp.streams') }}" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-amber-500/50 hover:bg-zinc-900/60">
+        <a href="{{ $settings->get('youtube_url', 'https://www.youtube.com') }}" target="_blank" rel="noopener noreferrer" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-amber-500/50 hover:bg-zinc-900/60">
             <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition duration-500">
-                <i class="fa-solid fa-microphone-lines text-2xl text-amber-500"></i>
+                <i class="fa-brands fa-youtube text-2xl text-amber-500"></i>
             </div>
-            <h4 class="text-xs font-black uppercase tracking-widest text-white">Vocal Stems</h4>
-            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">Free Access</p>
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">YouTube</h4>
+            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">NCS Hindi Channel</p>
         </a>
 
-        <a href="{{ route('webapp.trending') }}" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-red-500/50 hover:bg-zinc-900/60">
+        <a href="{{ $settings->get('playstore_url', 'https://play.google.com/store/search?q=NCS%20Hindi%20Music&c=apps') }}" target="_blank" rel="noopener noreferrer" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-red-500/50 hover:bg-zinc-900/60">
             <div class="absolute inset-0 bg-gradient-to-br from-red-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="w-14 h-14 bg-red-600/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:-rotate-3 transition duration-500">
-                <i class="fa-solid fa-sliders text-2xl text-red-600"></i>
+                <i class="fa-brands fa-android text-2xl text-red-600"></i>
             </div>
-            <h4 class="text-xs font-black uppercase tracking-widest text-white">Mixing Tips</h4>
-            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">Community Feed</p>
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">Android App</h4>
+            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">NCS Hindi Music</p>
         </a>
 
-        <a href="{{ route('webapp.streams') }}" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-amber-600/50 hover:bg-zinc-900/60">
+        <a href="{{ route('webapp.profile') }}" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-amber-600/50 hover:bg-zinc-900/60">
             <div class="absolute inset-0 bg-gradient-to-br from-amber-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="w-14 h-14 bg-amber-600/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition duration-500">
-                <i class="fa-solid fa-guitar text-2xl text-amber-600"></i>
+                <i class="fa-solid fa-user text-2xl text-amber-600"></i>
             </div>
-            <h4 class="text-xs font-black uppercase tracking-widest text-white">Acoustic</h4>
-            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">Premium Samples</p>
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">Profile</h4>
+            <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">Your account</p>
         </a>
 
-        <div class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-zinc-500/50 hover:bg-zinc-900/60 cursor-pointer">
+        <a href="{{ route('webapp.faq') }}" class="group relative overflow-hidden bg-zinc-900/40 backdrop-blur-md border border-zinc-800 p-6 rounded-[2rem] text-center transition-all duration-500 hover:border-zinc-500/50 hover:bg-zinc-900/60">
             <div class="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition duration-500">
                 <i class="fa-solid fa-shield-halved text-2xl text-zinc-400"></i>
             </div>
             <h4 class="text-xs font-black uppercase tracking-widest text-white">FAQ</h4>
             <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-tighter">Legal Guides</p>
-        </div>
+        </a>
     </section>
 
     {{-- 2. Feed Header --}}

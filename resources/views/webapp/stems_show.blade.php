@@ -112,34 +112,14 @@
                 <div class="flex items-center justify-between mb-8">
                     <h3 class="text-white font-brand font-bold text-xl uppercase tracking-tight flex items-center gap-3">
                         <span class="w-2 h-8 bg-amber-500 rounded-full"></span>
-                        Technical Specs
+                        Music Info
                     </h3>
-                    <span class="text-zinc-600 text-[10px] font-black uppercase tracking-tighter">Verified Studio Asset</span>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                    <div class="group p-5 bg-black/40 rounded-3xl border border-zinc-800 hover:border-amber-500/30 transition-colors">
-                        <p class="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2 group-hover:text-amber-500">BPM</p>
-                        <p class="text-2xl font-black text-white">{{ $stem->bpm ?? 'N/A' }}</p>
-                    </div>
-                    <div class="group p-5 bg-black/40 rounded-3xl border border-zinc-800 hover:border-amber-500/30 transition-colors">
-                        <p class="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2 group-hover:text-amber-500">Scale/Key</p>
-                        <p class="text-2xl font-black text-white">{{ $stem->music_key ?? 'N/A' }}</p>
-                    </div>
-                    <div class="group p-5 bg-black/40 rounded-3xl border border-zinc-800 hover:border-amber-500/30 transition-colors">
-                        <p class="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2 group-hover:text-amber-500">File Size</p>
-                        <p class="text-2xl font-black text-white text-nowrap">{{ $stem->file_size ?: 'Variable' }}</p>
-                    </div>
-                    <div class="group p-5 bg-black/40 rounded-3xl border border-zinc-800 hover:border-amber-500/30 transition-colors">
-                        <p class="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2 group-hover:text-amber-500">Quality</p>
-                        <p class="text-2xl font-black text-white">320kbps</p>
-                    </div>
                 </div>
 
                 @if($stem->description)
                     <div class="mt-10 pt-8 border-t border-zinc-800/50">
                         <h4 class="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-align-left text-amber-500"></i> Producer Notes
+                            <i class="fa-solid fa-align-left text-amber-500"></i> Description
                         </h4>
                         <p class="text-zinc-400 text-base leading-relaxed font-medium">
                             {{ $stem->description }}
@@ -174,10 +154,11 @@
                     </div>
                     <div>
                         <h3 class="text-white text-xl font-bold uppercase tracking-tight text-center md:text-left">Creator Friendly License</h3>
-                        <p class="text-zinc-500 text-sm mt-3 leading-relaxed text-center md:text-left">
-                            This music is safe for use in YouTube, Twitch, and Social Media content.
-                            <strong>Credit Required:</strong> Simply include the track title and artist in your video description.
-                        </p>
+                        <div class="text-zinc-500 text-sm mt-3 leading-relaxed text-center md:text-left space-y-3">
+                            <p>
+                                {!! nl2br(e($stem->license_text ?: "This music is safe for use in YouTube, Twitch, Shorts, Reels, and other social media content. You may use this track in monetized videos as long as you give clear credit in the description. Include the track title and artist name, and do not claim the music as your own original composition.")) !!}
+                            </p>
+                        </div>
                         <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-4">
                             <span class="flex items-center gap-2 text-[10px] font-bold text-green-500 uppercase">
                                 <i class="fa-solid fa-check-circle"></i> Monetization Active

@@ -14,7 +14,7 @@
                 <div class="col-12">
                     <div class="card bg-light-subtle border shadow-none">
                         <div class="card-header bg-transparent border-bottom">
-                            <h5 class="card-title mb-0">Page Titles</h5>
+                            <h5 class="card-title mb-0">Page Titles & FAQ Content</h5>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('admin.settings.update-page-setting') }}" method="POST">
@@ -31,6 +31,33 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Contact Page Title</label>
                                     <input type="text" class="form-control" name="contact_page_title" value="{{ $settings->get('contact_page_title') }}">
+                                </div>
+                                <hr class="my-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">FAQ Page Title</label>
+                                    <input type="text" class="form-control" name="faq_page_title" value="{{ $settings->get('faq_page_title', 'FAQ / Legal Guides') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">FAQ Intro</label>
+                                    <textarea class="form-control" name="faq_page_intro" rows="3">{{ $settings->get('faq_page_intro', 'Answers to common questions and the rules that apply when using NCS Hindi music.') }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">FAQ Content</label>
+                                    <textarea class="form-control" name="faq_page_content" rows="8" placeholder="<h5>Question</h5><p>Answer</p>">{{ $settings->get('faq_page_content') }}</textarea>
+                                    <small class="text-muted">You can use simple HTML like headings, paragraphs, lists, and links.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Legal Guides Title</label>
+                                    <input type="text" class="form-control" name="legal_page_title" value="{{ $settings->get('legal_page_title', 'Legal Guides') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Legal Guides Intro</label>
+                                    <textarea class="form-control" name="legal_page_intro" rows="3">{{ $settings->get('legal_page_intro', 'Simple usage guidance for creators, brands, and community members.') }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Legal Guides Content</label>
+                                    <textarea class="form-control" name="legal_page_content" rows="8" placeholder="<h5>Usage Rule</h5><p>Rule text</p>">{{ $settings->get('legal_page_content') }}</textarea>
+                                    <small class="text-muted">This content appears on the public FAQ page. Keep it creator-friendly and easy to read.</small>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update Page Settings</button>
                             </form>

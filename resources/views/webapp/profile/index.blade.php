@@ -1,123 +1,261 @@
 <x-webapp-layout>
-    <div class="max-w-5xl mx-auto pb-24">
+    @php
+        $displayName = $profile?->studio_name ?? $user->name;
+        $bio = $profile?->bio ?? 'No bio set for this profile yet.';
+        $avatar = $user->profile_image && strlen($user->profile_image) > 20
+            ? $user->profile_image
+            : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=b45309&color=fff&size=240';
+        $portfolioUrl = $profile?->website_url ?? null;
+        $instagramUrl = $profile?->instagram_url ?? null;
+    @endphp
 
-        {{-- Profile Header / Cover --}}
-        <section class="relative mb-12">
-            <div
-                class="h-48 lg:h-64 rounded-[40px] bg-gradient-to-br from-[#4b3a24] to-[#050402] border border-zinc-800 overflow-hidden relative">
-                <div class="absolute inset-0 opacity-20"
-                    style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');">
-                </div>
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-red-600/20 blur-[100px] rounded-full"></div>
-            </div>
+    <div class="max-w-7xl mx-auto pb-24">
+        <section class="relative overflow-hidden rounded-[36px] border border-white/5 bg-gradient-to-br from-[#100b08] via-[#09090b] to-[#030303]">
+            <div class="absolute inset-0 opacity-35 bg-[radial-gradient(circle_at_top_right,_rgba(245,158,11,0.18),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(153,27,27,0.22),_transparent_30%)]"></div>
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-amber-500/15 blur-[110px]"></div>
+            <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-red-600/10 blur-[120px]"></div>
 
-            <div class="absolute -bottom-10 left-10 flex flex-col md:flex-row md:items-end gap-6">
-                <div class="relative group">
-                    {{-- Dynamic Avatar based on User Name --}}
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=b45309&color=fff&size=200"
-                        class="w-32 h-32 lg:w-40 lg:h-40 rounded-[32px] border-8 border-black shadow-2xl object-cover">
-                    <div
-                        class="absolute bottom-2 right-2 w-5 h-5 bg-green-500 border-4 border-black rounded-full shadow-[0_0_15px_rgba(34,197,94,0.5)]">
+            <div class="relative grid lg:grid-cols-[1.15fr_0.85fr] gap-6 p-6 md:p-8 lg:p-10">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-[9px] font-black uppercase tracking-[0.22em] text-amber-400">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        Profile overview
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-end gap-5">
+                        <img src="{{ $avatar }}" alt="{{ $user->name }}"
+                            class="w-28 h-28 md:w-36 md:h-36 rounded-[30px] object-cover border-4 border-black shadow-2xl">
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500">User Profile</p>
+                            <h1 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter text-white leading-[0.92]">
+                                {{ $displayName }}
+                            </h1>
+                            <p class="text-amber-500 font-bold text-xs md:text-sm uppercase tracking-[0.2em]">
+                                {{ $profile?->rank_title ?? 'New Artist' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="max-w-2xl text-sm md:text-base text-zinc-300 leading-relaxed">
+                        {{ $bio }}
+                    </p>
+
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('webapp.profile.edit') }}"
+                            class="btn-vault px-6 py-3 rounded-2xl text-[10px] uppercase font-black tracking-[0.2em]">
+                            Edit Profile
+                        </a>
+                        <a href="{{ route('webapp.streams') }}"
+                            class="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 text-[10px] uppercase font-black tracking-[0.2em] text-zinc-200 hover:text-white hover:border-amber-500/40 transition">
+                            View Music Library
+                        </a>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <h1 class="font-brand text-3xl font-black text-white tracking-tighter uppercase leading-none">
-                        {{ $user->name }}
-                    </h1>
-                    <p class="text-amber-500 font-bold text-xs mt-2 uppercase tracking-widest">
-                        {{ $user->profile->rank_title ?? 'Level 1 Artist' }}
-                    </p>
-                </div>
-            </div>
 
-            <div class="absolute -bottom-10 right-10 hidden md:flex gap-3">
-                <a href="{{ route('webapp.profile.edit') }}"
-                    class="btn-vault px-6 py-3 text-[10px] uppercase font-black">Edit Studio</a>
-                <button class="bg-zinc-900 border border-zinc-800 px-4 py-3 rounded-xl hover:text-red-500 transition">
-                    <i class="fa-solid fa-share-nodes"></i>
-                </button>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="rounded-[24px] bg-black/40 border border-white/5 p-4">
+                            <p class="text-[9px] uppercase tracking-[0.22em] text-zinc-500 font-black">Liked songs</p>
+                            <p class="mt-2 text-3xl font-black text-white">{{ number_format($profileStats['liked'] ?? 0) }}</p>
+                        </div>
+                        <div class="rounded-[24px] bg-black/40 border border-white/5 p-4">
+                            <p class="text-[9px] uppercase tracking-[0.22em] text-zinc-500 font-black">Viewed songs</p>
+                            <p class="mt-2 text-3xl font-black text-white">{{ number_format($profileStats['viewed'] ?? 0) }}</p>
+                        </div>
+                        <div class="rounded-[24px] bg-black/40 border border-white/5 p-4">
+                            <p class="text-[9px] uppercase tracking-[0.22em] text-zinc-500 font-black">Downloaded songs</p>
+                            <p class="mt-2 text-3xl font-black text-white">{{ number_format($profileStats['downloaded'] ?? 0) }}</p>
+                        </div>
+                        <div class="rounded-[24px] bg-black/40 border border-white/5 p-4">
+                            <p class="text-[9px] uppercase tracking-[0.22em] text-zinc-500 font-black">Uploads</p>
+                            <p class="mt-2 text-3xl font-black text-white">{{ number_format($profileStats['uploads'] ?? 0) }}</p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-[28px] bg-black/35 border border-white/5 p-5">
+                        <p class="text-[9px] uppercase tracking-[0.22em] text-zinc-500 font-black mb-3">Profile links</p>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between gap-4">
+                                <span class="text-zinc-500">Member since</span>
+                                <span class="text-white font-bold">{{ optional($user->created_at)->format('M Y') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <span class="text-zinc-500">Profile name</span>
+                                <span class="text-white font-bold truncate text-right">{{ $displayName }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <span class="text-zinc-500">Website</span>
+                                @if ($portfolioUrl)
+                                    <a href="{{ $portfolioUrl }}" target="_blank" class="text-amber-400 hover:text-amber-300 font-bold truncate text-right">
+                                        Open link
+                                    </a>
+                                @else
+                                    <span class="text-zinc-600">Not set</span>
+                                @endif
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <span class="text-zinc-500">Instagram</span>
+                                @if ($instagramUrl)
+                                    <a href="{{ $instagramUrl }}" target="_blank" class="text-amber-400 hover:text-amber-300 font-bold truncate text-right">
+                                        Open link
+                                    </a>
+                                @else
+                                    <span class="text-zinc-600">Not set</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-20">
-
-            {{-- Left Column: Info --}}
+        <section class="mt-8 grid lg:grid-cols-[0.95fr_1.05fr] gap-6">
             <div class="space-y-6">
-                <div class="forum-card p-6">
-                    <h3 class="font-brand text-sm font-black text-zinc-500 uppercase tracking-widest mb-4">Bio</h3>
-                    <p class="text-sm text-zinc-400 leading-relaxed font-medium">
-                        {{ $user->profile->bio ?? 'No bio set for this studio yet.' }}
+                <div class="forum-card p-6 bg-[#0a0a0c] border border-white/5">
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <h3 class="font-brand text-sm md:text-base font-black uppercase tracking-widest text-zinc-400">About Profile</h3>
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-zinc-600 font-black">Bio</span>
+                    </div>
+                    <p class="text-sm text-zinc-300 leading-relaxed">
+                        {{ $bio }}
                     </p>
                 </div>
 
-                <div class="forum-card p-6">
-                    <h3 class="font-brand text-sm font-black text-zinc-500 uppercase tracking-widest mb-6">Studio Stats
-                    </h3>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="text-center">
-                            {{-- Accessing object properties with null-coalesce fallback --}}
-                            <p class="text-xl font-black text-white leading-none">
-                                {{ $user->threads_count ?? 0 }}
-                            </p>
-                            <p class="text-[8px] text-zinc-600 font-bold uppercase mt-1">Uploads</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-xl font-black text-red-600 leading-none">
-                                {{ $user->profile->total_downloads ?? 0 }}
-                            </p>
-                            <p class="text-[8px] text-zinc-600 font-bold uppercase mt-1">Get Stems</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-xl font-black text-amber-500 leading-none">
-                                {{ $user->profile->xp_count ?? 0 }}
-                            </p>
-                            <p class="text-[8px] text-zinc-600 font-bold uppercase mt-1">XP Points</p>
-                        </div>
+                <div class="forum-card p-6 bg-[#0a0a0c] border border-white/5">
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <h3 class="font-brand text-sm md:text-base font-black uppercase tracking-widest text-zinc-400">Profile Actions</h3>
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-zinc-600 font-black">Quick links</span>
+                    </div>
+                    <div class="space-y-3">
+                        <a href="{{ route('webapp.profile.edit') }}"
+                            class="flex items-center justify-between rounded-2xl bg-white/5 border border-white/5 px-4 py-3 hover:border-amber-500/30 transition">
+                            <span class="text-sm font-bold text-white">Edit your profile</span>
+                            <i class="fa-solid fa-pen text-zinc-500"></i>
+                        </a>
+                        <a href="{{ route('webapp.streams') }}"
+                            class="flex items-center justify-between rounded-2xl bg-white/5 border border-white/5 px-4 py-3 hover:border-amber-500/30 transition">
+                            <span class="text-sm font-bold text-white">Browse music library</span>
+                            <i class="fa-solid fa-box-open text-zinc-500"></i>
+                        </a>
                     </div>
                 </div>
             </div>
 
-            {{-- Right Column: Activity --}}
-            <div class="lg:col-span-2 space-y-6">
-                <div class="flex items-center justify-between px-2 mb-2">
-                    <h2 class="font-brand text-xl font-bold italic text-white uppercase tracking-tight">Recent Studio
-                        Work</h2>
-                    <button
-                        class="text-[10px] font-black text-zinc-600 hover:text-amber-500 transition uppercase tracking-widest">View
-                        Library</button>
+            <div class="space-y-6">
+                <div class="forum-card p-6 bg-[#0a0a0c] border border-white/5">
+                    <div class="flex items-center justify-between gap-3 mb-5">
+                        <div>
+                            <h3 class="font-brand text-xl md:text-2xl font-black uppercase tracking-tight text-white">Liked songs</h3>
+                            <p class="mt-1 text-[11px] text-zinc-500">Songs you have liked.</p>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-zinc-600 font-black">{{ number_format($profileStats['liked'] ?? 0) }}</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        @forelse ($likedSongs as $song)
+                            @php
+                                $cover = $song->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80';
+                            @endphp
+                            <div class="flex items-center gap-4 rounded-[24px] border border-white/5 bg-black/35 p-3">
+                                <img src="{{ $cover }}" alt="{{ $song->title }}" class="w-16 h-16 rounded-2xl object-cover shrink-0">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-amber-400 font-black">Liked</p>
+                                    <h4 class="text-sm font-bold text-white truncate">{{ $song->title }}</h4>
+                                    <p class="text-xs text-zinc-500 truncate">{{ $song->artist_name ?: 'Unknown artist' }}</p>
+                                    <div class="mt-2 flex flex-wrap gap-2 text-[9px] uppercase tracking-[0.2em]">
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ $song->category?->name ?? 'Uncategorized' }}</span>
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->like_count) }} likes</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('webapp.stems.show', $song->slug) }}"
+                                    class="px-3.5 py-2.5 rounded-2xl bg-amber-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0">
+                                    View
+                                </a>
+                            </div>
+                        @empty
+                            <div class="rounded-[24px] border border-dashed border-white/10 bg-black/20 p-6 text-center">
+                                <p class="text-sm font-bold text-zinc-500">No liked songs yet.</p>
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
 
-                {{-- Handling real relationship data for uploads --}}
-                @forelse($user->threads ?? [] as $thread)
-                    <div
-                        class="forum-card p-6 flex items-center justify-between group hover:border-amber-600/40 transition-all duration-300">
-                        <div class="flex items-center gap-5">
-                            <div
-                                class="w-14 h-14 rounded-2xl bg-zinc-950 flex items-center justify-center border border-zinc-800 group-hover:bg-amber-600/10 transition">
-                                <i class="fa-solid fa-file-audio text-xl text-amber-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-white">{{ $thread->title }}</h4>
-                                <p class="text-[10px] text-zinc-600 font-mono uppercase tracking-widest mt-1">
-                                    {{ $thread->created_at->diffForHumans() }} • Forum Post
-                                </p>
-                            </div>
+                <div class="forum-card p-6 bg-[#0a0a0c] border border-white/5">
+                    <div class="flex items-center justify-between gap-3 mb-5">
+                        <div>
+                            <h3 class="font-brand text-xl md:text-2xl font-black uppercase tracking-tight text-white">Viewed songs</h3>
+                            <p class="mt-1 text-[11px] text-zinc-500">Songs you recently opened.</p>
                         </div>
-                        <div class="flex gap-2">
-                            <a href="{{ route('webapp.forum.show', $thread->id) }}"
-                                class="btn-vault px-5 py-2.5 rounded-xl text-[10px] uppercase font-black">View</a>
-                        </div>
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-zinc-600 font-black">{{ number_format($profileStats['viewed'] ?? 0) }}</span>
                     </div>
-                @empty
-                    <div
-                        class="forum-card p-12 border-dashed flex flex-col items-center justify-center text-center opacity-50">
-                        <div class="w-16 h-16 rounded-full bg-zinc-900 flex items-center justify-center mb-4">
-                            <i class="fa-solid fa-plus text-zinc-700"></i>
-                        </div>
-                        <p class="text-xs font-bold text-zinc-600 uppercase tracking-widest">No recent work found</p>
+
+                    <div class="space-y-3">
+                        @forelse ($viewedSongs as $song)
+                            @php
+                                $cover = $song->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80';
+                            @endphp
+                            <div class="flex items-center gap-4 rounded-[24px] border border-white/5 bg-black/35 p-3">
+                                <img src="{{ $cover }}" alt="{{ $song->title }}" class="w-16 h-16 rounded-2xl object-cover shrink-0">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-cyan-400 font-black">Viewed</p>
+                                    <h4 class="text-sm font-bold text-white truncate">{{ $song->title }}</h4>
+                                    <p class="text-xs text-zinc-500 truncate">{{ $song->artist_name ?: 'Unknown artist' }}</p>
+                                    <div class="mt-2 flex flex-wrap gap-2 text-[9px] uppercase tracking-[0.2em]">
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ $song->category?->name ?? 'Uncategorized' }}</span>
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->view_count) }} views</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('webapp.stems.show', $song->slug) }}"
+                                    class="px-3.5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-[0.2em] text-white shrink-0">
+                                    Open
+                                </a>
+                            </div>
+                        @empty
+                            <div class="rounded-[24px] border border-dashed border-white/10 bg-black/20 p-6 text-center">
+                                <p class="text-sm font-bold text-zinc-500">No viewed songs yet.</p>
+                            </div>
+                        @endforelse
                     </div>
-                @endforelse
+                </div>
+
+                <div class="forum-card p-6 bg-[#0a0a0c] border border-white/5">
+                    <div class="flex items-center justify-between gap-3 mb-5">
+                        <div>
+                            <h3 class="font-brand text-xl md:text-2xl font-black uppercase tracking-tight text-white">Downloaded songs</h3>
+                            <p class="mt-1 text-[11px] text-zinc-500">Songs you downloaded from the library.</p>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-zinc-600 font-black">{{ number_format($profileStats['downloaded'] ?? 0) }}</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        @forelse ($downloadedSongs as $song)
+                            @php
+                                $cover = $song->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80';
+                            @endphp
+                            <div class="flex items-center gap-4 rounded-[24px] border border-white/5 bg-black/35 p-3">
+                                <img src="{{ $cover }}" alt="{{ $song->title }}" class="w-16 h-16 rounded-2xl object-cover shrink-0">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-emerald-400 font-black">Downloaded</p>
+                                    <h4 class="text-sm font-bold text-white truncate">{{ $song->title }}</h4>
+                                    <p class="text-xs text-zinc-500 truncate">{{ $song->artist_name ?: 'Unknown artist' }}</p>
+                                    <div class="mt-2 flex flex-wrap gap-2 text-[9px] uppercase tracking-[0.2em]">
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ $song->category?->name ?? 'Uncategorized' }}</span>
+                                        <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->download_count) }} downloads</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('webapp.stems.download', $song->id) }}"
+                                    class="px-3.5 py-2.5 rounded-2xl bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0">
+                                    Download
+                                </a>
+                            </div>
+                        @empty
+                            <div class="rounded-[24px] border border-dashed border-white/10 bg-black/20 p-6 text-center">
+                                <p class="text-sm font-bold text-zinc-500">No downloaded songs yet.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 </x-webapp-layout>

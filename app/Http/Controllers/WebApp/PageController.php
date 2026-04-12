@@ -5,26 +5,33 @@ namespace App\Http\Controllers\WebApp;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\ForumThread;
+use App\Models\MusicStem;
+use App\Models\StemInteraction;
 use App\Models\User;
 use App\Repositories\Contracts\ForumRepositoryInterface;
 use App\Repositories\Contracts\ProfileRepositoryInterface;
 use App\Repositories\Contracts\StemRepositoryInterface;
+use App\Services\SettingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class PageController extends Controller
 {
     protected $forumRepo;
     protected $stemRepo;
     protected $profileRepo;
+    protected $settingService;
 
     public function __construct(
         ForumRepositoryInterface $forumRepo,
         StemRepositoryInterface $stemRepo,
-        ProfileRepositoryInterface $profileRepo
+        ProfileRepositoryInterface $profileRepo,
+        SettingService $settingService
     ) {
         $this->forumRepo = $forumRepo;
         $this->stemRepo = $stemRepo;
         $this->profileRepo = $profileRepo;
+        $this->settingService = $settingService;
     }
 
     public function index()
@@ -81,10 +88,56 @@ class PageController extends Controller
     public function profile()
     {
         $user = User::with('profile')->findOrFail(auth()->id());
+        $profile = $user->profile;
 
-        $recent_uploads = [];
+        $likedSongs = $this->getUserStemActivity($user->id, 'like', 6);
+        $viewedSongs = $this->getUserStemActivity($user->id, 'view', 6);
+        $downloadedSongs = $this->getUserStemActivity($user->id, 'download', 6);
 
-        return view('webapp.profile.index', compact('user', 'recent_uploads'));
+        $profileStats = [
+            'liked' => StemInteraction::query()
+                ->where('user_id', $user->id)
+                ->where('type', 'like')
+                ->select('stem_id')
+                ->distinct()
+                ->count('stem_id'),
+            'viewed' => StemInteraction::query()
+                ->where('user_id', $user->id)
+                ->where('type', 'view')
+                ->select('stem_id')
+                ->distinct()
+                ->count('stem_id'),
+            'downloaded' => StemInteraction::query()
+                ->where('user_id', $user->id)
+                ->where('type', 'download')
+                ->select('stem_id')
+                ->distinct()
+                ->count('stem_id'),
+            'uploads' => ForumThread::query()->where('user_id', $user->id)->count(),
+        ];
+
+        return view('webapp.profile.index', compact(
+            'user',
+            'profile',
+            'likedSongs',
+            'viewedSongs',
+            'downloadedSongs',
+            'profileStats'
+        ));
+    }
+
+    public function faq()
+    {
+        $page = [
+            'title' => $this->settingService->get('faq_page_title', 'FAQ / Legal Guides'),
+            'intro' => $this->settingService->get('faq_page_intro', 'Answers to common questions and the rules that apply when using NCS Hindi music.'),
+            'faq_content' => $this->settingService->get('faq_page_content', ''),
+            'legal_title' => $this->settingService->get('legal_page_title', 'Legal Guides'),
+            'legal_intro' => $this->settingService->get('legal_page_intro', 'Simple usage guidance for creators, brands, and community members.'),
+            'legal_content' => $this->settingService->get('legal_page_content', ''),
+        ];
+
+        return view('webapp.faq', compact('page'));
     }
 
     public function editProfile()
@@ -105,7 +158,7 @@ class PageController extends Controller
         $this->profileRepo->updateProfile(auth()->id(), $data);
 
         return redirect()->route('webapp.profile')
-            ->with('success', 'Studio updated successfully!');
+            ->with('success', 'Profile updated successfully!');
     }
 
     public function show($slug)
@@ -138,5 +191,29 @@ class PageController extends Controller
         ]);
         $thread = $this->forumRepo->storeThread($validData);
         return redirect()->route('home')->with('success', 'Post published to the Vault!');
+    }
+
+    private function getUserStemActivity(string $userId, string $type, int $limit = 6): Collection
+    {
+        $stemIds = StemInteraction::query()
+            ->where('user_id', $userId)
+            ->where('type', $type)
+            ->selectRaw('stem_id, MAX(created_at) as last_activity_at')
+            ->groupBy('stem_id')
+            ->orderByDesc('last_activity_at')
+            ->limit($limit)
+            ->pluck('stem_id');
+
+        if ($stemIds->isEmpty()) {
+            return collect();
+        }
+
+        $stems = MusicStem::query()
+            ->with('category')
+            ->whereIn('id', $stemIds)
+            ->get()
+            ->keyBy('id');
+
+        return $stemIds->map(fn ($stemId) => $stems->get($stemId))->filter()->values();
     }
 }

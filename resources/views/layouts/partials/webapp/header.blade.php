@@ -13,7 +13,7 @@
             </div>
         </div>
         <a href="{{ route('webapp.forum.create') }}" class="btn-vault px-6 py-2.5 text-[10px] uppercase font-black">
-            New Topic
+            New Thread
         </a>
     </div>
 </header>

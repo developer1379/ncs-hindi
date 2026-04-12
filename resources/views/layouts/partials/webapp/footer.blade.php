@@ -33,7 +33,7 @@
         <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Stems</span>
     </a>
 
-    {{-- User Studio --}}
+    {{-- User Profile --}}
     <a href="{{ route('webapp.profile') }}"
         class="flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.profile') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
         @auth
@@ -48,7 +48,7 @@
         @else
             <i class="fa-solid fa-user-circle text-xl"></i>
         @endauth
-        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Studio</span>
+        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Profile</span>
     </a>
 </nav>
 

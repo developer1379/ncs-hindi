@@ -116,21 +116,9 @@
                     </div>
                 </div>
 
-                {{-- XP Progress Bar --}}
-                <div class="space-y-1.5 mb-4">
-                    <div class="flex justify-between text-[8px] font-black uppercase text-zinc-600 tracking-widest">
-                        <span>Rank XP</span>
-                        <span>{{ Auth::user()->profile->xp_count ?? 0 }}%</span>
-                    </div>
-                    <div class="h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-amber-600 to-red-600"
-                            style="width: {{ Auth::user()->profile->xp_count ?? 0 }}%"></div>
-                    </div>
-                </div>
-
                 <a href="{{ route('webapp.profile') }}"
                     class="block w-full text-center py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-[10px] font-bold text-zinc-400 hover:text-white transition-all {{ request()->routeIs('webapp.profile') ? 'border-amber-600 text-white' : '' }}">
-                    VIEW STUDIO
+                    VIEW PROFILE
                 </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="mt-2">

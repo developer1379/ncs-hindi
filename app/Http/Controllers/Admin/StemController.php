@@ -61,6 +61,7 @@ class StemController extends Controller
             'album_movie_name' => 'nullable|string|max:255',
             'language'         => 'nullable|string|max:100',
             'description'      => 'nullable|string',
+            'license_text'     => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
             // UPDATED: Changed from file to string/url because JS sends the Mega link here
             'stem_file'        => 'required|string',
@@ -111,6 +112,7 @@ class StemController extends Controller
             'album_movie_name' => 'nullable|string|max:255',
             'language'         => 'nullable|string|max:100',
             'description'      => 'nullable|string',
+            'license_text'     => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
             // UPDATED: stem_file is now an optional string/url for updates
             'stem_file'        => 'nullable|string',

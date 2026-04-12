@@ -28,7 +28,8 @@
                                             'instagram_url' => 'Instagram',
                                             'whatsapp_url' => 'WhatsApp',
                                             'youtube_url' => 'YouTube',
-                                            'linkedin_url' => 'LinkedIn'
+                                            'linkedin_url' => 'LinkedIn',
+                                            'playstore_url' => 'Play Store'
                                         ];
                                     @endphp
                                     @foreach($socials as $key => $label)

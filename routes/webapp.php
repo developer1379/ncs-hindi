@@ -152,6 +152,7 @@ Route::prefix('music')->name('webapp.')->group(function () {
 Route::prefix('vault')->name('webapp.')->group(function () {
     Route::get('/trending', [PageController::class, 'trending'])->name('trending');
     Route::get('/streams', [PageController::class, 'streams'])->name('streams');
+    Route::get('/faq', [PageController::class, 'faq'])->name('faq');
     Route::get('/forum/{id}', [PageController::class, 'showForum'])->name('forum.show');
     Route::get('/profile', [PageController::class, 'profile'])->name('profile');
 });

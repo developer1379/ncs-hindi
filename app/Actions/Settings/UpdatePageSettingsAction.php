@@ -11,7 +11,17 @@ class UpdatePageSettingsAction
 
     public function handle(Request $request): void
     {
-        $keys = ['home_page_title', 'about_page_title', 'contact_page_title'];
+        $keys = [
+            'home_page_title',
+            'about_page_title',
+            'contact_page_title',
+            'faq_page_title',
+            'faq_page_intro',
+            'faq_page_content',
+            'legal_page_title',
+            'legal_page_intro',
+            'legal_page_content',
+        ];
 
         foreach ($keys as $key) {
             $this->settingService->set($key, $request->input($key));
