@@ -61,7 +61,7 @@ class AuthController extends Controller
                 // Automatically create the NCS Hindi Studio Profile
                 $this->profileRepo->updateProfile($user->id, [
                     'studio_name' => $user->name . ' Studio',
-                    'rank_title' => 'New Artist',
+                    'rank_title' => '',
                     'xp_count' => 0
                 ]);
             }
