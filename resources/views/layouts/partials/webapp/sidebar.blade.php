@@ -111,7 +111,7 @@
                     <div class="overflow-hidden">
                         <p class="text-xs font-bold text-white truncate">{{ Auth::user()->name }}</p>
                         <p class="text-[9px] text-zinc-500 font-medium uppercase tracking-tighter">
-                            {{ Auth::user()->profile->rank_title ?? 'Level 1 Artist' }}
+                            {{-- {{ Auth::user()->profile->rank_title ?? 'Level 1 Artist' }} --}}
                         </p>
                     </div>
                 </div>
