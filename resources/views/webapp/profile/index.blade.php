@@ -30,9 +30,11 @@
                             <h1 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter text-white leading-[0.92]">
                                 {{ $displayName }}
                             </h1>
-                            <p class="text-amber-500 font-bold text-xs md:text-sm uppercase tracking-[0.2em]">
-                                {{ $profile?->rank_title ?? 'New Artist' }}
-                            </p>
+                            @if (!empty($profile?->rank_title))
+                                <p class="text-amber-500 font-bold text-xs md:text-sm uppercase tracking-[0.2em]">
+                                    {{ $profile->rank_title }}
+                                </p>
+                            @endif
                         </div>
                     </div>
 

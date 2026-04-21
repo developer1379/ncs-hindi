@@ -46,7 +46,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </a>
             <h1 class="font-brand text-2xl font-black text-white uppercase italic tracking-tighter">New <span
-                    class="text-amber-500">Vault Post</span></h1>
+                    class="text-amber-500">Feed Post</span></h1>
         </div>
 
         <form id="vault-post-form" action="{{ route('webapp.forum.store') }}" method="POST"
@@ -109,9 +109,9 @@
             </div>
 
             <div class="flex justify-end gap-4">
-                <button type="submit"
+                    <button type="submit"
                     class="btn-vault px-12 py-4 text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-red-900/30">
-                    Publish to Vault
+                    Publish to Feeds
                 </button>
             </div>
         </form>

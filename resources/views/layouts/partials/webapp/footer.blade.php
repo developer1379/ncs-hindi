@@ -1,10 +1,10 @@
 <nav class="lg:hidden fixed bottom-6 left-4 right-4 h-20 bg-zinc-950/80 border border-zinc-800/50 rounded-[2.5rem] px-2 flex items-center justify-around z-[100] backdrop-blur-2xl shadow-2xl shadow-black/50">
 
-    {{-- Vault Feed --}}
+    {{-- Feeds Feed --}}
     <a href="{{ route('home') }}"
         class="flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-300 {{ request()->routeIs('home') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
         <i class="fa-solid fa-layer-group text-xl"></i>
-        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Vault</span>
+        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Feeds</span>
     </a>
 
     {{-- Community Chat --}}
@@ -26,11 +26,11 @@
         </a>
     </div>
 
-    {{-- Music Library --}}
+    {{-- Audio Library --}}
     <a href="{{ route('webapp.streams') }}"
         class="flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.streams') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
         <i class="fa-solid fa-box-open text-xl"></i>
-        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Stems</span>
+        <span class="text-[7px] font-black uppercase tracking-[0.15em] mt-1">Audio</span>
     </a>
 
     {{-- User Profile --}}

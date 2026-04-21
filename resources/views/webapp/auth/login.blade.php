@@ -9,7 +9,7 @@
                     <i class="fa-brands fa-google text-white text-3xl"></i>
                 </div>
                 <h2 class="text-center text-3xl font-black font-brand italic text-white uppercase tracking-tighter">
-                    Creator <span class="text-amber-500">Vault</span>
+                    Creator <span class="text-amber-500">Feeds</span>
                 </h2>
                 <p class="mt-2 text-center text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em]">
                     One-Tap Secure Studio Access

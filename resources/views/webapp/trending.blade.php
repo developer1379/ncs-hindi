@@ -220,20 +220,6 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
-                    <div class="metric-chip rounded-2xl p-2.5 md:p-3">
-                        <p class="text-[8px] uppercase tracking-[0.2em] text-zinc-500 font-black">Most liked</p>
-                        <p class="mt-1 text-[11px] md:text-sm font-black text-white">Live view</p>
-                    </div>
-                    <div class="metric-chip rounded-2xl p-2.5 md:p-3">
-                        <p class="text-[8px] uppercase tracking-[0.2em] text-zinc-500 font-black">Created for</p>
-                        <p class="mt-1 text-[11px] md:text-sm font-black text-white">Fast discovery</p>
-                    </div>
-                    <div class="metric-chip rounded-2xl p-2.5 md:p-3">
-                        <p class="text-[8px] uppercase tracking-[0.2em] text-zinc-500 font-black">Access</p>
-                        <p class="mt-1 text-[11px] md:text-sm font-black text-white">Live actions</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
