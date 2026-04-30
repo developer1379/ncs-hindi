@@ -174,6 +174,16 @@
                     </li>
                 @endcan
 
+                <li>
+                    <a href="{{ route('admin.reports.index') }}"
+                        class="tp-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                        <span class="nav-icon">
+                            <iconify-icon icon="tabler:bug"></iconify-icon>
+                        </span>
+                        <span class="sidebar-text"> Bug Reports </span>
+                    </a>
+                </li>
+
                 @can('settings.manage')
                     <li class="menu-title mt-2">Pages</li>
                     <li>

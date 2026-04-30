@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InteractionController;
 use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\MessageRequestController;
+use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\Admin\StemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,8 @@ Route::middleware('auth', 'role:0,1')->group(function () {
         });
 
         Route::resource('blogs', BlogController::class);
+        Route::get('reports', [BugReportController::class, 'index'])->name('reports.index');
+        Route::patch('reports/{bugReport}', [BugReportController::class, 'update'])->name('reports.update');
 
         Route::post('blogs/update-status', [BlogController::class, 'updateStatus'])->name('blogs.update-status');
 

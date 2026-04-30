@@ -79,6 +79,20 @@
                 @endforelse
             </div>
         </div>
+
+        @auth
+            <div>
+                <p class="px-4 text-[10px] font-black text-zinc-700 uppercase tracking-widest mb-4">Support</p>
+                <div class="space-y-1">
+                    <a href="{{ route('webapp.bug-reports.create') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('webapp.bug-reports.*') ? 'bg-gradient-to-r from-amber-600/10 to-transparent text-amber-500 font-bold border-l-2 border-amber-600' : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50' }}">
+                        <i
+                            class="fa-solid fa-bug text-sm {{ request()->routeIs('webapp.bug-reports.*') ? 'text-amber-500' : 'group-hover:text-amber-500' }}"></i>
+                        <span class="text-sm">Report a Bug</span>
+                    </a>
+                </div>
+            </div>
+        @endauth
     </nav>
 
     {{-- User Profile Section --}}

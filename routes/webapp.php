@@ -8,6 +8,7 @@ use App\Http\Controllers\WebApp\LikeController;
 use App\Http\Controllers\WebApp\PageController;
 use App\Http\Controllers\WebApp\SearchController;
 use App\Http\Controllers\WebApp\StemController;
+use App\Http\Controllers\WebApp\BugReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/vault/create', [PageController::class, 'createThread'])->name('webapp.forum.create');
     Route::post('/vault/store', [PageController::class, 'storeThread'])->name('webapp.forum.store');
+    Route::get('/vault/report-bug', [BugReportController::class, 'create'])->name('webapp.bug-reports.create');
+    Route::post('/vault/report-bug', [BugReportController::class, 'store'])->name('webapp.bug-reports.store');
 
     // Profile & Studio Management
     Route::prefix('vault')->name('webapp.')->group(function () {
