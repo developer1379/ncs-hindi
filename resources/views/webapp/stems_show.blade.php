@@ -62,7 +62,7 @@
                             data-action-url="{{ $stem->mega_link }}"
                             data-action-label="Continue to download"
                             class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-amber-500 hover:text-white transition-all duration-300 shadow-xl shadow-white/5">
-                            <i class="fa-solid fa-cloud-arrow-down text-lg"></i> Download via Mega
+                            <i class="fa-solid fa-cloud-arrow-down text-lg"></i> NCS Version
                         </a>
                     @else
                         <a href="{{ route('webapp.stems.download', $stem->id) }}"
@@ -72,7 +72,7 @@
                             data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
                             data-action-label="Continue to download"
                             class="w-full sm:w-auto btn-vault px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-lg shadow-amber-600/20">
-                            <i class="fa-solid fa-download text-lg"></i> Get Stems ({{ $stem->file_size }})
+                            <i class="fa-solid fa-download text-lg"></i> NCS Version
                         </a>
                     @endif
 

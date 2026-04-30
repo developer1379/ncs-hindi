@@ -60,7 +60,9 @@
                             <div class="flex-grow">
                                 <h4 class="font-bold text-sm leading-tight">{{ $stem->title }}</h4>
                                 <p class="text-xs text-amber-600 mt-1">{{ $stem->artist_name }}</p>
-                                <a href="{{ url('/stems/' . $stem->slug) }}" class="text-[10px] uppercase font-black text-white mt-2 inline-block hover:underline">Download Stem</a>
+                                <a href="{{ url('/stems/' . $stem->slug) }}" class="text-[10px] uppercase font-black text-white mt-2 inline-flex items-center gap-1 hover:underline">
+                                    <i class="fa-solid fa-download"></i> NCS Version
+                                </a>
                             </div>
                         </div>
                     @empty

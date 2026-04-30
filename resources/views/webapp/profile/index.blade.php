@@ -246,8 +246,8 @@
                                     </div>
                                 </div>
                                 <a href="{{ route('webapp.stems.download', $song->id) }}"
-                                    class="px-3.5 py-2.5 rounded-2xl bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0">
-                                    Download
+                                    class="px-3.5 py-2.5 rounded-2xl bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0 inline-flex items-center gap-2">
+                                    <i class="fa-solid fa-download"></i> NCS Version
                                 </a>
                             </div>
                         @empty

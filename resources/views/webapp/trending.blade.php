@@ -153,8 +153,8 @@
                                         data-music-title="{{ $featuredStem->title }}"
                                         data-action-url="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
                                         data-action-label="Continue to download"
-                                        class="px-3.5 py-2.5 rounded-2xl bg-white/10 soft-border text-[9px] font-black tracking-[0.2em] uppercase text-white hover:bg-white/15 transition">
-                                        Download
+                                        class="px-3.5 py-2.5 rounded-2xl bg-white/10 soft-border text-[9px] font-black tracking-[0.2em] uppercase text-white hover:bg-white/15 transition inline-flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-download"></i> NCS Version
                                     </a>
                                 </div>
                             </div>
@@ -371,8 +371,8 @@
                                     data-music-title="{{ $stem->title }}"
                                     data-action-url="{{ $downloadUrl }}"
                                     data-action-label="Continue to download"
-                                    class="rounded-2xl px-3 py-2.5 text-center text-[8px] font-black uppercase tracking-[0.2em] btn-vault">
-                                    Open release
+                                    class="rounded-2xl px-3 py-2.5 text-center text-[8px] font-black uppercase tracking-[0.2em] btn-vault inline-flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-download"></i> NCS Version
                                 </a>
                             </div>
                         </div>

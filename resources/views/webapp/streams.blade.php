@@ -163,7 +163,7 @@
                                 data-action-url="{{ $stem->mega_link }}"
                                 data-action-label="Continue to download"
                                 class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
-                                <i class="fa-solid fa-external-link mr-1"></i> Mega Link
+                                <i class="fa-solid fa-download mr-1"></i> NCS Version
                             </a>
                         @else
                             <div class="grid grid-cols-2 gap-3">
@@ -174,7 +174,7 @@
                                     data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
                                     data-action-label="Continue to download"
                                     class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
-                                    <i class="fa-solid fa-download mr-1"></i> Download
+                                    <i class="fa-solid fa-download mr-1"></i> NCS Version
                                 </a>
                                 <button type="button"
                                     data-stem-like-btn

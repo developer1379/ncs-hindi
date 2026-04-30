@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <button class="btn-vault px-6 py-2 text-[10px] uppercase font-black flex items-center gap-2">
-                    <i class="fa-solid fa-download"></i> Download Stems
+                    <i class="fa-solid fa-download"></i> NCS Version
                 </button>
             </div>
 
