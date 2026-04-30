@@ -1,4 +1,42 @@
 <x-webapp-layout>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <style>
+        .ql-toolbar.ql-snow {
+            border: 1px solid #1a1a1c !important;
+            background: #0f0f11;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .ql-container.ql-snow {
+            border: 1px solid #1a1a1c !important;
+            background: #000;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            min-height: 280px;
+            font-family: inherit;
+            color: #d4d4d8;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: #52525b !important;
+            font-style: normal;
+        }
+
+        .ql-snow .ql-stroke {
+            stroke: #71717a !important;
+        }
+
+        .ql-snow .ql-fill {
+            fill: #71717a !important;
+        }
+
+        .ql-snow .ql-picker {
+            color: #71717a !important;
+        }
+    </style>
+
     <div class="max-w-4xl mx-auto pb-24">
         <div class="flex items-center gap-4 mb-8">
             <a href="{{ route('home') }}"
@@ -49,9 +87,10 @@
 
                 <div class="md:col-span-2">
                     <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">What happened?</label>
-                    <textarea name="description" rows="8" required
-                        class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-sm text-white focus:border-amber-600 outline-none transition mt-1"
-                        placeholder="Tell us what you expected, what actually happened, and how we can reproduce it.">{{ old('description') }}</textarea>
+                    <div class="mt-1">
+                        <div id="bug-report-editor"></div>
+                        <input type="hidden" name="description" id="description" value="{{ old('description') }}">
+                    </div>
                     @error('description')
                         <p class="mt-2 text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -59,7 +98,7 @@
             </div>
 
             <div class="rounded-[2rem] border border-zinc-800 bg-black/40 p-5 text-sm text-zinc-400">
-                Include useful details like device type, browser, login state, and the exact steps that caused the issue.
+                Include useful details like device type, browser, login state, exact steps, and screenshots pasted directly into the editor.
             </div>
 
             <div class="pt-6 border-t border-zinc-900 flex justify-end gap-4">
@@ -71,13 +110,39 @@
         </form>
     </div>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const pageUrlInput = document.getElementById('page_url');
+                const descriptionInput = document.getElementById('description');
+                const form = descriptionInput ? descriptionInput.form : null;
 
                 if (pageUrlInput && !pageUrlInput.value) {
                     pageUrlInput.value = window.location.href;
+                }
+
+                const quill = new Quill('#bug-report-editor', {
+                    theme: 'snow',
+                    placeholder: 'Tell us what you expected, what happened instead, the steps to reproduce it, and add screenshots if needed.',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
+
+                if (descriptionInput.value) {
+                    quill.root.innerHTML = descriptionInput.value;
+                }
+
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        descriptionInput.value = quill.root.innerHTML;
+                    });
                 }
             });
         </script>

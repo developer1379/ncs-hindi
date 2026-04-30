@@ -69,6 +69,7 @@ Route::middleware('auth', 'role:0,1')->group(function () {
 
         Route::resource('blogs', BlogController::class);
         Route::get('reports', [BugReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/{bugReport}', [BugReportController::class, 'show'])->name('reports.show');
         Route::patch('reports/{bugReport}', [BugReportController::class, 'update'])->name('reports.update');
 
         Route::post('blogs/update-status', [BlogController::class, 'updateStatus'])->name('blogs.update-status');

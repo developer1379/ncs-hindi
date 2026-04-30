@@ -18,7 +18,7 @@ class BugReportController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'page_url' => 'nullable|url|max:2048',
-            'description' => 'required|string|max:5000',
+            'description' => 'required|string|max:20000',
         ]);
 
         $data['user_id'] = $request->user()->id;

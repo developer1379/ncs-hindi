@@ -55,7 +55,7 @@
                                     <tr>
                                         <td class="ps-3" style="min-width: 280px;">
                                             <h5 class="mb-1 fs-15 fw-semibold">{{ $bugReport->title }}</h5>
-                                            <p class="mb-0 text-muted">{{ \Illuminate\Support\Str::limit($bugReport->description, 120) }}</p>
+                                            <p class="mb-0 text-muted">{{ \Illuminate\Support\Str::limit(strip_tags($bugReport->description), 120) }}</p>
                                         </td>
                                         <td>
                                             <div class="fw-semibold">{{ $bugReport->user->name }}</div>
@@ -87,6 +87,11 @@
                                             <div class="text-muted fs-13">{{ $bugReport->created_at->diffForHumans() }}</div>
                                         </td>
                                         <td class="pe-3" style="min-width: 320px;">
+                                            <div class="mb-2">
+                                                <a href="{{ route('admin.reports.show', $bugReport) }}" class="btn btn-sm btn-soft-info">
+                                                    <iconify-icon icon="tabler:eye" class="me-1"></iconify-icon> View Report
+                                                </a>
+                                            </div>
                                             <form action="{{ route('admin.reports.update', $bugReport) }}" method="POST">
                                                 @csrf
                                                 @method('PATCH')

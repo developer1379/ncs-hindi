@@ -38,6 +38,13 @@ class BugReportController extends Controller
         return view('admin.reports.index', compact('bugReports'));
     }
 
+    public function show(BugReport $bugReport)
+    {
+        $bugReport->load('user');
+
+        return view('admin.reports.show', compact('bugReport'));
+    }
+
     public function update(Request $request, BugReport $bugReport)
     {
         $data = $request->validate([
