@@ -154,9 +154,9 @@
                             class="py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-zinc-400 text-[10px] font-black uppercase text-center hover:bg-zinc-800 hover:text-white transition-all">
                             View Details
                         </a>
-{{--
+
                         @if($stem->mega_link)
-                            <a href="{{ $stem->mega_link }}" target="_blank"
+                            {{-- <a href="{{ $stem->mega_link }}" target="_blank"
                                 data-notification-gate
                                 data-music-action="download"
                                 data-music-title="{{ $stem->title }}"
@@ -164,10 +164,10 @@
                                 data-action-label="Continue to download"
                                 class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
                                 <i class="fa-solid fa-download mr-1"></i> NCS Version
-                            </a>
-                        @else --}}
+                            </a> --}}
+                        @else
                             <div class="grid grid-cols-2 gap-3">
-                                <a href="{{ route('webapp.stems.download', $stem->id) }}"
+                                {{-- <a href="{{ route('webapp.stems.download', $stem->id) }}"
                                     data-notification-gate
                                     data-music-action="download"
                                     data-music-title="{{ $stem->title }}"
@@ -175,7 +175,7 @@
                                     data-action-label="Continue to download"
                                     class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
                                     <i class="fa-solid fa-download mr-1"></i> NCS Version
-                                </a>
+                                </a> --}}
                                 <button type="button"
                                     data-stem-like-btn
                                     data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
