@@ -61,15 +61,16 @@
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
                     {{-- Primary Action: Download --}}
                     @if ($stem->mega_link)
-                        <a href="{{ $stem->mega_link }}" target="_blank" data-notification-gate
-                            data-music-action="download" data-music-title="{{ $stem->title }}"
+                        <a href="{{ $stem->mega_link }}" target="_blank" rel="noopener noreferrer"
+                            data-notification-gate data-music-action="download" data-music-title="{{ $stem->title }}"
                             data-action-url="{{ $stem->mega_link }}" data-action-label="Continue to download"
                             class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-amber-500 hover:text-white transition-all duration-300 shadow-xl shadow-white/5">
                             <i class="fa-solid fa-cloud-arrow-down text-lg"></i> NCS Version
                         </a>
                     @else
                         <a href="{{ route('webapp.stems.download', $stem->id) }}" target="_blank"
-                            data-notification-gate data-music-action="download" data-music-title="{{ $stem->title }}"
+                            rel="noopener noreferrer" data-notification-gate data-music-action="download"
+                            data-music-title="{{ $stem->title }}"
                             data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
                             data-action-label="Continue to download"
                             class="w-full sm:w-auto btn-vault px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-lg shadow-amber-600/20">
