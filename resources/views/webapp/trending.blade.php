@@ -143,18 +143,9 @@
                                         data-music-title="{{ $featuredStem->title }}"
                                         data-action-url="{{ route('webapp.stems.show', $featuredStem->slug) }}"
                                         data-action-label="Continue to view"
-                                        class="btn-vault px-3.5 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
-                                        View release
-                                    </a>
-                                    <a href="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
-                                        target="_blank"
-                                        data-notification-gate
-                                        data-music-action="download"
-                                        data-music-title="{{ $featuredStem->title }}"
-                                        data-action-url="{{ $featuredStem->mega_link && filter_var($featuredStem->mega_link, FILTER_VALIDATE_URL) ? $featuredStem->mega_link : route('webapp.stems.download', $featuredStem->id) }}"
-                                        data-action-label="Continue to download"
-                                        class="px-3.5 py-2.5 rounded-2xl bg-white/10 soft-border text-[9px] font-black tracking-[0.2em] uppercase text-white hover:bg-white/15 transition inline-flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-download"></i> NCS Version
+                                        data-stem-id="{{ $featuredStem->id }}"
+                                        class="btn-vault px-8 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
+                                        VIEW
                                     </a>
                                 </div>
                             </div>
@@ -355,24 +346,16 @@
                                 </p>
                             @endif
 
-                            <div class="mt-3.5 grid grid-cols-2 gap-2">
+                            <div class="mt-3.5">
                                 <a href="{{ route('webapp.stems.show', $stem->slug) }}"
                                     data-notification-gate
                                     data-music-action="view"
                                     data-music-title="{{ $stem->title }}"
                                     data-action-url="{{ route('webapp.stems.show', $stem->slug) }}"
                                     data-action-label="Continue to view"
-                                    class="rounded-2xl px-3 py-2.5 text-center text-[8px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-amber-500 transition">
-                                    View details
-                                </a>
-                                <a href="{{ $downloadUrl }}" target="_blank"
-                                    data-notification-gate
-                                    data-music-action="download"
-                                    data-music-title="{{ $stem->title }}"
-                                    data-action-url="{{ $downloadUrl }}"
-                                    data-action-label="Continue to download"
-                                    class="rounded-2xl px-3 py-2.5 text-center text-[8px] font-black uppercase tracking-[0.2em] btn-vault inline-flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-download"></i> NCS Version
+                                    data-stem-id="{{ $stem->id }}"
+                                    class="block w-full rounded-2xl px-3 py-3 text-center text-[9px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-amber-500 transition">
+                                    VIEW
                                 </a>
                             </div>
                         </div>

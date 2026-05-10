@@ -138,31 +138,20 @@
                                 <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->download_count) }}</span>
                             </div>
                         </div>
-                        <span class="text-[9px] font-bold text-zinc-600 uppercase">
-                            {{ $stem->file_size ?: 'Studio' }}
-                        </span>
+                        </div>
                     </div>
 
                     {{-- Actions --}}
-                    <div class="grid grid-cols-2 gap-3 mt-5">
+                    <div class="mt-5">
                         <a href="{{ route('webapp.stems.show', $stem->slug) }}"
                             data-notification-gate
                             data-music-action="view"
                             data-music-title="{{ $stem->title }}"
                             data-action-url="{{ route('webapp.stems.show', $stem->slug) }}"
                             data-action-label="Continue to view"
-                            class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
-                            View Details
-                        </a>
-
-                        <a href="{{ $stem->mega_link ?: route('webapp.stems.download', $stem->id) }}" target="_blank"
-                            data-notification-gate
-                            data-music-action="download"
-                            data-music-title="{{ $stem->title }}"
-                            data-action-url="{{ $stem->mega_link ?: route('webapp.stems.download', $stem->id) }}"
-                            data-action-label="Continue to download"
-                            class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
-                            <i class="fa-solid fa-download mr-1"></i> NCS Version
+                            data-stem-id="{{ $stem->id }}"
+                            class="block w-full py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
+                            VIEW
                         </a>
                     </div>
                 </div>

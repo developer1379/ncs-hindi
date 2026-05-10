@@ -51,9 +51,7 @@ class StemController extends Controller
     {
         $stem = MusicStem::findOrFail($id);
 
-        if (Auth::check()) {
-            $this->stemRepo->logInteraction($id, Auth::id(), 'download');
-        }
+        $this->stemRepo->logInteraction($id, Auth::id(), 'download');
 
         if ($stem->mega_link && filter_var($stem->mega_link, FILTER_VALIDATE_URL)) {
             return redirect()->away($stem->mega_link);
@@ -70,6 +68,16 @@ class StemController extends Controller
         $downloadName = $stem->file_name ?: basename($stem->file_path);
 
         return Storage::disk('public')->download($stem->file_path, $downloadName);
+    }
+
+    public function incrementDownload($id)
+    {
+        $stem = MusicStem::findOrFail($id);
+        $this->stemRepo->logInteraction($id, Auth::id(), 'download');
+        return response()->json([
+            'success' => true,
+            'count' => $stem->download_count
+        ]);
     }
 
     public function toggleLike($id)

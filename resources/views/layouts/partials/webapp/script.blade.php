@@ -104,6 +104,7 @@
         $('#notificationGateContinue').text(notificationGateContext.actionLabel || 'Continue');
         $('#notificationGateContinue').data('action-url', notificationGateContext.actionUrl || '');
         $('#notificationGateContinue').data('action-type', notificationGateContext.actionType || 'continue');
+        $('#notificationGateContinue').data('stem-id', notificationGateContext.stemId || '');
     }
 
     function openNotificationGate(context = {}) {
@@ -347,6 +348,8 @@
         if (localStorage.getItem(notificationGateKey) || localStorage.getItem(notificationPromptKey)) {
             if (actionUrl) {
                 if (isDownload) {
+                    const stemId = $btn.data('stem-id');
+                    if (stemId) $.post(`/music/${stemId}/increment-download`);
                     window.open(actionUrl, '_blank');
                 } else {
                     window.location.href = actionUrl;
@@ -364,6 +367,7 @@
             actionUrl: actionUrl,
             actionLabel: $btn.data('actionLabel') || (isDownload ? 'Continue to download' : 'Continue to view'),
             actionType: $btn.data('musicAction') || 'continue',
+            stemId: $btn.data('stem-id') || '',
         });
     });
 
@@ -416,10 +420,15 @@
 
         const actionUrl = $(this).data('action-url');
         const actionType = $(this).data('action-type');
+        const stemId = $(this).data('stem-id');
 
         if (!actionUrl) {
             closeNotificationGate();
             return;
+        }
+
+        if (actionType === 'download' && stemId) {
+            $.post(`/music/${stemId}/increment-download`);
         }
 
         closeNotificationGate();
