@@ -17,6 +17,7 @@ use App\Http\Controllers\WebApp\BugReportController;
 */
 
 Route::get('/', [PageController::class, 'index'])->name('home');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/firebase-messaging-sw.js', function () {
     $firebaseConfig = [
