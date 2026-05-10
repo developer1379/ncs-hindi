@@ -163,13 +163,12 @@
                         <h3 class="text-white text-xl font-bold uppercase tracking-tight text-center md:text-left">
                             Creator Friendly License</h3>
                         <div class="text-zinc-500 text-sm mt-3 leading-relaxed text-center md:text-left space-y-3">
+                            @php
+                                $settings = app(\App\Services\SettingService::class);
+                                $globalLicense = $settings->get('global_license_text', 'This music is safe for use in YouTube, Twitch, Shorts, Reels, and other social media content. You may use this track in monetized videos as long as you give clear credit in the description. Include the track title and artist name, and do not claim the music as your own original composition.');
+                            @endphp
                             <p>
-                                {!! nl2br(
-                                    e(
-                                        $stem->license_text ?:
-                                        'This music is safe for use in YouTube, Twitch, Shorts, Reels, and other social media content. You may use this track in monetized videos as long as you give clear credit in the description. Include the track title and artist name, and do not claim the music as your own original composition.',
-                                    ),
-                                ) !!}
+                                {!! nl2br(e($stem->license_text ?: $globalLicense)) !!}
                             </p>
                         </div>
                         <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-4">

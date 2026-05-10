@@ -151,42 +151,19 @@
                             data-music-title="{{ $stem->title }}"
                             data-action-url="{{ route('webapp.stems.show', $stem->slug) }}"
                             data-action-label="Continue to view"
-                            class="py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-zinc-400 text-[10px] font-black uppercase text-center hover:bg-zinc-800 hover:text-white transition-all">
+                            class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
                             View Details
                         </a>
 
-                        @if($stem->mega_link)
-                            {{-- <a href="{{ $stem->mega_link }}" target="_blank"
-                                data-notification-gate
-                                data-music-action="download"
-                                data-music-title="{{ $stem->title }}"
-                                data-action-url="{{ $stem->mega_link }}"
-                                data-action-label="Continue to download"
-                                class="py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
-                                <i class="fa-solid fa-download mr-1"></i> NCS Version
-                            </a> --}}
-                        @else
-                            <div class="grid grid-cols-2 gap-3">
-                                {{-- <a href="{{ route('webapp.stems.download', $stem->id) }}"
-                                    data-notification-gate
-                                    data-music-action="download"
-                                    data-music-title="{{ $stem->title }}"
-                                    data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
-                                    data-action-label="Continue to download"
-                                    class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
-                                    <i class="fa-solid fa-download mr-1"></i> NCS Version
-                                </a> --}}
-                                <button type="button"
-                                    data-stem-like-btn
-                                    data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
-                                    data-liked="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 1 : 0 }}"
-                                    aria-pressed="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'true' : 'false' }}"
-                                    class="py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-300 text-[10px] font-black uppercase text-center hover:bg-zinc-700 transition-all {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'text-red-400' : '' }}">
-                                    <i data-stem-like-icon class="fa-heart mr-1 {{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 'fa-solid' : 'fa-regular' }}"></i>
-                                    Like
-                                </button>
-                            </div>
-                        @endif
+                        <a href="{{ $stem->mega_link ?: route('webapp.stems.download', $stem->id) }}" target="_blank"
+                            data-notification-gate
+                            data-music-action="download"
+                            data-music-title="{{ $stem->title }}"
+                            data-action-url="{{ $stem->mega_link ?: route('webapp.stems.download', $stem->id) }}"
+                            data-action-label="Continue to download"
+                            class="py-3 bg-amber-500 text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-white transition-all">
+                            <i class="fa-solid fa-download mr-1"></i> NCS Version
+                        </a>
                     </div>
                 </div>
             </div>

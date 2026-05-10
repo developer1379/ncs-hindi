@@ -124,6 +124,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('vault')->name('webapp.')->group(function () {
         Route::get('/profile/edit', [PageController::class, 'editProfile'])->name('profile.edit');
         Route::post('/profile/update', [PageController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/profile', [PageController::class, 'profile'])->name('profile');
     });
 
     Route::post('/forum/thread/{thread}/reply', [ForumReplyController::class, 'store'])
@@ -157,5 +158,4 @@ Route::prefix('vault')->name('webapp.')->group(function () {
     Route::get('/streams', [PageController::class, 'streams'])->name('streams');
     Route::get('/faq', [PageController::class, 'faq'])->name('faq');
     Route::get('/forum/{id}', [PageController::class, 'showForum'])->name('forum.show');
-    Route::get('/profile', [PageController::class, 'profile'])->name('profile');
 });

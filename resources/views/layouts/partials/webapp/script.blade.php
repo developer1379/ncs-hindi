@@ -339,15 +339,30 @@
     }
 
     $(document).on('click', '[data-notification-gate]', function(e) {
+        const $btn = $(this);
+        const actionUrl = $btn.data('actionUrl') || $btn.attr('href') || '';
+        const isDownload = $btn.data('musicAction') === 'download';
+
+        // Check if modal was already dismissed or seen
+        if (localStorage.getItem(notificationGateKey) || localStorage.getItem(notificationPromptKey)) {
+            if (actionUrl) {
+                if (isDownload) {
+                    window.open(actionUrl, '_blank');
+                } else {
+                    window.location.href = actionUrl;
+                }
+            }
+            return;
+        }
+
         e.preventDefault();
 
-        const $btn = $(this);
         openNotificationGate({
             title: $btn.data('notificationTitle') || 'Get release alerts',
             description: $btn.data('notificationDescription') || 'Allow notifications so you can get updates when new music is added.',
             music: $btn.data('musicTitle') ? `Music: ${$btn.data('musicTitle')}` : '',
-            actionUrl: $btn.data('actionUrl') || $btn.attr('href') || '',
-            actionLabel: $btn.data('actionLabel') || ($btn.data('musicAction') === 'download' ? 'Continue to download' : 'Continue to view'),
+            actionUrl: actionUrl,
+            actionLabel: $btn.data('actionLabel') || (isDownload ? 'Continue to download' : 'Continue to view'),
             actionType: $btn.data('musicAction') || 'continue',
         });
     });
@@ -400,6 +415,7 @@
         e.preventDefault();
 
         const actionUrl = $(this).data('action-url');
+        const actionType = $(this).data('action-type');
 
         if (!actionUrl) {
             closeNotificationGate();
@@ -407,7 +423,12 @@
         }
 
         closeNotificationGate();
-        window.location.href = actionUrl;
+        
+        if (actionType === 'download') {
+            window.open(actionUrl, '_blank');
+        } else {
+            window.location.href = actionUrl;
+        }
     });
 
     $(document).on('click', '#notificationGateLater', function() {

@@ -70,11 +70,6 @@
                                             placeholder="Write a short release description, credits, or usage notes..."></textarea>
                                     </div>
                                     <div class="col-12">
-                                        <label class="form-label fw-bold small text-uppercase text-secondary">License Text</label>
-                                        <textarea name="license_text" rows="6" class="form-control bg-light border-0"
-                                            placeholder="Write the full creator-friendly license text shown on the release page...">This music is safe for use in YouTube, Twitch, Shorts, Reels, and other social media content. You may use this track in monetized videos as long as you give clear credit in the description. Include the track title and artist name, and do not claim the music as your own original composition.</textarea>
-                                    </div>
-                                    <div class="col-12">
                                         <label class="form-label fw-bold small text-uppercase text-secondary">Languages
                                             <span class="text-muted">(multi-select)</span></label>
                                         <div id="language_options" class="d-flex flex-wrap gap-2">

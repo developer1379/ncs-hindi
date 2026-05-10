@@ -21,6 +21,7 @@ class UpdatePageSettingsAction
             'legal_page_title',
             'legal_page_intro',
             'legal_page_content',
+            'global_license_text',
         ];
 
         foreach ($keys as $key) {

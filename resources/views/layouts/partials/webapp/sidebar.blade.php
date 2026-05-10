@@ -50,6 +50,26 @@
             </div>
         </div>
 
+        @php
+            $settings = app(\App\Services\SettingService::class);
+        @endphp
+
+        <div>
+            <p class="px-4 text-[10px] font-black text-zinc-700 uppercase tracking-widest mb-4">Official Channels</p>
+            <div class="space-y-1">
+                <a href="{{ $settings->get('youtube_url', 'https://www.youtube.com') }}" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-white hover:bg-zinc-900/50 transition-all group">
+                    <i class="fa-brands fa-youtube text-sm group-hover:text-amber-500"></i>
+                    <span class="text-sm">YouTube Channel</span>
+                </a>
+                <a href="{{ $settings->get('playstore_url', 'https://play.google.com/store') }}" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-white hover:bg-zinc-900/50 transition-all group">
+                    <i class="fa-brands fa-android text-sm group-hover:text-red-500"></i>
+                    <span class="text-sm">Android App</span>
+                </a>
+            </div>
+        </div>
+
         <div>
             <div class="flex items-center justify-between px-4 mb-4">
                 <p class="text-[10px] font-black text-zinc-700 uppercase tracking-widest">Top Genres</p>

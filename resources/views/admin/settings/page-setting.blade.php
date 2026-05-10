@@ -59,6 +59,12 @@
                                     <textarea class="form-control" name="legal_page_content" rows="8" placeholder="<h5>Usage Rule</h5><p>Rule text</p>">{{ $settings->get('legal_page_content') }}</textarea>
                                     <small class="text-muted">This content appears on the public FAQ page. Keep it creator-friendly and easy to read.</small>
                                 </div>
+                                <hr class="my-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Global Song License Text</label>
+                                    <textarea class="form-control" name="global_license_text" rows="6">{{ $settings->get('global_license_text', 'This music is safe for use in YouTube, Twitch, Shorts, Reels, and other social media content. You may use this track in monetized videos as long as you give clear credit in the description. Include the track title and artist name, and do not claim the music as your own original composition.') }}</textarea>
+                                    <small class="text-muted">This text will be shown on all song detail pages unless a specific license is provided (if still supported).</small>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Update Page Settings</button>
                             </form>
                         </div>
