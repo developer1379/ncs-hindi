@@ -431,6 +431,9 @@
             $.post(`/music/${stemId}/increment-download`);
         }
 
+        // Set prompt as seen/dismissed for this session to avoid showing on every page change
+        localStorage.setItem(notificationPromptKey, '1');
+
         closeNotificationGate();
         
         if (actionType === 'download') {
@@ -446,6 +449,7 @@
     });
 
     $(document).on('click', '[data-notification-dismiss]', function() {
+        localStorage.setItem(notificationPromptKey, '1');
         closeNotificationGate();
     });
 
