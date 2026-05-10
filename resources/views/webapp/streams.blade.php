@@ -129,15 +129,14 @@
                     {{-- Stats --}}
                     <div class="flex items-center justify-between py-3 border-y border-zinc-800/50">
                         <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-1">
-                            <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
-                            <span data-like-count class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
-                        </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
+                                <span data-like-count class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
+                            </div>
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-download text-[10px] text-zinc-600"></i>
                                 <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->download_count) }}</span>
                             </div>
-                        </div>
                         </div>
                     </div>
 
