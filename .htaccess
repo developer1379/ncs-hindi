@@ -2,12 +2,21 @@
 Options +FollowSymLinks
 RewriteEngine On
 
+# Block access to .env and other sensitive files
+<FilesMatch "^\.|\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|composer\.json|composer\.lock|package\.json|package-lock\.json|artisan$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
 RewriteCond %{REQUEST_URI} !^/public/
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-
-
 
 RewriteRule ^(.*)$ /public/$1
 #RewriteRule ^ index.php [L]
