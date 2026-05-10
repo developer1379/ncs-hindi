@@ -66,6 +66,7 @@ class StemController extends Controller
             // UPDATED: Changed from file to string/url because JS sends the Mega link here
             'stem_file'        => 'required|string',
             'mega_link'        => 'required|url',
+            'youtube_link'     => 'nullable|string|max:255',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'music_key'        => 'nullable|string|max:10',
             'is_public'        => 'boolean',
@@ -117,6 +118,7 @@ class StemController extends Controller
             // UPDATED: stem_file is now an optional string/url for updates
             'stem_file'        => 'nullable|string',
             'mega_link'        => 'nullable|url',
+            'youtube_link'     => 'nullable|string|max:255',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'music_key'        => 'nullable|string|max:10',
             'is_public'        => 'boolean',

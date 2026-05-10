@@ -40,9 +40,8 @@ class StemController extends Controller
             ->orWhere('id', $slug)
             ->firstOrFail();
 
-        if (Auth::check()) {
-            $this->stemRepo->logInteraction($stem->id, Auth::id(), 'view');
-        }
+        // Log the view interaction (works for both guests and authenticated users now)
+        $this->stemRepo->logInteraction($stem->id, Auth::id(), 'view');
 
         return view('webapp.stems_show', compact('stem'));
     }

@@ -34,7 +34,8 @@ class MusicStem extends Model
         'seo_description',
         'slug',
         'is_public',
-        'mega_link'
+        'mega_link',
+        'youtube_link'
     ];
 
     /**

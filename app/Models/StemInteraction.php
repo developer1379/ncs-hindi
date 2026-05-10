@@ -16,7 +16,7 @@ class StemInteraction extends Model
         'id',
         'user_id',
         'stem_id',
-        'type', // 'like' or 'download'
+        'type', // 'like', 'download', or 'view'
     ];
 
     /**

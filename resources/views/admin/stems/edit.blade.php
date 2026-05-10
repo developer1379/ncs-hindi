@@ -129,12 +129,21 @@
                                         class="me-2 text-primary"></iconify-icon>Storage Link</h5>
                             </div>
                             <div class="card-body p-4">
-                                <label class="form-label fw-bold small text-uppercase text-secondary">Mega.nz Link <span
-                                        class="text-danger">*</span></label>
-                                <input type="url" name="mega_link" id="mega_link"
-                                    class="form-control bg-light border-0" value="{{ $stem->mega_link }}"
-                                    placeholder="https://mega.nz/file/..." required>
-                                <small class="text-muted mt-2 d-block">Updating this will override the previous link in
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">Mega.nz Link <span
+                                            class="text-danger">*</span></label>
+                                    <input type="url" name="mega_link" id="mega_link"
+                                        class="form-control bg-light border-0" value="{{ $stem->mega_link }}"
+                                        placeholder="https://mega.nz/file/..." required>
+                                </div>
+                                <div>
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">YouTube Link <span
+                                            class="text-muted">(Optional)</span></label>
+                                    <input type="url" name="youtube_link" id="youtube_link"
+                                        class="form-control bg-light border-0" value="{{ $stem->youtube_link }}"
+                                        placeholder="https://youtube.com/watch?v=...">
+                                </div>
+                                <small class="text-muted mt-2 d-block">Updating these will override the previous links in
                                     the vault.</small>
                             </div>
                         </div>

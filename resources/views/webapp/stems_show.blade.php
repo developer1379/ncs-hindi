@@ -80,6 +80,12 @@
 
                     {{-- Secondary Actions --}}
                     <div class="flex gap-3 w-full sm:w-auto justify-center" data-like-card>
+                        @if($stem->youtube_link)
+                            <a href="{{ $stem->youtube_link }}" target="_blank" rel="noopener noreferrer"
+                                class="flex-1 sm:flex-none p-4 bg-zinc-800/80 backdrop-blur-md border border-zinc-700 rounded-2xl text-zinc-300 hover:text-red-500 hover:border-red-500/50 transition-all group">
+                                <i class="fa-brands fa-youtube group-hover:scale-125 transition text-lg"></i>
+                            </a>
+                        @endif
                         <button type="button" data-stem-like-btn
                             data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
                             data-liked="{{ auth()->check() && $stem->isLikedBy(auth()->id()) ? 1 : 0 }}"

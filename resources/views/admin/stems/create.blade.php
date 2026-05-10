@@ -122,11 +122,19 @@
                                 </h5>
                             </div>
                             <div class="card-body p-4">
-                                <label class="form-label fw-bold small text-uppercase text-secondary">Mega.nz Link <span
-                                        class="text-danger">*</span></label>
-                                <input type="url" name="mega_link" id="mega_link"
-                                    class="form-control bg-light border-0" placeholder="https://mega.nz/file/..."
-                                    required>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">Mega.nz Link <span
+                                            class="text-danger">*</span></label>
+                                    <input type="url" name="mega_link" id="mega_link"
+                                        class="form-control bg-light border-0" placeholder="https://mega.nz/file/..."
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">YouTube Link <span
+                                            class="text-muted">(Optional)</span></label>
+                                    <input type="url" name="youtube_link" id="youtube_link"
+                                        class="form-control bg-light border-0" placeholder="https://youtube.com/watch?v=...">
+                                </div>
                             </div>
                         </div>
                     </div>
