@@ -48,6 +48,7 @@ class StemController extends Controller
 
     public function download($id)
     {
+        \Illuminate\Support\Facades\Log::info("Download route hit for ID: $id");
         $stem = MusicStem::findOrFail($id);
 
         $this->stemRepo->logInteraction($id, Auth::id(), 'download');
@@ -71,6 +72,7 @@ class StemController extends Controller
 
     public function incrementDownload($id)
     {
+        \Illuminate\Support\Facades\Log::info("Increment download hit for ID: $id");
         $stem = MusicStem::findOrFail($id);
         $this->stemRepo->logInteraction($id, Auth::id(), 'download');
         return response()->json([
