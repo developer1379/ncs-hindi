@@ -144,8 +144,8 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('music')->name('webapp.')->group(function () {
     Route::get('/', [StemController::class, 'index'])->name('streams');
-    Route::get('/{slug}', [StemController::class, 'show'])->name('stems.show');
     Route::get('/{id}/download', [StemController::class, 'download'])->name('stems.download');
+    Route::get('/{slug}', [StemController::class, 'show'])->name('stems.show');
     Route::post('/{id}/increment-download', [StemController::class, 'incrementDownload'])->name('stems.increment-download');
     Route::post('/{id}/like', [StemController::class, 'toggleLike'])->name('stems.like');
 });

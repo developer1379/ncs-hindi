@@ -73,6 +73,7 @@
                             data-music-title="{{ $stem->title }}"
                             data-action-url="{{ route('webapp.stems.download', $stem->id) }}"
                             data-action-label="Continue to download"
+                            data-stem-id="{{ $stem->id }}"
                             class="w-full sm:w-auto btn-vault px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-lg shadow-amber-600/20">
                             <i class="fa-solid fa-download text-lg"></i> NCS Version
                         </a>
