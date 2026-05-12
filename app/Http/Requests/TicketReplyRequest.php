@@ -42,3 +42,9 @@ class TicketReplyRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

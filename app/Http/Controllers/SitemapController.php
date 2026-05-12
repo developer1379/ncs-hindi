@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
+use App\Models$musiclog;
 use App\Models\ForumThread;
-use App\Models\MusicStem;
+use App\Models\Music;
 use Illuminate\Http\Response;
 
 class SitemapController extends Controller
@@ -31,12 +31,12 @@ class SitemapController extends Controller
             ];
         }
 
-        // 2. Music Stems
-        $stems = MusicStem::where('is_public', true)->latest()->get();
-        foreach ($stems as $stem) {
+        // 2. Music music
+        $music = Music::where('is_public', true)->latest()->get();
+        foreach ($music as $music) {
             $urls[] = [
-                'loc' => route('webapp.stems.show', $stem->slug),
-                'lastmod' => $stem->updated_at->toAtomString(),
+                'loc' => route('webapp.music.show', $music->slug),
+                'lastmod' => $music->updated_at->toAtomString(),
                 'changefreq' => 'weekly',
                 'priority' => '0.8',
             ];
@@ -69,3 +69,10 @@ class SitemapController extends Controller
         return response()->view('sitemap', compact('urls'))->header('Content-Type', 'text/xml');
     }
 }
+
+
+
+
+
+
+

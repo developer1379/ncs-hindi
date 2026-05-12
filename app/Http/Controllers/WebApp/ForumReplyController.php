@@ -69,3 +69,10 @@ class ForumReplyController extends Controller
         return redirect()->back()->with('success', 'Reply deleted.');
     }
 }
+
+
+
+
+
+
+

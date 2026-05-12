@@ -1,4 +1,4 @@
-<x-app-layout title="Stem Management | NCS Hindi Admin">
+<x-app-layout title="Music Management | NCS Hindi Admin">
     @push('heads')
         <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     @endpush
@@ -42,7 +42,7 @@
             min-width: 160px;
         }
 
-        .stem-img {
+        .music-img {
             width: 45px;
             height: 45px;
             object-fit: cover;
@@ -70,12 +70,12 @@
             {{-- Header & Controls --}}
             <div class="row align-items-center mb-4 g-3">
                 <div class="col-md-4">
-                    <h3 class="fw-bold text-dark mb-0">Official Stems Vault</h3>
-                    <p class="text-muted small mb-0">Manage {{ $stems->total() }} studio assets</p>
+                    <h3 class="fw-bold text-dark mb-0">Official Music Vault</h3>
+                    <p class="text-muted small mb-0">Manage {{ $music->total() }} music assets</p>
                 </div>
 
                 <div class="col-md-5">
-                    <form action="{{ route('admin.stems.index') }}" method="GET" class="d-flex gap-2">
+                    <form action="{{ route('admin.music.index') }}" method="GET" class="d-flex gap-2">
                         <div class="input-group">
                             <input type="text" name="search"
                                 class="form-control search-input border-light bg-white shadow-sm"
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="col-md-3 text-md-end">
-                    <a href="{{ route('admin.stems.create') }}"
+                    <a href="{{ route('admin.music.create') }}"
                         class="btn btn-primary px-4 rounded-3 shadow-sm fw-bold">
                         <iconify-icon icon="mdi:plus-circle" class="me-1"></iconify-icon> NEW RELEASE
                     </a>
@@ -120,47 +120,47 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($stems as $stem)
+                            @forelse($music as $item)
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            @if ($stem->featured_image)
-                                                <img src="{{ $stem->featured_image }}" alt="{{ $stem->title }}"
-                                                    class="stem-img border me-3">
+                                            @if ($item->featured_image)
+                                                <img src="{{ $item->featured_image }}" alt="{{ $item->title }}"
+                                                    class="music-img border me-3">
                                             @else
                                                 <div
-                                                    class="stem-img bg-light border d-flex align-items-center justify-content-center me-3 text-muted">
+                                                    class="music-img bg-light border d-flex align-items-center justify-content-center me-3 text-muted">
                                                     <iconify-icon icon="mdi:music-note"></iconify-icon>
                                                 </div>
                                             @endif
                                             <div>
-                                                <div class="fw-bold text-dark">{{ $stem->title }}</div>
+                                                <div class="fw-bold text-dark">{{ $item->title }}</div>
                                                 <div class="text-muted small">
-                                                    {{ $stem->artist_name ?: 'Unknown Artist' }}</div>
+                                                    {{ $item->artist_name ?: 'Unknown Artist' }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <span class="badge bg-light text-dark border fw-normal px-2 py-1">
-                                            {{ $stem->category->name ?? 'N/A' }}
+                                            {{ $item->category->name ?? 'N/A' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="small fw-bold">{{ $stem->bpm ?? '--' }} <span
+                                        <div class="small fw-bold">{{ $item->bpm ?? '--' }} <span
                                                 class="text-muted fw-normal">BPM</span></div>
-                                        <div class="small text-primary fw-bold">{{ $stem->music_key ?? '--' }}</div>
+                                        <div class="small text-primary fw-bold">{{ $item->music_key ?? '--' }}</div>
                                     </td>
                                     <td>
                                         <div class="d-flex gap-3">
                                             <span class="small text-muted" title="Downloads"><iconify-icon
                                                     icon="mdi:download" class="text-info"></iconify-icon>
-                                                {{ $stem->download_count }}</span>
+                                                {{ $item->download_count }}</span>
                                             <span class="small text-muted" title="Likes"><iconify-icon icon="mdi:heart"
-                                                    class="text-danger"></iconify-icon> {{ $stem->like_count }}</span>
+                                                    class="text-danger"></iconify-icon> {{ $item->like_count }}</span>
                                         </div>
                                     </td>
                                     <td>
-                                        @if ($stem->is_public)
+                                        @if ($item->is_public)
                                             <span
                                                 class="text-success small fw-bold d-flex align-items-center"><iconify-icon
                                                     icon="mdi:check-circle" class="me-1"></iconify-icon> LIVE</span>
@@ -172,11 +172,11 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="{{ route('admin.stems.edit', $stem->id) }}"
+                                            <a href="{{ route('admin.music.edit', $item->id) }}"
                                                 class="action-btn text-primary border" title="Edit">
                                                 <iconify-icon icon="mdi:pencil-outline"></iconify-icon>
                                             </a>
-                                            <form action="{{ route('admin.stems.destroy', $stem->id) }}" method="POST"
+                                            <form action="{{ route('admin.music.destroy', $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Delete permanently?');">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="action-btn text-danger border"
@@ -202,8 +202,15 @@
             </div>
 
             <div class="mt-4 d-flex justify-content-center">
-                {{ $stems->appends(request()->query())->links('pagination::bootstrap-5') }}
+                {{ $music->appends(request()->query())->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
 </x-app-layout>
+
+
+
+
+
+
+

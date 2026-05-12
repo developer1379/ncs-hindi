@@ -93,3 +93,9 @@ class OtpController extends Controller
         return redirect()->route('user.login')->with('success', 'Logged out successfully.');
     }
 }
+
+
+
+
+
+

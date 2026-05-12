@@ -77,3 +77,10 @@ class ChannelController extends Controller
         return redirect()->back()->with('success', 'Channel deleted.');
     }
 }
+
+
+
+
+
+
+

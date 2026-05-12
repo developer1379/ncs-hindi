@@ -43,7 +43,7 @@ class Like extends Model
     }
 
     /**
-     * Get the parent likeable model (Post or MusicStem).
+     * Get the parent likeable model (Post or Music).
      */
     public function likeable(): MorphTo
     {
@@ -58,3 +58,10 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 }
+
+
+
+
+
+
+

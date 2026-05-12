@@ -19,3 +19,9 @@ interface InteractionRepositoryInterface
     public function getConversation(string $userId1, string $userId2, int $limit = 50): Collection;
     public function markAsRead(string $receiverId, string $senderId): bool;
 }
+
+
+
+
+
+

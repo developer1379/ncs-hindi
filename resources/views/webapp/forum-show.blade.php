@@ -39,7 +39,7 @@
                     <i class="fa-solid fa-heart"></i> <span class="text-xs font-bold">{{ $post['likes'] }} Likes</span>
                 </button>
                 <button class="flex items-center gap-2 text-zinc-400 hover:text-amber-500 transition">
-                    <i class="fa-solid fa-share-nodes"></i> <span class="text-xs font-bold">Share Stems</span>
+                    <i class="fa-solid fa-share-nodes"></i> <span class="text-xs font-bold">Share music</span>
                 </button>
             </div>
         </article>
@@ -79,3 +79,10 @@
         </section>
     </div>
 </x-webapp-layout>
+
+
+
+
+
+
+

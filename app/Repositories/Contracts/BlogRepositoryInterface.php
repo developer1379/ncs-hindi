@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\Blog;
+use App\Models$musiclog;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface BlogRepositoryInterface
@@ -15,3 +15,9 @@ interface BlogRepositoryInterface
     public function delete(string $id): bool;
     public function updateStatus(string $id, bool $status): bool;
 }
+
+
+
+
+
+

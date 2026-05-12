@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
-use App\Models\BugReport;
+use App\Models$musicugReport;
 use Illuminate\Http\Request;
 
 class BugReportController extends Controller
@@ -31,3 +31,10 @@ class BugReportController extends Controller
             ->with('success', 'Bug report submitted successfully.');
     }
 }
+
+
+
+
+
+
+

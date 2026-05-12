@@ -75,15 +75,15 @@
                             });
                         }
 
-                        if (data.stems && data.stems.length > 0) {
+                        if (data.music && data.music.length > 0) {
                             html +=
-                                `<div class="p-2 bg-white/5 text-[10px] text-amber-500 font-bold uppercase mt-2">Music Stems</div>`;
-                            $.each(data.stems, function(i, stem) {
+                                `<div class="p-2 bg-white/5 text-[10px] text-amber-500 font-bold uppercase mt-2">Music music</div>`;
+                            $.each(data.music, function(i, music) {
                                 html += `
-                                <a href="/stems/${stem.slug}" class="flex items-center gap-3 p-3 hover:bg-white/5 border-b border-white/5 transition">
+                                <a href="/music/${music.slug}" class="flex items-center gap-3 p-3 hover:bg-white/5 border-b border-white/5 transition">
                                     <div class="text-sm">
-                                        <p class="font-medium text-zinc-200">${stem.title}</p>
-                                        <p class="text-xs text-zinc-500">${stem.artist_name || 'Unknown Artist'}</p>
+                                        <p class="font-medium text-zinc-200">${music.title}</p>
+                                        <p class="text-xs text-zinc-500">${music.artist_name || 'Unknown Artist'}</p>
                                     </div>
                                 </a>`;
                             });
@@ -112,3 +112,10 @@
         });
     </script>
 @endpush
+
+
+
+
+
+
+

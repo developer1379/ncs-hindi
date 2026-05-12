@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\BugReport;
+use App\Models$musicugReport;
 use Illuminate\Http\Request;
 
 class BugReportController extends Controller
@@ -57,3 +57,10 @@ class BugReportController extends Controller
         return back()->with('success', 'Bug report updated successfully.');
     }
 }
+
+
+
+
+
+
+

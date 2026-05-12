@@ -12,7 +12,7 @@
 
         <div class="flex items-center gap-4 bg-zinc-900/40 p-3 rounded-[24px] border border-zinc-800 backdrop-blur-md">
             <div class="px-6 py-1 border-r border-zinc-800 text-center">
-                <p class="text-2xl font-black text-white leading-none">{{ $stems->total() }}</p>
+                <p class="text-2xl font-black text-white leading-none">{{ $music->total() }}</p>
                 <p class="text-[8px] text-zinc-500 uppercase font-black tracking-tighter mt-1">Tracks</p>
             </div>
             <div class="px-6 py-1 text-center">
@@ -51,11 +51,11 @@
         </div>
     </form>
 
-    {{-- 3. Stems Grid --}}
+    {{-- 3. music Grid --}}
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @forelse($stems as $stem)
+        @forelse($music as $item)
             @php
-                $stemLanguages = collect(explode(',', (string) $stem->language))
+                $itemLanguages = collect(explode(',', (string) $item->language))
                     ->map(fn ($language) => trim($language))
                     ->filter()
                     ->values();
@@ -64,10 +64,10 @@
 
                 {{-- Artwork --}}
                 <div class="relative aspect-square m-3 overflow-hidden rounded-[24px] bg-zinc-800">
-                    @if ($stem->featured_image)
-                        <img src="{{ $stem->featured_image }}"
+                    @if ($item->featured_image)
+                        <img src="{{ $item->featured_image }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            alt="{{ $stem->title }}">
+                            alt="{{ $item->title }}">
                     @else
                         <div class="w-full h-full flex items-center justify-center">
                             <i class="fa-solid fa-music text-4xl text-zinc-700"></i>
@@ -76,14 +76,14 @@
 
                     {{-- Status Badges --}}
                     <div class="absolute top-3 left-3 flex flex-col gap-1.5">
-                        @if($stem->bpm)
+                        @if($item->bpm)
                             <span class="px-2 py-1 bg-black/70 backdrop-blur-md rounded-lg text-[8px] font-black text-white border border-white/10">
-                                {{ $stem->bpm }} BPM
+                                {{ $item->bpm }} BPM
                             </span>
                         @endif
-                        @if($stem->music_key)
+                        @if($item->music_key)
                             <span class="px-2 py-1 bg-amber-500/90 backdrop-blur-md rounded-lg text-[8px] font-black text-black border border-amber-400/20">
-                                KEY: {{ $stem->music_key }}
+                                KEY: {{ $item->music_key }}
                             </span>
                         @endif
                     </div>
@@ -94,31 +94,31 @@
                     <div class="mb-4">
                         <div class="flex justify-between items-start gap-2">
                             <h4 class="font-brand text-lg font-bold text-white uppercase tracking-tighter truncate">
-                                {{ $stem->title }}
+                                {{ $item->title }}
                             </h4>
                         </div>
                         <p class="text-xs text-zinc-500 font-bold truncate">
-                            {{ $stem->artist_name ?: 'Official NCS Asset' }}
+                            {{ $item->artist_name ?: 'Official NCS Asset' }}
                         </p>
                     </div>
 
-                    @if ($stem->description || $stemLanguages->isNotEmpty())
+                    @if ($item->description || $itemLanguages->isNotEmpty())
                         <div class="mb-4 space-y-2">
-                            @if ($stem->description)
+                            @if ($item->description)
                                 <p class="text-xs leading-relaxed text-zinc-500">
-                                    {{ \Illuminate\Support\Str::limit($stem->description, 95) }}
+                                    {{ \Illuminate\Support\Str::limit($item->description, 95) }}
                                 </p>
                             @endif
-                            @if ($stemLanguages->isNotEmpty())
+                            @if ($itemLanguages->isNotEmpty())
                                 <div class="flex flex-wrap gap-1.5">
-                                    @foreach ($stemLanguages->take(3) as $language)
+                                    @foreach ($itemLanguages->take(3) as $language)
                                         <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5 text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
                                             {{ $language }}
                                         </span>
                                     @endforeach
-                                    @if ($stemLanguages->count() > 3)
+                                    @if ($itemLanguages->count() > 3)
                                         <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5 text-[8px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                                            +{{ $stemLanguages->count() - 3 }}
+                                            +{{ $itemLanguages->count() - 3 }}
                                         </span>
                                     @endif
                                 </div>
@@ -131,24 +131,24 @@
                         <div class="flex items-center gap-4">
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-heart text-[10px] text-zinc-600"></i>
-                                <span data-like-count class="text-[10px] font-black text-zinc-400">{{ number_format($stem->like_count) }}</span>
+                                <span data-like-count class="text-[10px] font-black text-zinc-400">{{ number_format($item->like_count) }}</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-download text-[10px] text-zinc-600"></i>
-                                <span class="text-[10px] font-black text-zinc-400">{{ number_format($stem->download_count) }}</span>
+                                <span class="text-[10px] font-black text-zinc-400">{{ number_format($item->download_count) }}</span>
                             </div>
                         </div>
                     </div>
 
                     {{-- Actions --}}
                     <div class="mt-5">
-                        <a href="{{ route('webapp.stems.show', $stem->slug) }}"
+                        <a href="{{ route('webapp.music.show', $item->slug) }}"
                             data-notification-gate
                             data-music-action="view"
-                            data-music-title="{{ $stem->title }}"
-                            data-action-url="{{ route('webapp.stems.show', $stem->slug) }}"
+                            data-music-title="{{ $item->title }}"
+                            data-action-url="{{ route('webapp.music.show', $item->slug) }}"
                             data-action-label="Continue to view"
-                            data-stem-id="{{ $stem->id }}"
+                            data-music-id="{{ $item->id }}"
                             class="block w-full py-3 bg-white text-black rounded-xl text-[10px] font-black uppercase text-center hover:bg-amber-500 hover:text-white transition-all">
                             VIEW
                         </a>
@@ -164,6 +164,13 @@
     </section>
 
     <div class="mt-12">
-        {{ $stems->links() }}
+        {{ $music->links() }}
     </div>
 </x-webapp-layout>
+
+
+
+
+
+
+

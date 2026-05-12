@@ -65,3 +65,9 @@ class PermissionController extends Controller
         return redirect()->route('admin.permissions.index')->with('success', 'Permission deleted successfully.');
     }
 }
+
+
+
+
+
+

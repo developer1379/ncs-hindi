@@ -9,3 +9,10 @@ interface ProfileRepositoryInterface
     public function incrementXP($userId, $amount);
     public function getTopProducers($limit = 5);
 }
+
+
+
+
+
+
+

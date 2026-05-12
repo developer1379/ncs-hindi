@@ -84,7 +84,7 @@ class CommunityMessageController extends Controller
         $type = 'text';
         $metadata = [];
 
-        // Handle File Uploads (Stems, Images, Audio)
+        // Handle File Uploads (music, Images, Audio)
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
@@ -154,3 +154,10 @@ class CommunityMessageController extends Controller
         ]);
     }
 }
+
+
+
+
+
+
+

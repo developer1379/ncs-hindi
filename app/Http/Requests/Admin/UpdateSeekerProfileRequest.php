@@ -24,3 +24,9 @@ class UpdateSeekerProfileRequest extends FormRequest
         ];
     }
 }
+
+
+
+
+
+

@@ -47,3 +47,9 @@ class InteractionController extends Controller
         return redirect()->route('admin.requests.index')->with('success', 'Message sent directly.');
     }
 }
+
+
+
+
+
+

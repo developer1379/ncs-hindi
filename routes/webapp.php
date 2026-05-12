@@ -7,8 +7,8 @@ use App\Http\Controllers\WebApp\ForumReplyController;
 use App\Http\Controllers\WebApp\LikeController;
 use App\Http\Controllers\WebApp\PageController;
 use App\Http\Controllers\WebApp\SearchController;
-use App\Http\Controllers\WebApp\StemController;
-use App\Http\Controllers\WebApp\BugReportController;
+use App\Http\Controllers\WebApp\MusicController;
+use App\Http\Controllers\WebApp$musicugReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +99,7 @@ Route::prefix('community')->middleware('auth')->group(function () {
     Route::delete('/messages/{id}', [CommunityMessageController::class, 'destroy']);
 });
 
-Route::get('/vault/download/{id}', [StemController::class, 'download'])->name('webapp.stems.download');
+Route::get('/vault/download/{id}', [MusicController::class, 'download'])->name('webapp.music.download');
 Route::get('/search', [SearchController::class, 'search'])->name('webapp.search');
 Route::get('/search-all', [SearchController::class, 'index'])->name('webapp.search.index');
 // Ensure this exists
@@ -137,17 +137,17 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/stems/{id}/like', [StemController::class, 'toggleLike'])->name('webapp.stems.like');
-    Route::get('/stems/{id}/download', [StemController::class, 'download'])->name('webapp.stems.download');
+    Route::post('/music/{id}/like', [MusicController::class, 'toggleLike'])->name('webapp.music.like');
+    Route::get('/music/{id}/download', [MusicController::class, 'download'])->name('webapp.music.download');
     Route::post('/toggle-like', [LikeController::class, 'toggle'])->name('webapp.like.toggle');
 });
 
 Route::prefix('music')->name('webapp.')->group(function () {
-    Route::get('/', [StemController::class, 'index'])->name('streams');
-    Route::get('/{id}/download', [StemController::class, 'download'])->name('stems.download');
-    Route::get('/{slug}', [StemController::class, 'show'])->name('stems.show');
-    Route::post('/{id}/increment-download', [StemController::class, 'incrementDownload'])->name('stems.increment-download');
-    Route::post('/{id}/like', [StemController::class, 'toggleLike'])->name('stems.like');
+    Route::get('/', [MusicController::class, 'index'])->name('streams');
+    Route::get('/{id}/download', [MusicController::class, 'download'])->name('music.download');
+    Route::get('/{slug}', [MusicController::class, 'show'])->name('music.show');
+    Route::post('/{id}/increment-download', [MusicController::class, 'incrementDownload'])->name('music.increment-download');
+    Route::post('/{id}/like', [MusicController::class, 'toggleLike'])->name('music.like');
 });
 
 /*
@@ -161,3 +161,10 @@ Route::prefix('vault')->name('webapp.')->group(function () {
     Route::get('/faq', [PageController::class, 'faq'])->name('faq');
     Route::get('/forum/{id}', [PageController::class, 'showForum'])->name('forum.show');
 });
+
+
+
+
+
+
+

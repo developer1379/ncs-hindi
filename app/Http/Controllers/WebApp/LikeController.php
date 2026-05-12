@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Like;
 use App\Models\ForumThread;
-use App\Models\MusicStem;
+use App\Models\Music;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
@@ -19,7 +19,7 @@ class LikeController extends Controller
 
         $request->validate([
             'id'   => 'required|string|size:36',
-            'type' => 'required|string|in:thread,stem'
+            'type' => 'required|string|in:thread,music'
         ]);
 
         $userId = Auth::id(); // This is a CHAR(36) UUID per your user table
@@ -27,7 +27,7 @@ class LikeController extends Controller
 
         $map = [
             'thread' => ForumThread::class,
-            'stem'   => MusicStem::class,
+            'music'   => Music::class,
         ];
 
         $modelClass = $map[$request->type];
@@ -59,3 +59,10 @@ class LikeController extends Controller
         ]);
     }
 }
+
+
+
+
+
+
+

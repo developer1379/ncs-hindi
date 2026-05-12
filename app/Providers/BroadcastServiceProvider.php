@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades$musicroadcast;
 use Illuminate\Support\ServiceProvider;
 
 class BroadcastServiceProvider extends ServiceProvider
@@ -17,3 +17,10 @@ class BroadcastServiceProvider extends ServiceProvider
         require base_path('routes/channels.php');
     }
 }
+
+
+
+
+
+
+

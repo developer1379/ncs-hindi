@@ -67,3 +67,9 @@ class UpdateMailConfigRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

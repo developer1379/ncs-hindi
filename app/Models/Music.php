@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class MusicStem extends Model
+class Music extends Model
 {
+    protected $table = 'music_stems';
     protected $keyType = 'string';
     public $incrementing = false;
 
@@ -94,7 +95,7 @@ class MusicStem extends Model
 
     public function interactions()
     {
-        return $this->hasMany(StemInteraction::class, 'stem_id');
+        return $this->hasMany(MusicInteraction::class, 'stem_id');
     }
 
     public function isLikedBy($userId): bool
@@ -116,3 +117,10 @@ class MusicStem extends Model
         return $query->where('is_public', true);
     }
 }
+
+
+
+
+
+
+

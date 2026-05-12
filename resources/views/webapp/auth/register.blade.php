@@ -43,7 +43,7 @@
                 <div class="p-4 bg-zinc-950 rounded-xl border border-zinc-900">
                     <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">
                         By registering, you agree to the <span class="text-amber-600">NCS Hindi Usage Policy</span>.
-                        Your account will start at <span class="text-white">Level 1</span> with access to public stems.
+                        Your account will start at <span class="text-white">Level 1</span> with access to public music.
                     </p>
                 </div>
 
@@ -59,3 +59,10 @@
         </div>
     </div>
 </x-webapp-layout>
+
+
+
+
+
+
+

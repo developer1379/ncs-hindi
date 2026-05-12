@@ -21,3 +21,9 @@ class StoreInteractionRequest extends FormRequest
         ];
     }
 }
+
+
+
+
+
+

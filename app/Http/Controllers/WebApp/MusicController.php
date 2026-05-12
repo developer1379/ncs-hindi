@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
-use App\Models\StemInteraction;
-use App\Repositories\Contracts\StemRepositoryInterface;
+use App\Models\MusicInteraction;
+use App\Repositories\Contracts\MusicRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use App\Models\MusicStem;
+use App\Models\Music;
 
-class StemController extends Controller
+class MusicController extends Controller
 {
-    protected $stemRepo;
+    protected $musicRepo;
 
-    public function __construct(StemRepositoryInterface $stemRepo)
+    public function __construct(MusicRepositoryInterface $musicRepo)
     {
-        $this->stemRepo = $stemRepo;
+        $this->musicRepo = $musicRepo;
     }
 
     public function index(Request $request)
@@ -28,56 +28,56 @@ class StemController extends Controller
             'sort' => $request->sort ?? 'latest'
         ];
 
-        $stems = $this->stemRepo->getLibraryStems($filters);
+        $music = $this->musicRepo->getLibraryMusic($filters);
 
-        return view('webapp.streams', compact('stems'));
+        return view('webapp.streams', compact('music'));
     }
 
     public function show($slug)
     {
-        $stem = MusicStem::with('category')
+        $music = Music::with('category')
             ->where('slug', $slug)
             ->orWhere('id', $slug)
             ->firstOrFail();
 
         // Log the view interaction (works for both guests and authenticated users now)
-        $this->stemRepo->logInteraction($stem->id, Auth::id(), 'view');
+        $this->musicRepo->logInteraction($music->id, Auth::id(), 'view');
 
-        return view('webapp.stems_show', compact('stem'));
+        return view('webapp.music_show', compact('music'));
     }
 
     public function download($id)
     {
         \Illuminate\Support\Facades\Log::info("Download route hit for ID: $id");
-        $stem = MusicStem::findOrFail($id);
+        $music = Music::findOrFail($id);
 
-        $this->stemRepo->logInteraction($id, Auth::id(), 'download');
+        $this->musicRepo->logInteraction($id, Auth::id(), 'download');
 
-        if ($stem->mega_link && filter_var($stem->mega_link, FILTER_VALIDATE_URL)) {
-            return redirect()->away($stem->mega_link);
+        if ($music->mega_link && filter_var($music->mega_link, FILTER_VALIDATE_URL)) {
+            return redirect()->away($music->mega_link);
         }
 
-        if ($stem->file_path && filter_var($stem->file_path, FILTER_VALIDATE_URL)) {
-            return redirect()->away($stem->file_path);
+        if ($music->file_path && filter_var($music->file_path, FILTER_VALIDATE_URL)) {
+            return redirect()->away($music->file_path);
         }
 
-        if (!$stem->file_path) {
+        if (!$music->file_path) {
             abort(404);
         }
 
-        $downloadName = $stem->file_name ?: basename($stem->file_path);
+        $downloadName = $music->file_name ?: basename($music->file_path);
 
-        return Storage::disk('public')->download($stem->file_path, $downloadName);
+        return Storage::disk('public')->download($music->file_path, $downloadName);
     }
 
     public function incrementDownload($id)
     {
         \Illuminate\Support\Facades\Log::info("Increment download hit for ID: $id");
-        $stem = MusicStem::findOrFail($id);
-        $this->stemRepo->logInteraction($id, Auth::id(), 'download');
+        $music = Music::findOrFail($id);
+        $this->musicRepo->logInteraction($id, Auth::id(), 'download');
         return response()->json([
             'success' => true,
-            'count' => $stem->download_count
+            'count' => $music->download_count
         ]);
     }
 
@@ -89,9 +89,9 @@ class StemController extends Controller
 
         return DB::transaction(function () use ($id) {
             $userId = Auth::id();
-            $stem = MusicStem::lockForUpdate()->findOrFail($id);
+            $music = Music::lockForUpdate()->findOrFail($id);
 
-            $interaction = StemInteraction::where('user_id', $userId)
+            $interaction = MusicInteraction::where('user_id', $userId)
                 ->where('stem_id', $id)
                 ->where('type', 'like')
                 ->first();
@@ -99,20 +99,20 @@ class StemController extends Controller
             if ($interaction) {
                 $interaction->delete();
 
-                if ($stem->like_count > 0) {
-                    $stem->decrement('like_count');
+                if ($music->like_count > 0) {
+                    $music->decrement('like_count');
                 }
 
-                $stem->refresh();
+                $music->refresh();
 
                 return response()->json([
                     'liked' => false,
-                    'count' => $stem->like_count,
+                    'count' => $music->like_count,
                     'message' => 'Removed from your likes.',
                 ]);
             }
 
-            StemInteraction::create([
+            MusicInteraction::create([
                 'id' => (string) \Illuminate\Support\Str::uuid(),
                 'user_id' => $userId,
                 'stem_id' => $id,
@@ -120,12 +120,12 @@ class StemController extends Controller
                 'created_at' => now(),
             ]);
 
-            $stem->increment('like_count');
-            $stem->refresh();
+            $music->increment('like_count');
+            $music->refresh();
 
             return response()->json([
                 'liked' => true,
-                'count' => $stem->like_count,
+                'count' => $music->like_count,
                 'message' => 'Added to your likes.',
             ]);
         });
@@ -136,14 +136,21 @@ class StemController extends Controller
         $data = $request->validate([
             'title'          => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'stem_file'      => 'required|file|mimes:zip,wav,mp3|max:102400',
+            'music_file'      => 'required|file|mimes:zip,wav,mp3|max:102400',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'bpm'            => 'nullable|integer',
             'music_key'      => 'nullable|string',
         ]);
 
-        $this->stemRepo->uploadStem($threadId, $data);
+        $this->musicRepo->uploadMusic($threadId, $data);
 
         return back()->with('success', 'Studio asset published to the Vault!');
     }
 }
+
+
+
+
+
+
+

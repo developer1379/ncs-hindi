@@ -40,3 +40,10 @@ class ForumReply extends Model
         return $this->hasMany(ForumReply::class, 'parent_id');
     }
 }
+
+
+
+
+
+
+

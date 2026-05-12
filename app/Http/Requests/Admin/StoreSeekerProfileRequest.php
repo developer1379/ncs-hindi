@@ -31,3 +31,9 @@ class StoreSeekerProfileRequest extends FormRequest
         ];
     }
 }
+
+
+
+
+
+

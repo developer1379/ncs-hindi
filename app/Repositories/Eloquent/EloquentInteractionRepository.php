@@ -99,3 +99,9 @@ class EloquentInteractionRepository implements InteractionRepositoryInterface
             ->update(['status' => 'read']);
     }
 }
+
+
+
+
+
+

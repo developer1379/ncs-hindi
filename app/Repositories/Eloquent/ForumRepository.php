@@ -26,7 +26,7 @@ class ForumRepository implements ForumRepositoryInterface
 
     public function findThreadBySlug($slug)
     {
-        return ForumThread::with(['author', 'category', 'stems'])
+        return ForumThread::with(['author', 'category', 'music'])
             ->where('slug', $slug)
             ->firstOrFail();
     }
@@ -57,3 +57,10 @@ class ForumRepository implements ForumRepositoryInterface
             ->findOrFail($id);
     }
 }
+
+
+
+
+
+
+

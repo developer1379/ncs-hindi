@@ -61,7 +61,7 @@
                             Title</label>
                         <input name="title" type="text" required
                             class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-lg font-bold text-white focus:border-amber-600 outline-none transition mt-1"
-                            placeholder="e.g. 'Tum Mile' Official Stems Release">
+                            placeholder="e.g. 'Tum Mile' Official music Release">
                     </div>
 
                     {{-- Category & Metadata Grid --}}
@@ -99,7 +99,7 @@
                     <div class="w-16 h-16 rounded-2xl bg-zinc-900 flex items-center justify-center mb-4 text-amber-500">
                         <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
                     </div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-tight">Upload Stems Zip</h4>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-tight">Upload music Zip</h4>
                     <input type="file" name="stem_file" class="hidden" id="stem_file">
                     <button type="button" onclick="document.getElementById('stem_file').click()"
                         class="mt-6 px-6 py-2 rounded-xl border border-zinc-700 text-[10px] font-black text-zinc-400 hover:text-white hover:bg-zinc-800 transition uppercase tracking-widest">
@@ -171,7 +171,7 @@
             modules: {
                 toolbar: toolbarOptions
             },
-            placeholder: 'Describe your stems, share production secrets, or add mixing tips...',
+            placeholder: 'Describe your music, share production secrets, or add mixing tips...',
             theme: 'snow'
         });
 
@@ -183,3 +183,10 @@
         };
     </script>
 </x-webapp-layout>
+
+
+
+
+
+
+

@@ -74,3 +74,9 @@ class RoleController extends Controller
         return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
     }
 }
+
+
+
+
+
+

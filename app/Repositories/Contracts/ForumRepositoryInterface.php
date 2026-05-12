@@ -11,3 +11,10 @@ interface ForumRepositoryInterface
     public function storeThread(array $data); // New Method
     public function findThreadById($id);
 }
+
+
+
+
+
+
+

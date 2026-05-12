@@ -16,3 +16,10 @@ class Page extends Model
     // 'id' is guarded, so 'language_id' is automatically fillable
     protected $guarded = ['id'];
 }
+
+
+
+
+
+
+

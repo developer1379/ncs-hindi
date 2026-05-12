@@ -42,3 +42,9 @@ class Interaction extends Model
             ->exists();
     }
 }
+
+
+
+
+
+

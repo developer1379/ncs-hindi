@@ -33,24 +33,24 @@
                 @endforelse
 
                 <div class="mt-6">
-                    {{ $threads->appends(['query' => $query, 'stems_page' => $stems->currentPage()])->links() }}
+                    {{ $threads->appends(['query' => $query, 'stems_page' => $music->currentPage()])->links() }}
                 </div>
             </div>
 
             <div class="lg:col-span-4 space-y-6">
                 <div class="flex items-center justify-between border-b border-white/10 pb-4">
                     <h2 class="text-xl font-bold flex items-center gap-2">
-                        <i class="fa-solid fa-compact-disc text-amber-500"></i> Stems
+                        <i class="fa-solid fa-compact-disc text-amber-500"></i> music
                     </h2>
-                    <span class="text-xs text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full">{{ $stems->total() }} matches</span>
+                    <span class="text-xs text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full">{{ $music->total() }} matches</span>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
-                    @forelse($stems as $stem)
+                    @forelse($music as $music)
                         <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-xl flex items-center gap-4 hover:bg-zinc-800/50 transition">
                             <div class="w-16 h-16 bg-zinc-800 rounded-lg flex-shrink-0 overflow-hidden">
-                                @if($stem->featured_image)
-                                    <img src="{{ asset('storage/' . $stem->featured_image) }}" class="w-full h-full object-cover">
+                                @if($music->featured_image)
+                                    <img src="{{ asset('storage/' . $music->featured_image) }}" class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-zinc-700">
                                         <i class="fa-solid fa-music text-xl"></i>
@@ -58,23 +58,30 @@
                                 @endif
                             </div>
                             <div class="flex-grow">
-                                <h4 class="font-bold text-sm leading-tight">{{ $stem->title }}</h4>
-                                <p class="text-xs text-amber-600 mt-1">{{ $stem->artist_name }}</p>
-                                <a href="{{ url('/stems/' . $stem->slug) }}" class="text-[10px] uppercase font-black text-white mt-2 inline-flex items-center gap-1 hover:underline">
+                                <h4 class="font-bold text-sm leading-tight">{{ $music->title }}</h4>
+                                <p class="text-xs text-amber-600 mt-1">{{ $music->artist_name }}</p>
+                                <a href="{{ url('/music/' . $music->slug) }}" class="text-[10px] uppercase font-black text-white mt-2 inline-flex items-center gap-1 hover:underline">
                                     <i class="fa-solid fa-download"></i> NCS Version
                                 </a>
                             </div>
                         </div>
                     @empty
-                        <div class="text-zinc-600 py-10 italic text-sm">No stems found.</div>
+                        <div class="text-zinc-600 py-10 italic text-sm">No music found.</div>
                     @endforelse
                 </div>
 
                 <div class="mt-6">
-                    {{ $stems->appends(['query' => $query, 'threads_page' => $threads->currentPage()])->links() }}
+                    {{ $music->appends(['query' => $query, 'threads_page' => $threads->currentPage()])->links() }}
                 </div>
             </div>
 
         </div>
     </div>
 </x-webapp-layout>
+
+
+
+
+
+
+

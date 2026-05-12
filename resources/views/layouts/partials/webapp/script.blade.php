@@ -104,7 +104,7 @@
         $('#notificationGateContinue').text(notificationGateContext.actionLabel || 'Continue');
         $('#notificationGateContinue').data('action-url', notificationGateContext.actionUrl || '');
         $('#notificationGateContinue').data('action-type', notificationGateContext.actionType || 'continue');
-        $('#notificationGateContinue').data('stem-id', notificationGateContext.stemId || '');
+        $('#notificationGateContinue').data('music-id', notificationGateContext.stemId || '');
     }
 
     function openNotificationGate(context = {}) {
@@ -348,7 +348,7 @@
         if (localStorage.getItem(notificationGateKey) || localStorage.getItem(notificationPromptKey)) {
             if (actionUrl) {
                 if (isDownload) {
-                    const stemId = $btn.data('stem-id');
+                    const stemId = $btn.data('music-id');
                     if (stemId) $.post(`/music/${stemId}/increment-download`);
                     window.open(actionUrl, '_blank');
                 } else {
@@ -367,7 +367,7 @@
             actionUrl: actionUrl,
             actionLabel: $btn.data('actionLabel') || (isDownload ? 'Continue to download' : 'Continue to view'),
             actionType: $btn.data('musicAction') || 'continue',
-            stemId: $btn.data('stem-id') || '',
+            stemId: $btn.data('music-id') || '',
         });
     });
 
@@ -420,7 +420,7 @@
 
         const actionUrl = $(this).data('action-url');
         const actionType = $(this).data('action-type');
-        const stemId = $(this).data('stem-id');
+        const stemId = $(this).data('music-id');
 
         if (!actionUrl) {
             closeNotificationGate();
@@ -453,7 +453,7 @@
         closeNotificationGate();
     });
 
-    $(document).on('click', '[data-stem-share-btn]', function(e) {
+    $(document).on('click', '[data-music-share-btn]', function(e) {
         e.preventDefault();
 
         const $btn = $(this);
@@ -489,7 +489,7 @@
         }
     });
 
-    $(document).on('click', '[data-stem-like-btn]', function(e) {
+    $(document).on('click', '[data-music-like-btn]', function(e) {
         e.preventDefault();
 
         const $btn = $(this);
@@ -507,7 +507,7 @@
         }
 
         const $count = $card.find('[data-like-count]').first();
-        const $icon = $btn.find('[data-stem-like-icon]').first();
+        const $icon = $btn.find('[data-music-like-icon]').first();
 
         $btn.prop('disabled', true);
 
@@ -579,3 +579,10 @@
 
     console.log('NCS Hindi WebApp Initialized');
 </script>
+
+
+
+
+
+
+

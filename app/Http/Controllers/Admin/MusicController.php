@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Contracts\StemRepositoryInterface;
+use App\Repositories\Contracts\MusicRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\MusicStem;
+use App\Models\Music;
 use App\Models\Category;
 
-class StemController extends Controller
+class MusicController extends Controller
 {
-    protected $stemRepo;
+    protected $musicRepo;
 
-    public function __construct(StemRepositoryInterface $stemRepo)
+    public function __construct(MusicRepositoryInterface $musicRepo)
     {
-        $this->stemRepo = $stemRepo;
+        $this->musicRepo = $musicRepo;
     }
 
     public function index(Request $request)
     {
         try {
-            $query = MusicStem::with(['category']);
+            $query = Music::with(['category']);
 
             if ($request->filled('search')) {
                 $search = $request->search;
@@ -36,12 +36,12 @@ class StemController extends Controller
                 $query->where('category_id', $request->category);
             }
 
-            $stems = $query->latest()->paginate(15)->withQueryString();
+            $music = $query->latest()->paginate(15)->withQueryString();
             $categories = Category::where('is_active', 1)->get();
 
-            return view('admin.stems.index', compact('stems', 'categories'));
+            return view('admin.music.index', compact('music', 'categories'));
         } catch (\Exception $e) {
-            Log::error('Admin Stem Index Error', ['message' => $e->getMessage()]);
+            Log::error('Admin music Index Error', ['message' => $e->getMessage()]);
             return back()->with('error', 'Could not load studio assets.');
         }
     }
@@ -49,7 +49,7 @@ class StemController extends Controller
     public function create()
     {
         $categories = Category::where('is_active', 1)->get();
-        return view('admin.stems.create', compact('categories'));
+        return view('admin.music.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -64,7 +64,7 @@ class StemController extends Controller
             'license_text'     => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
             // UPDATED: Changed from file to string/url because JS sends the Mega link here
-            'stem_file'        => 'required|string',
+            'music_file'        => 'required|string',
             'mega_link'        => 'required|url',
             'youtube_link'     => 'nullable|string|max:255',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
@@ -77,13 +77,13 @@ class StemController extends Controller
 
         try {
             // The Repository should handle saving the string URL into the file path column
-            $this->stemRepo->uploadStem($data['category_id'], $data);
+            $this->musicRepo->uploadMusic($data['category_id'], $data);
 
             if ($request->ajax()) {
                 return response()->json(['success' => true, 'message' => 'Published successfully.']);
             }
 
-            return redirect()->route('admin.stems.index')->with('success', 'Published successfully.');
+            return redirect()->route('admin.music.index')->with('success', 'Published successfully.');
         } catch (\Exception $e) {
             Log::error('Upload Failed', ['error' => $e->getMessage()]);
             if ($request->ajax()) {
@@ -96,11 +96,11 @@ class StemController extends Controller
     public function edit($id)
     {
         try {
-            $stem = MusicStem::findOrFail($id);
+            $music = Music::findOrFail($id);
             $categories = Category::where('is_active', 1)->get();
-            return view('admin.stems.edit', compact('stem', 'categories'));
+            return view('admin.music.edit', compact('music', 'categories'));
         } catch (\Exception $e) {
-            return redirect()->route('admin.stems.index')->with('error', 'Asset not found.');
+            return redirect()->route('admin.music.index')->with('error', 'Asset not found.');
         }
     }
 
@@ -116,7 +116,7 @@ class StemController extends Controller
             'license_text'     => 'nullable|string',
             'tags_keywords'    => 'nullable|string',
             // UPDATED: stem_file is now an optional string/url for updates
-            'stem_file'        => 'nullable|string',
+            'music_file'        => 'nullable|string',
             'mega_link'        => 'nullable|url',
             'youtube_link'     => 'nullable|string|max:255',
             'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
@@ -128,13 +128,13 @@ class StemController extends Controller
         ]);
 
         try {
-            $this->stemRepo->updateStem($id, $data);
+            $this->musicRepo->updateMusic($id, $data);
 
             if ($request->ajax()) {
                 return response()->json(['success' => true, 'message' => 'Updated successfully.']);
             }
 
-            return redirect()->route('admin.stems.index')->with('success', 'Updated successfully.');
+            return redirect()->route('admin.music.index')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             Log::error('Update Failed', ['error' => $e->getMessage()]);
             if ($request->ajax()) {
@@ -147,10 +147,17 @@ class StemController extends Controller
     public function destroy($id)
     {
         try {
-            $this->stemRepo->deleteStem($id);
+            $this->musicRepo->deleteMusic($id);
             return back()->with('success', 'Asset removed.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete.');
         }
     }
 }
+
+
+
+
+
+
+

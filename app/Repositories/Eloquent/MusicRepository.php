@@ -2,19 +2,19 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\MusicStem;
+use App\Models\Music;
 use App\Models\FcmToken;
-use App\Models\StemInteraction;
+use App\Models\MusicInteraction;
 use App\Notifications\MusicPublishedNotification;
 use App\Services\ImgBBService;
-use App\Repositories\Contracts\StemRepositoryInterface;
-use Illuminate\Database\Eloquent\Builder;
+use App\Repositories\Contracts\MusicRepositoryInterface;
+use Illuminate\Database\Eloquent$musicuilder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
-class StemRepository implements StemRepositoryInterface
+class MusicRepository implements MusicRepositoryInterface
 {
     protected $imgBB;
 
@@ -25,7 +25,7 @@ class StemRepository implements StemRepositoryInterface
 
     private function buildTrendingQuery(array $filters = []): Builder
     {
-        $query = MusicStem::with('category')->where('is_public', true);
+        $query = Music::with('category')->where('is_public', true);
 
         if (!empty($filters['search'])) {
             $search = $filters['search'];
@@ -54,7 +54,7 @@ class StemRepository implements StemRepositoryInterface
         };
     }
 
-    public function getTrendingStems($filters = [])
+    public function getTrendingMusic($filters = [])
     {
         $perPage = max(6, min((int) ($filters['per_page'] ?? 12), 24));
         $sort = $filters['sort'] ?? 'downloads';
@@ -99,18 +99,18 @@ class StemRepository implements StemRepositoryInterface
         ];
     }
 
-    public function uploadStem($categoryId, array $data)
+    public function uploadMusic($categoryId, array $data)
     {
         try {
             // Since jQuery sends the Mega Link as a string in 'stem_file'
-            $audioPath = $data['stem_file'];
+            $audioPath = $data['music_file'];
 
             $imageUrl = null;
             if (isset($data['featured_image']) && $data['featured_image'] instanceof \Illuminate\Http\UploadedFile) {
                 $imageUrl = $this->imgBB->upload($data['featured_image']);
             }
 
-            $stem = MusicStem::create([
+            $music = Music::create([
                 'id'               => (string) Str::uuid(), // Ensure UUID is generated if not in boot
                 'category_id'      => $categoryId,
                 'title'            => $data['title'],
@@ -131,77 +131,77 @@ class StemRepository implements StemRepositoryInterface
                 'seo_title'        => $data['seo_title'] ?? $data['title'],
                 'seo_description'  => $data['seo_description'] ?? Str::limit($data['description'] ?? '', 150),
                 'is_public'        => $data['is_public'] ?? true,
-                'slug'             => MusicStem::uniqueSlug($data['title']),
+                'slug'             => Music::uniqueSlug($data['title']),
             ]);
 
-            Log::info("Stem uploaded successfully", ['id' => $stem->id]);
+            Log::info("music uploaded successfully", ['id' => $music->id]);
 
-            if ($stem->is_public) {
-                $this->notifyMusicPublished($stem);
+            if ($music->is_public) {
+                $this->notifyMusicPublished($music);
             }
 
-            return $stem;
+            return $music;
         } catch (\Exception $e) {
-            Log::error("Failed to upload stem", ['error' => $e->getMessage()]);
+            Log::error("Failed to upload music", ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-    public function updateStem($stemId, array $data)
+    public function updateMusic($musicId, array $data)
     {
         try {
-            $stem = MusicStem::findOrFail($stemId);
-            $wasPublic = (bool) $stem->is_public;
+            $music = Music::findOrFail($musicId);
+            $wasPublic = (bool) $music->is_public;
 
             // Update Audio path if a new link/string is provided
-            if (isset($data['stem_file'])) {
-                $stem->file_path = $data['stem_file'];
-                $stem->mega_link = $data['mega_link'] ?? $data['stem_file'];
+            if (isset($data['music_file'])) {
+                $music->file_path = $data['music_file'];
+                $music->mega_link = $data['mega_link'] ?? $data['music_file'];
             }
 
             if (isset($data['featured_image']) && $data['featured_image'] instanceof \Illuminate\Http\UploadedFile) {
                 $imageUrl = $this->imgBB->upload($data['featured_image']);
                 if ($imageUrl) {
-                    $stem->featured_image = $imageUrl;
+                    $music->featured_image = $imageUrl;
                 }
             }
 
-            $stem->update([
-                'category_id'      => $data['category_id'] ?? $stem->category_id,
-                'title'            => $data['title'] ?? $stem->title,
-                'artist_name'      => $data['artist_name'] ?? $stem->artist_name,
-                'album_movie_name' => $data['album_movie_name'] ?? $stem->album_movie_name,
-                'language'         => $data['language'] ?? $stem->language,
-                'description'      => $data['description'] ?? $stem->description,
-                'license_text'     => array_key_exists('license_text', $data) ? $data['license_text'] : $stem->license_text,
-                'tags_keywords'    => $data['tags_keywords'] ?? $stem->tags_keywords,
-                'music_key'        => $data['music_key'] ?? $stem->music_key,
-                'youtube_link'     => $data['youtube_link'] ?? $stem->youtube_link,
-                'seo_title'        => $data['seo_title'] ?? $stem->seo_title,
-                'seo_description'  => $data['seo_description'] ?? $stem->seo_description,
-                'is_public'        => isset($data['is_public']) ? (bool)$data['is_public'] : $stem->is_public,
-                'slug'             => isset($data['title']) ? MusicStem::uniqueSlug($data['title'], $stem->id) : $stem->slug,
+            $music->update([
+                'category_id'      => $data['category_id'] ?? $music->category_id,
+                'title'            => $data['title'] ?? $music->title,
+                'artist_name'      => $data['artist_name'] ?? $music->artist_name,
+                'album_movie_name' => $data['album_movie_name'] ?? $music->album_movie_name,
+                'language'         => $data['language'] ?? $music->language,
+                'description'      => $data['description'] ?? $music->description,
+                'license_text'     => array_key_exists('license_text', $data) ? $data['license_text'] : $music->license_text,
+                'tags_keywords'    => $data['tags_keywords'] ?? $music->tags_keywords,
+                'music_key'        => $data['music_key'] ?? $music->music_key,
+                'youtube_link'     => $data['youtube_link'] ?? $music->youtube_link,
+                'seo_title'        => $data['seo_title'] ?? $music->seo_title,
+                'seo_description'  => $data['seo_description'] ?? $music->seo_description,
+                'is_public'        => isset($data['is_public']) ? (bool)$data['is_public'] : $music->is_public,
+                'slug'             => isset($data['title']) ? Music::uniqueSlug($data['title'], $music->id) : $music->slug,
             ]);
 
-            Log::info("Stem updated successfully", ['id' => $stem->id]);
+            Log::info("music updated successfully", ['id' => $music->id]);
 
             $isNowPublic = array_key_exists('is_public', $data)
                 ? (bool) $data['is_public']
                 : $wasPublic;
 
             if (!$wasPublic && $isNowPublic) {
-                $this->notifyMusicPublished($stem);
+                $this->notifyMusicPublished($music);
             }
 
-            return $stem;
+            return $music;
         } catch (\Exception $e) {
-            Log::error("Failed to update stem", ['error' => $e->getMessage()]);
+            Log::error("Failed to update music", ['error' => $e->getMessage()]);
             throw $e;
         }
     }
-    public function getLibraryStems($filters = [])
+    public function getLibraryMusic($filters = [])
     {
-        $query = MusicStem::with('category');
+        $query = Music::with('category');
 
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
@@ -223,19 +223,19 @@ class StemRepository implements StemRepositoryInterface
         return $query->paginate(20);
     }
 
-    public function logInteraction($stemId, $userId, $type)
+    public function logInteraction($musicId, $userId, $type)
     {
         try {
-            $interaction = StemInteraction::create([
+            $interaction = MusicInteraction::create([
                 'id'      => (string) Str::uuid(),
                 'user_id' => $userId,
-                'stem_id' => $stemId,
+                'stem_id' => $musicId,
                 'type'    => $type,
                 'created_at' => now(),
             ]);
 
             $column = $type . '_count';
-            MusicStem::where('id', $stemId)->increment($column);
+            Music::where('id', $musicId)->increment($column);
 
             return $interaction;
         } catch (\Exception $e) {
@@ -244,20 +244,20 @@ class StemRepository implements StemRepositoryInterface
         }
     }
 
-    public function deleteStem($stemId)
+    public function deleteMusic($musicId)
     {
         try {
-            $stem = MusicStem::findOrFail($stemId);
+            $music = Music::findOrFail($musicId);
 
-            if ($stem->file_path && !filter_var($stem->file_path, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($stem->file_path);
+            if ($music->file_path && !filter_var($music->file_path, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($music->file_path);
             }
 
-            $stem->delete();
-            Log::info("Stem deleted successfully", ['id' => $stemId]);
+            $music->delete();
+            Log::info("music deleted successfully", ['id' => $musicId]);
             return true;
         } catch (\Exception $e) {
-            Log::error("Failed to delete stem", ['error' => $e->getMessage()]);
+            Log::error("Failed to delete music", ['error' => $e->getMessage()]);
             return false;
         }
     }
@@ -271,7 +271,7 @@ class StemRepository implements StemRepositoryInterface
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
-    private function notifyMusicPublished(MusicStem $stem): void
+    private function notifyMusicPublished(Music $music): void
     {
         try {
             $tokens = FcmToken::query()
@@ -284,14 +284,14 @@ class StemRepository implements StemRepositoryInterface
                 ->all();
 
             Log::info('Preparing music publish notification', [
-                'stem_id' => $stem->id,
-                'slug' => $stem->slug,
+                'stem_id' => $music->id,
+                'slug' => $music->slug,
                 'token_count' => count($tokens),
             ]);
 
             if (empty($tokens)) {
                 Log::info('Skipping music publish notification because no FCM tokens exist', [
-                    'stem_id' => $stem->id,
+                    'stem_id' => $music->id,
                 ]);
                 return;
             }
@@ -306,18 +306,25 @@ class StemRepository implements StemRepositoryInterface
                     }
                 };
 
-                Notification::sendNow($notifiable, new MusicPublishedNotification($stem));
+                Notification::sendNow($notifiable, new MusicPublishedNotification($music));
             }
 
             Log::info('Music publish notification dispatched', [
-                'stem_id' => $stem->id,
+                'stem_id' => $music->id,
                 'token_count' => count($tokens),
             ]);
         } catch (\Throwable $e) {
             Log::error('Failed to dispatch music publish notification', [
-                'stem_id' => $stem->id,
+                'stem_id' => $music->id,
                 'error' => $e->getMessage(),
             ]);
         }
     }
 }
+
+
+
+
+
+
+

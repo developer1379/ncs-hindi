@@ -2,8 +2,8 @@
   'providers' => 
   array (
     0 => 'Illuminate\\Auth\\AuthServiceProvider',
-    1 => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
-    2 => 'Illuminate\\Bus\\BusServiceProvider',
+    1 => 'Illuminate\$musicroadcasting\$musicroadcastServiceProvider',
+    2 => 'Illuminate\$musicus\$musicusServiceProvider',
     3 => 'Illuminate\\Cache\\CacheServiceProvider',
     4 => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     5 => 'Illuminate\\Concurrency\\ConcurrencyServiceProvider',
@@ -26,7 +26,7 @@
     22 => 'Illuminate\\View\\ViewServiceProvider',
     23 => 'Barryvdh\\DomPDF\\ServiceProvider',
     24 => 'Intervention\\Image\\Laravel\\ServiceProvider',
-    25 => 'Laravel\\Breeze\\BreezeServiceProvider',
+    25 => 'Laravel\$musicreeze\$musicreezeServiceProvider',
     26 => 'Laravel\\Pail\\PailServiceProvider',
     27 => 'Laravel\\Sail\\SailServiceProvider',
     28 => 'Laravel\\Sanctum\\SanctumServiceProvider',
@@ -76,14 +76,14 @@
   ),
   'deferred' => 
   array (
-    'Illuminate\\Broadcasting\\BroadcastManager' => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
-    'Illuminate\\Contracts\\Broadcasting\\Factory' => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
-    'Illuminate\\Contracts\\Broadcasting\\Broadcaster' => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
-    'Illuminate\\Bus\\Dispatcher' => 'Illuminate\\Bus\\BusServiceProvider',
-    'Illuminate\\Contracts\\Bus\\Dispatcher' => 'Illuminate\\Bus\\BusServiceProvider',
-    'Illuminate\\Contracts\\Bus\\QueueingDispatcher' => 'Illuminate\\Bus\\BusServiceProvider',
-    'Illuminate\\Bus\\BatchRepository' => 'Illuminate\\Bus\\BusServiceProvider',
-    'Illuminate\\Bus\\DatabaseBatchRepository' => 'Illuminate\\Bus\\BusServiceProvider',
+    'Illuminate\$musicroadcasting\$musicroadcastManager' => 'Illuminate\$musicroadcasting\$musicroadcastServiceProvider',
+    'Illuminate\\Contracts\$musicroadcasting\\Factory' => 'Illuminate\$musicroadcasting\$musicroadcastServiceProvider',
+    'Illuminate\\Contracts\$musicroadcasting\$musicroadcaster' => 'Illuminate\$musicroadcasting\$musicroadcastServiceProvider',
+    'Illuminate\$musicus\\Dispatcher' => 'Illuminate\$musicus\$musicusServiceProvider',
+    'Illuminate\\Contracts\$musicus\\Dispatcher' => 'Illuminate\$musicus\$musicusServiceProvider',
+    'Illuminate\\Contracts\$musicus\\QueueingDispatcher' => 'Illuminate\$musicus\$musicusServiceProvider',
+    'Illuminate\$musicus\$musicatchRepository' => 'Illuminate\$musicus\$musicusServiceProvider',
+    'Illuminate\$musicus\\DatabaseBatchRepository' => 'Illuminate\$musicus\$musicusServiceProvider',
     'cache' => 'Illuminate\\Cache\\CacheServiceProvider',
     'cache.store' => 'Illuminate\\Cache\\CacheServiceProvider',
     'cache.psr6' => 'Illuminate\\Cache\\CacheServiceProvider',
@@ -150,7 +150,7 @@
     'Illuminate\\Foundation\\Console\\ViewCacheCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\ViewClearCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\ApiInstallCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
-    'Illuminate\\Foundation\\Console\\BroadcastingInstallCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+    'Illuminate\\Foundation\\Console\$musicroadcastingInstallCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Cache\\Console\\CacheTableCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\CastMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\ChannelListCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
@@ -182,7 +182,7 @@
     'Illuminate\\Foundation\\Console\\ProviderMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\FailedTableCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\TableCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
-    'Illuminate\\Queue\\Console\\BatchesTableCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+    'Illuminate\\Queue\\Console\$musicatchesTableCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\RequestMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\ResourceMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Foundation\\Console\\RuleMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
@@ -230,7 +230,7 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'Illuminate\\Contracts\\Validation\\UncompromisedVerifier' => 'Illuminate\\Validation\\ValidationServiceProvider',
-    'Laravel\\Breeze\\Console\\InstallCommand' => 'Laravel\\Breeze\\BreezeServiceProvider',
+    'Laravel\$musicreeze\\Console\\InstallCommand' => 'Laravel\$musicreeze\$musicreezeServiceProvider',
     'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
@@ -238,10 +238,10 @@
   ),
   'when' => 
   array (
-    'Illuminate\\Broadcasting\\BroadcastServiceProvider' => 
+    'Illuminate\$musicroadcasting\$musicroadcastServiceProvider' => 
     array (
     ),
-    'Illuminate\\Bus\\BusServiceProvider' => 
+    'Illuminate\$musicus\$musicusServiceProvider' => 
     array (
     ),
     'Illuminate\\Cache\\CacheServiceProvider' => 
@@ -277,7 +277,7 @@
     'Illuminate\\Validation\\ValidationServiceProvider' => 
     array (
     ),
-    'Laravel\\Breeze\\BreezeServiceProvider' => 
+    'Laravel\$musicreeze\$musicreezeServiceProvider' => 
     array (
     ),
     'Laravel\\Sail\\SailServiceProvider' => 
@@ -291,3 +291,9 @@
     ),
   ),
 );
+
+
+
+
+
+

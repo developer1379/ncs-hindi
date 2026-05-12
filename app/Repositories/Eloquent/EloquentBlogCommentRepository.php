@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\BlogComment;
-use App\Repositories\Contracts\BlogCommentRepositoryInterface;
+use App\Models$musiclogComment;
+use App\Repositories\Contracts$musiclogCommentRepositoryInterface;
 
 class EloquentBlogCommentRepository implements BlogCommentRepositoryInterface
 {
@@ -60,3 +60,9 @@ class EloquentBlogCommentRepository implements BlogCommentRepositoryInterface
             ->get();
     }
 }
+
+
+
+
+
+

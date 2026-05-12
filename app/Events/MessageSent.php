@@ -3,9 +3,9 @@
 namespace App\Events;
 
 use App\Models\CommunityMessage;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate$musicroadcasting\Channel;
+use Illuminate$musicroadcasting\InteractsWithSockets;
+use Illuminate\Contracts$musicroadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -29,3 +29,10 @@ class MessageSent implements ShouldBroadcast
         ];
     }
 }
+
+
+
+
+
+
+

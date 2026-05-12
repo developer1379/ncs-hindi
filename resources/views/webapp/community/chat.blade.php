@@ -500,7 +500,7 @@ HTML;
                 const container = $('#chat-container');
 
                 var quill = new Quill('#chat-editor', {
-                    placeholder: 'Type a message or drop a stem...',
+                    placeholder: 'Type a message or drop a music...',
                     theme: 'snow',
                     modules: {
                         toolbar: false
@@ -817,3 +817,10 @@ HTML;
         });
     </script>
 </x-webapp-layout>
+
+
+
+
+
+
+

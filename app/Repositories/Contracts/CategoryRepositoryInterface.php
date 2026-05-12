@@ -15,3 +15,9 @@ interface CategoryRepositoryInterface
     public function delete(string $id): bool;
     public function getTopPopular($limit = 5);
 }
+
+
+
+
+
+

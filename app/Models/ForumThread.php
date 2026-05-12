@@ -66,3 +66,10 @@ class ForumThread extends Model
         return $this->hasMany(ForumReply::class, 'thread_id');
     }
 }
+
+
+
+
+
+
+

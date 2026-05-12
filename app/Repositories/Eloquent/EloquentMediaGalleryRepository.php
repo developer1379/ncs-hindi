@@ -63,3 +63,9 @@ class EloquentMediaGalleryRepository implements MediaGalleryInterface
         return 'document';
     }
 }
+
+
+
+
+
+

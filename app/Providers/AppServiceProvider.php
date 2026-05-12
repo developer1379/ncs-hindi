@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades$musiclade;
 use Illuminate\Support\Facades\View;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\CoachRepositoryInterface;
@@ -19,8 +19,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Category;
-use App\Repositories\Contracts\BlogCommentRepositoryInterface;
-use App\Repositories\Contracts\BlogRepositoryInterface;
+use App\Repositories\Contracts$musiclogCommentRepositoryInterface;
+use App\Repositories\Contracts$musiclogRepositoryInterface;
 use App\Repositories\Contracts\CoachBlogRepositoryInterface;
 use App\Repositories\Contracts\CoachDashboardRepositoryInterface;
 use App\Repositories\Contracts\CoachProfileRepositoryInterface;
@@ -30,7 +30,7 @@ use App\Repositories\Contracts\MessageRequestInterface;
 use App\Repositories\Contracts\ProfileRepositoryInterface as ContractsProfileRepositoryInterface;
 use App\Repositories\Contracts\SeekerDashboardInterface;
 use App\Repositories\Contracts\SeekerProfileInterface;
-use App\Repositories\Contracts\StemRepositoryInterface as ContractsStemRepositoryInterface;
+use App\Repositories\Contracts\MusicRepositoryInterface as ContractsMusicRepositoryInterface;
 use App\Repositories\Eloquent\EloquentBlogCommentRepository;
 use App\Repositories\Eloquent\EloquentBlogRepository;
 use App\Repositories\Eloquent\EloquentCoachBlogRepository;
@@ -42,9 +42,9 @@ use App\Repositories\Eloquent\EloquentSeekerDashboardRepository;
 use App\Repositories\Eloquent\EloquentSeekerProfileRepository;
 use App\Repositories\Eloquent\ForumRepository;
 use App\Repositories\Eloquent\ProfileRepository;
-use App\Repositories\Eloquent\StemRepository;
+use App\Repositories\Eloquent\MusicRepository;
 use App\Repositories\Interfaces\ProfileRepositoryInterface;
-use App\Repositories\Interfaces\StemRepositoryInterface;
+use App\Repositories\Interfaces\MusicRepositoryInterface;
 use App\View\Components\WebAppLayout;
 
 class AppServiceProvider extends ServiceProvider
@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BlogCommentRepositoryInterface::class, EloquentBlogCommentRepository::class);
         $this->app->bind(MediaGalleryInterface::class, EloquentMediaGalleryRepository::class);
         $this->app->bind(ForumRepositoryInterface::class, ForumRepository::class);
-        $this->app->bind(ContractsStemRepositoryInterface::class, StemRepository::class);
+        $this->app->bind(ContractsMusicRepositoryInterface::class, MusicRepository::class);
         $this->app->bind(ContractsProfileRepositoryInterface::class, ProfileRepository::class);
     }
 
@@ -82,13 +82,20 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.partials.webapp.sidebar', function ($view) {
             $view->with('sidebarCategories', Category::where('is_active', true)
-                ->withCount(['stems as public_stems_count' => function ($query) {
+                ->withCount(['music as public_music_count' => function ($query) {
                     $query->where('is_public', true);
                 }])
-                ->orderByDesc('public_stems_count')
+                ->orderByDesc('public_music_count')
                 ->orderBy('name')
                 ->limit(6)
                 ->get());
         });
     }
 }
+
+
+
+
+
+
+

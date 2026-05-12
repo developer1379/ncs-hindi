@@ -10,3 +10,9 @@ interface MediaGalleryInterface
     public function store(array $data, UploadedFile $file);
     public function delete(string $id);
 }
+
+
+
+
+
+

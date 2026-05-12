@@ -47,3 +47,9 @@ class SeekersExport implements FromCollection, WithHeadings, WithMapping
         ];
     }
 }
+
+
+
+
+
+

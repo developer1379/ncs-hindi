@@ -57,3 +57,9 @@ class BlogComment extends Model
         return $this->hasMany(BlogComment::class, 'parent_id')->where('status', 'approved');
     }
 }
+
+
+
+
+
+

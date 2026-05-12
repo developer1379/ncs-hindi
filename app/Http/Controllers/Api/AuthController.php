@@ -134,3 +134,9 @@ class AuthController extends BaseController
         ], 'Registration completed successfully', 201);
     }
 }
+
+
+
+
+
+

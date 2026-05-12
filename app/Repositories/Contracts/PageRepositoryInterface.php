@@ -10,3 +10,10 @@ interface PageRepositoryInterface
 
     public function updateOrCreate(string $type, array $data);
 }
+
+
+
+
+
+
+

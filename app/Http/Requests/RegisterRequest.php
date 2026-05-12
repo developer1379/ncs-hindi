@@ -59,3 +59,9 @@ class RegisterRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

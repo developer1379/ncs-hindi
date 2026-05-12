@@ -1,4 +1,4 @@
-<x-webapp-layout title="Trending Releases | NCS Hindi">
+<x-webapp-layout title="Trending Music | NCS Hindi">
     @push('heads')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <style>
@@ -137,13 +137,13 @@
                                 @endif
 
                                 <div class="mt-4 flex flex-wrap gap-2">
-                                    <a href="{{ route('webapp.stems.show', $featuredStem->slug) }}"
+                                    <a href="{{ route('webapp.music.show', $featuredStem->slug) }}"
                                         data-notification-gate
                                         data-music-action="view"
                                         data-music-title="{{ $featuredStem->title }}"
-                                        data-action-url="{{ route('webapp.stems.show', $featuredStem->slug) }}"
+                                        data-action-url="{{ route('webapp.music.show', $featuredStem->slug) }}"
                                         data-action-label="Continue to view"
-                                        data-stem-id="{{ $featuredStem->id }}"
+                                        data-music-id="{{ $featuredStem->id }}"
                                         class="btn-vault px-8 py-2.5 rounded-2xl text-[9px] font-black tracking-[0.2em] uppercase">
                                         VIEW
                                     </a>
@@ -195,7 +195,7 @@
                 <div class="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <a href="{{ route('webapp.trending', array_merge(request()->except('page'), ['sort' => 'downloads'])) }}"
                         class="shrink-0 px-3.5 py-2 rounded-full text-[9px] font-black tracking-[0.2em] uppercase transition {{ $sort === 'downloads' ? 'bg-amber-500 text-black' : 'bg-white/5 text-zinc-400 hover:text-white' }}">
-                        Top downloads
+                        Top Music
                     </a>
                     <a href="{{ route('webapp.trending', array_merge(request()->except('page'), ['sort' => 'likes'])) }}"
                         class="shrink-0 px-3.5 py-2 rounded-full text-[9px] font-black tracking-[0.2em] uppercase transition {{ $sort === 'likes' ? 'bg-amber-500 text-black' : 'bg-white/5 text-zinc-400 hover:text-white' }}">
@@ -242,7 +242,7 @@
         <div class="flex items-end justify-between gap-3 mb-3">
             <div>
                 <h3 class="font-brand text-lg sm:text-xl md:text-3xl font-black uppercase tracking-tight text-white">
-                    Trending releases
+                    Trending music
                 </h3>
                 <p class="mt-1 text-[11px] md:text-sm text-zinc-500">
                     Ranked by {{ $sort === 'likes' ? 'likes' : ($sort === 'views' ? 'views' : ($sort === 'newest' || $sort === 'latest' ? 'freshness' : 'downloads')) }}.
@@ -255,50 +255,50 @@
 
         @if ($trendingStems->isNotEmpty())
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                @foreach ($trendingStems as $stem)
+                @foreach ($trendingStems as $music)
                     @php
-                        $downloadUrl = $stem->mega_link && filter_var($stem->mega_link, FILTER_VALIDATE_URL)
-                            ? $stem->mega_link
-                            : route('webapp.stems.download', $stem->id);
-                        $heroImage = $stem->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80';
-                        $stemLanguages = collect(explode(',', (string) $stem->language))
+                        $downloadUrl = $music->mega_link && filter_var($music->mega_link, FILTER_VALIDATE_URL)
+                            ? $music->mega_link
+                            : route('webapp.music.download', $music->id);
+                        $heroImage = $music->featured_image ?: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80';
+                        $stemLanguages = collect(explode(',', (string) $music->language))
                             ->map(fn ($language) => trim($language))
                             ->filter()
                             ->values();
                     @endphp
                     <article class="trend-card group overflow-hidden rounded-[20px]" data-like-card>
                         <div class="relative aspect-[4/3] overflow-hidden">
-                            <img src="{{ $heroImage }}" alt="{{ $stem->title }}"
+                            <img src="{{ $heroImage }}" alt="{{ $music->title }}"
                                 class="h-full w-full object-cover transition duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div>
                             <div class="absolute left-2.5 top-2.5 flex items-center gap-1.5">
                                 <span class="rank-badge px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em]">
                                     #{{ ($trendingStems->firstItem() ?? 1) + $loop->index }}
                                 </span>
-                                @if ($stem->music_key)
+                                @if ($music->music_key)
                                     <span class="px-2.5 py-1 rounded-full bg-black/55 soft-border text-[9px] font-black uppercase tracking-[0.2em] text-zinc-200">
-                                        {{ $stem->music_key }}
+                                        {{ $music->music_key }}
                                     </span>
                                 @endif
                             </div>
                             <div class="absolute right-2.5 bottom-2.5 flex gap-2">
                                 <button type="button"
                                     class="rounded-2xl bg-black/65 soft-border px-2.5 py-2.5 text-zinc-300 hover:text-white transition"
-                                    data-stem-share-btn
-                                    data-share-title="{{ $stem->title }}"
-                                    data-share-url="{{ route('webapp.stems.show', $stem->slug) }}"
+                                    data-music-share-btn
+                                    data-share-title="{{ $music->title }}"
+                                    data-share-url="{{ route('webapp.music.show', $music->slug) }}"
                                     aria-label="Share release">
                                     <i class="fa-solid fa-share-nodes text-[11px]"></i>
                                 </button>
                                 @if (Auth::check())
                                     <button type="button"
-                                        data-stem-like-btn
-                                        class="rounded-2xl bg-black/65 soft-border px-2.5 py-2.5 text-zinc-300 hover:text-red-400 transition {{ $stem->isLikedBy(auth()->id()) ? 'text-red-400' : '' }}"
-                                        data-like-url="{{ route('webapp.stems.like', $stem->id) }}"
-                                        data-stem-id="{{ $stem->id }}"
-                                        data-liked="{{ $stem->isLikedBy(auth()->id()) ? 1 : 0 }}"
+                                        data-music-like-btn
+                                        class="rounded-2xl bg-black/65 soft-border px-2.5 py-2.5 text-zinc-300 hover:text-red-400 transition {{ $music->isLikedBy(auth()->id()) ? 'text-red-400' : '' }}"
+                                        data-like-url="{{ route('webapp.music.like', $music->id) }}"
+                                        data-music-id="{{ $music->id }}"
+                                        data-liked="{{ $music->isLikedBy(auth()->id()) ? 1 : 0 }}"
                                         aria-label="Like release">
-                                        <i data-stem-like-icon class="fa-heart text-[11px] {{ $stem->isLikedBy(auth()->id()) ? 'fa-solid' : 'fa-regular' }}"></i>
+                                        <i data-music-like-icon class="fa-heart text-[11px] {{ $music->isLikedBy(auth()->id()) ? 'fa-solid' : 'fa-regular' }}"></i>
                                     </button>
                                 @endif
                             </div>
@@ -308,21 +308,21 @@
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0">
                                     <h4 class="font-brand text-base md:text-lg font-black uppercase tracking-tight text-white truncate">
-                                        {{ $stem->title }}
+                                        {{ $music->title }}
                                     </h4>
                                     <p class="mt-1 text-[11px] md:text-sm text-zinc-500 truncate">
-                                        {{ $stem->artist_name ?: 'Official NCS release' }}
+                                        {{ $music->artist_name ?: 'Official NCS release' }}
                                     </p>
                                 </div>
                                 <div class="text-right shrink-0">
                                     <p class="text-[8px] font-black uppercase tracking-[0.2em] text-zinc-500">Downloads</p>
-                                    <p class="text-sm md:text-base font-black text-white">{{ number_format($stem->download_count) }}</p>
+                                    <p class="text-sm md:text-base font-black text-white">{{ number_format($music->download_count) }}</p>
                                 </div>
                             </div>
 
                             <div class="mt-3 flex flex-wrap gap-2">
                                 <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
-                                    {{ $stem->category->name ?? 'Uncategorized' }}
+                                    {{ $music->category->name ?? 'Uncategorized' }}
                                 </span>
                                 @if ($stemLanguages->isNotEmpty())
                                     <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
@@ -333,27 +333,27 @@
                                     </span>
                                 @endif
                                 <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
-                                    <span data-like-count>{{ number_format($stem->like_count) }}</span> likes
+                                    <span data-like-count>{{ number_format($music->like_count) }}</span> likes
                                 </span>
                                 <span class="px-2.5 py-1 rounded-full bg-white/5 soft-border text-[8px] font-black uppercase tracking-[0.2em] text-zinc-400">
-                                    {{ number_format($stem->view_count) }} views
+                                    {{ number_format($music->view_count) }} views
                                 </span>
                             </div>
 
-                            @if ($stem->description)
+                            @if ($music->description)
                                 <p class="mt-2.5 text-[11px] md:text-sm leading-relaxed text-zinc-400">
-                                    {{ \Illuminate\Support\Str::limit($stem->description, 80) }}
+                                    {{ \Illuminate\Support\Str::limit($music->description, 80) }}
                                 </p>
                             @endif
 
                             <div class="mt-3.5">
-                                <a href="{{ route('webapp.stems.show', $stem->slug) }}"
+                                <a href="{{ route('webapp.music.show', $music->slug) }}"
                                     data-notification-gate
                                     data-music-action="view"
-                                    data-music-title="{{ $stem->title }}"
-                                    data-action-url="{{ route('webapp.stems.show', $stem->slug) }}"
+                                    data-music-title="{{ $music->title }}"
+                                    data-action-url="{{ route('webapp.music.show', $music->slug) }}"
                                     data-action-label="Continue to view"
-                                    data-stem-id="{{ $stem->id }}"
+                                    data-music-id="{{ $music->id }}"
                                     class="block w-full rounded-2xl px-3 py-3 text-center text-[9px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-amber-500 transition">
                                     VIEW
                                 </a>
@@ -383,3 +383,10 @@
     </section>
 
 </x-webapp-layout>
+
+
+
+
+
+
+

@@ -44,3 +44,9 @@ class UpdatePageRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

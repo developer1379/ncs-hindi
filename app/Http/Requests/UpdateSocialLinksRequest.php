@@ -60,3 +60,10 @@ class UpdateSocialLinksRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Contracts\BlogRepositoryInterface;
+use App\Repositories\Contracts$musiclogRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -152,3 +152,9 @@ class BlogController extends Controller
         ]);
     }
 }
+
+
+
+
+
+

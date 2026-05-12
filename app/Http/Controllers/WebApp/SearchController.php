@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WebApp;
 
 use App\Http\Controllers\Controller;
 use App\Models\ForumThread;
-use App\Models\MusicStem;
+use App\Models\Music;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +15,7 @@ class SearchController extends Controller
         $query = $request->input('query');
 
         if (strlen($query) < 3) {
-            return response()->json(['threads' => [], 'stems' => []]);
+            return response()->json(['threads' => [], 'music' => []]);
         }
 
         // Search Forum Threads
@@ -25,8 +25,8 @@ class SearchController extends Controller
             ->limit(5)
             ->get(['id', 'title', 'slug']);
 
-        // Search Music Stems
-        $stems = MusicStem::where('title', 'LIKE', "%{$query}%")
+        // Search Music music
+        $music = Music::where('title', 'LIKE', "%{$query}%")
             ->orWhere('artist_name', 'LIKE', "%{$query}%")
             ->orWhere('tags_keywords', 'LIKE', "%{$query}%")
             ->limit(5)
@@ -34,7 +34,7 @@ class SearchController extends Controller
 
         return response()->json([
             'threads' => $threads,
-            'stems' => $stems
+            'music' => $music
         ]);
     }
 
@@ -48,12 +48,19 @@ class SearchController extends Controller
             ->where('title', 'LIKE', "%{$query}%")
             ->paginate(10, ['*'], 'threads_page');
 
-        // Fetch Music Stems
-        $stems = DB::table('music_stems')
+        // Fetch Music music
+        $music = DB::table('music_stems')
             ->where('title', 'LIKE', "%{$query}%")
             ->paginate(12, ['*'], 'stems_page');
 
 
-        return view('webapp.search.index', compact('threads', 'stems', 'query'));
+        return view('webapp.search.index', compact('threads', 'music', 'query'));
     }
 }
+
+
+
+
+
+
+

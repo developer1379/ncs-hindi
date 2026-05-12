@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
+use Illuminate$musicus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -60,3 +60,9 @@ class AccountStatusChanged extends Notification implements ShouldQueue
         return $message;
     }
 }
+
+
+
+
+
+

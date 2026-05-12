@@ -41,3 +41,9 @@ class ForgotOtpRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

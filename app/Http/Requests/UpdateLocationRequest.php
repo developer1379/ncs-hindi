@@ -54,3 +54,10 @@ class UpdateLocationRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+
+

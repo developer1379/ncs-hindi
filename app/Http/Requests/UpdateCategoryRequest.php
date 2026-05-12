@@ -58,3 +58,9 @@ class UpdateCategoryRequest extends FormRequest
             ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

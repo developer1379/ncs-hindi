@@ -19,3 +19,10 @@ class EmailVerificationPromptController extends Controller
                     : view('auth.verify-email');
     }
 }
+
+
+
+
+
+
+

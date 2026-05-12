@@ -35,3 +35,10 @@
         <p class="text-muted px-5 text-center">Break the ice! Send a welcome message to start the conversation.</p>
     </div>
 @endforelse
+
+
+
+
+
+
+

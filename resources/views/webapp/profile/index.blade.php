@@ -169,7 +169,7 @@
                                         <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->like_count) }} likes</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('webapp.stems.show', $song->slug) }}"
+                                <a href="{{ route('webapp.music.show', $song->slug) }}"
                                     class="px-3.5 py-2.5 rounded-2xl bg-amber-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0">
                                     View
                                 </a>
@@ -207,7 +207,7 @@
                                         <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->view_count) }} views</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('webapp.stems.show', $song->slug) }}"
+                                <a href="{{ route('webapp.music.show', $song->slug) }}"
                                     class="px-3.5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-[0.2em] text-white shrink-0">
                                     Open
                                 </a>
@@ -245,7 +245,7 @@
                                         <span class="px-2 py-1 rounded-full bg-white/5 text-zinc-400">{{ number_format($song->download_count) }} downloads</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('webapp.stems.download', $song->id) }}"
+                                <a href="{{ route('webapp.music.download', $song->id) }}"
                                     class="px-3.5 py-2.5 rounded-2xl bg-emerald-500 text-black text-[9px] font-black uppercase tracking-[0.2em] shrink-0 inline-flex items-center gap-2">
                                     <i class="fa-solid fa-download"></i> NCS Version
                                 </a>
@@ -261,3 +261,10 @@
         </section>
     </div>
 </x-webapp-layout>
+
+
+
+
+
+
+

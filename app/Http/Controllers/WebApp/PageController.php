@@ -5,12 +5,12 @@ namespace App\Http\Controllers\WebApp;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\ForumThread;
-use App\Models\MusicStem;
-use App\Models\StemInteraction;
+use App\Models\Music;
+use App\Models\MusicInteraction;
 use App\Models\User;
 use App\Repositories\Contracts\ForumRepositoryInterface;
 use App\Repositories\Contracts\ProfileRepositoryInterface;
-use App\Repositories\Contracts\StemRepositoryInterface;
+use App\Repositories\Contracts\MusicRepositoryInterface;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -18,18 +18,18 @@ use Illuminate\Support\Collection;
 class PageController extends Controller
 {
     protected $forumRepo;
-    protected $stemRepo;
+    protected $musicRepo;
     protected $profileRepo;
     protected $settingService;
 
     public function __construct(
         ForumRepositoryInterface $forumRepo,
-        StemRepositoryInterface $stemRepo,
+        MusicRepositoryInterface $musicRepo,
         ProfileRepositoryInterface $profileRepo,
         SettingService $settingService
     ) {
         $this->forumRepo = $forumRepo;
-        $this->stemRepo = $stemRepo;
+        $this->musicRepo = $musicRepo;
         $this->profileRepo = $profileRepo;
         $this->settingService = $settingService;
     }
@@ -49,12 +49,12 @@ class PageController extends Controller
             'per_page' => $request->get('per_page', 9),
         ];
 
-        $trendingStems = $this->stemRepo->getTrendingStems($filters);
-        $featuredStem = $this->stemRepo->getTrendingSpotlight($filters);
-        $topCreators = $this->stemRepo->getTrendingCreators($filters);
-        $trendingStats = $this->stemRepo->getTrendingStats($filters);
+        $trendingStems = $this->musicRepo->getTrendingMusic($filters);
+        $featuredStem = $this->musicRepo->getTrendingSpotlight($filters);
+        $topCreators = $this->musicRepo->getTrendingCreators($filters);
+        $trendingStats = $this->musicRepo->getTrendingStats($filters);
         $categories = Category::where('is_active', 1)
-            ->withCount(['stems' => function ($query) use ($filters) {
+            ->withCount(['music' => function ($query) use ($filters) {
                 $query->where('is_public', true);
                 if (!empty($filters['search'])) {
                     $search = $filters['search'];
@@ -81,8 +81,8 @@ class PageController extends Controller
 
     public function streams()
     {
-        $stems = $this->stemRepo->getLibraryStems();
-        return view('webapp.streams', compact('stems'));
+        $music = $this->musicRepo->getLibraryMusic();
+        return view('webapp.streams', compact('music'));
     }
 
     public function profile()
@@ -95,19 +95,19 @@ class PageController extends Controller
         $downloadedSongs = $this->getUserStemActivity($user->id, 'download', 6);
 
         $profileStats = [
-            'liked' => StemInteraction::query()
+            'liked' => MusicInteraction::query()
                 ->where('user_id', $user->id)
                 ->where('type', 'like')
                 ->select('stem_id')
                 ->distinct()
                 ->count('stem_id'),
-            'viewed' => StemInteraction::query()
+            'viewed' => MusicInteraction::query()
                 ->where('user_id', $user->id)
                 ->where('type', 'view')
                 ->select('stem_id')
                 ->distinct()
                 ->count('stem_id'),
-            'downloaded' => StemInteraction::query()
+            'downloaded' => MusicInteraction::query()
                 ->where('user_id', $user->id)
                 ->where('type', 'download')
                 ->select('stem_id')
@@ -195,7 +195,7 @@ class PageController extends Controller
 
     private function getUserStemActivity(string $userId, string $type, int $limit = 6): Collection
     {
-        $stemIds = StemInteraction::query()
+        $stemIds = MusicInteraction::query()
             ->where('user_id', $userId)
             ->where('type', $type)
             ->selectRaw('stem_id, MAX(created_at) as last_activity_at')
@@ -208,12 +208,19 @@ class PageController extends Controller
             return collect();
         }
 
-        $stems = MusicStem::query()
+        $music = Music::query()
             ->with('category')
             ->whereIn('id', $stemIds)
             ->get()
             ->keyBy('id');
 
-        return $stemIds->map(fn ($stemId) => $stems->get($stemId))->filter()->values();
+        return $stemIds->map(fn ($musicId) => $music->get($musicId))->filter()->values();
     }
 }
+
+
+
+
+
+
+

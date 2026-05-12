@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
+use Illuminate$musicus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -49,3 +49,9 @@ class WelcomeNotification extends Notification implements ShouldQueue
             ->line('Please change your password after your first login.');
     }
 }
+
+
+
+
+
+

@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin$musiclogController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\BodyPartController;
+use App\Http\Controllers\Admin$musicodyPartController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CoachController;
 use App\Http\Controllers\Admin\EquipmentController;
@@ -19,8 +19,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InteractionController;
 use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\MessageRequestController;
-use App\Http\Controllers\Admin\BugReportController;
-use App\Http\Controllers\Admin\StemController;
+use App\Http\Controllers\Admin$musicugReportController;
+use App\Http\Controllers\Admin\MusicController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -100,13 +100,13 @@ Route::middleware('auth', 'role:0,1')->group(function () {
             Route::put('/page-setting', [SettingController::class, 'updatePageSetting'])->name('update-page-setting');
         });
 
-        Route::controller(StemController::class)->prefix('stems')->name('stems.')->group(function () {
-            Route::get('/', 'index')->name('index')->middleware('can:stems.view');
-            Route::get('/create', 'create')->name('create')->middleware('can:stems.create');
-            Route::post('/store', 'store')->name('store')->middleware('can:stems.create');
-            Route::get('/{id}/edit', 'edit')->name('edit')->middleware('can:stems.edit');
-            Route::put('/{id}/update', 'update')->name('update')->middleware('can:stems.edit');
-            Route::delete('/{id}/destroy', 'destroy')->name('destroy')->middleware('can:stems.delete');
+        Route::controller(MusicController::class)->prefix('music')->name('music.')->group(function () {
+            Route::get('/', 'index')->name('index')->middleware('can:music.view');
+            Route::get('/create', 'create')->name('create')->middleware('can:music.create');
+            Route::post('/store', 'store')->name('store')->middleware('can:music.create');
+            Route::get('/{id}/edit', 'edit')->name('edit')->middleware('can:music.edit');
+            Route::put('/{id}/update', 'update')->name('update')->middleware('can:music.edit');
+            Route::delete('/{id}/destroy', 'destroy')->name('destroy')->middleware('can:music.delete');
         });
 
         Route::resource('users', UserController::class);
@@ -138,3 +138,10 @@ Route::middleware('auth', 'role:0,1')->group(function () {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/webapp.php';
+
+
+
+
+
+
+

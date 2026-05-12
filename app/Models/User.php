@@ -78,15 +78,15 @@ class User extends Authenticatable
      */
     public function interactions()
     {
-        return $this->hasMany(StemInteraction::class);
+        return $this->hasMany(MusicInteraction::class);
     }
 
     /**
-     * Specifically get the user's liked stems.
+     * Specifically get the user's liked music.
      */
     public function likedStems()
     {
-        return $this->belongsToMany(MusicStem::class, 'stem_interactions', 'user_id', 'stem_id')
+        return $this->belongsToMany(Music::class, 'stem_interactions', 'user_id', 'stem_id')
             ->wherePivot('type', 'like');
     }
 
@@ -105,3 +105,10 @@ class User extends Authenticatable
         return $this->hasMany(BugReport::class);
     }
 }
+
+
+
+
+
+
+

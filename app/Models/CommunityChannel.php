@@ -23,3 +23,10 @@ class CommunityChannel extends Model
         return $this->hasMany(CommunityMessage::class, 'channel_id')->whereNull('parent_id');
     }
 }
+
+
+
+
+
+
+

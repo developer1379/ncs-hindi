@@ -46,3 +46,9 @@ class UpdateMapConfigureRequest extends FormRequest
                     ->redirectTo($this->getRedirectUrl());
     }
 }
+
+
+
+
+
+

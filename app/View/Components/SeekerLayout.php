@@ -24,3 +24,10 @@ class SeekerLayout extends Component
         return view('layouts.seeker-layout');
     }
 }
+
+
+
+
+
+
+

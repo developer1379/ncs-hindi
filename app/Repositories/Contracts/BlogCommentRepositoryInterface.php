@@ -11,3 +11,9 @@ interface BlogCommentRepositoryInterface
     public function delete(string $id);
     public function getCommentsByBlog(string $blogId);
 }
+
+
+
+
+
+

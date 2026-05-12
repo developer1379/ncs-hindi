@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class StemInteraction extends Model
+class MusicInteraction extends Model
 {
+    protected $table = 'stem_interactions';
     public $timestamps = false;
 
     /**
@@ -47,10 +48,17 @@ class StemInteraction extends Model
     }
 
     /**
-     * The stem being interacted with.
+     * The music being interacted with.
      */
-    public function stem()
+    public function music()
     {
-        return $this->belongsTo(MusicStem::class, 'stem_id');
+        return $this->belongsTo(Music::class, 'stem_id');
     }
 }
+
+
+
+
+
+
+

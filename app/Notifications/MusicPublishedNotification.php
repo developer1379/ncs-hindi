@@ -2,15 +2,15 @@
 
 namespace App\Notifications;
 
-use App\Models\MusicStem;
-use Illuminate\Bus\Queueable;
+use App\Models\Music;
+use Illuminate$musicus\Queueable;
 use Illuminate\Notifications\Notification;
 
 class MusicPublishedNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(protected MusicStem $stem) {}
+    public function __construct(protected Music $music) {}
 
     public function via($notifiable): array
     {
@@ -21,7 +21,7 @@ class MusicPublishedNotification extends Notification
     {
         return [
             'title' => 'New music release',
-            'body' => trim(($this->stem->title ?? 'A new track') . ' is now available.'),
+            'body' => trim(($this->music->title ?? 'A new track') . ' is now available.'),
         ];
     }
 
@@ -29,11 +29,18 @@ class MusicPublishedNotification extends Notification
     {
         return [
             'type' => 'music_release',
-            'stem_id' => $this->stem->id,
-            'slug' => $this->stem->slug,
-            'title' => $this->stem->title,
-            'artist_name' => $this->stem->artist_name,
-            'url' => route('webapp.stems.show', ['slug' => $this->stem->slug]),
+            'stem_id' => $this->music->id,
+            'slug' => $this->music->slug,
+            'title' => $this->music->title,
+            'artist_name' => $this->music->artist_name,
+            'url' => route('webapp.music.show', ['slug' => $this->music->slug]),
         ];
     }
 }
+
+
+
+
+
+
+

@@ -111,30 +111,30 @@
                     </a>
                 </li>
 
-                {{-- NEW: Stem Management Section --}}
-                @can('stems.view')
+                {{-- NEW: Music Management Section --}}
+                @can('music.view')
                     <li>
-                        <a href="#sidebarStems" data-bs-toggle="collapse"
-                            class="{{ request()->routeIs('admin.stems.*') ? 'active' : '' }}">
+                        <a href="#sidebarMusic" data-bs-toggle="collapse"
+                            class="{{ request()->routeIs('admin.music.*') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <iconify-icon icon="tabler:music"></iconify-icon>
                             </span>
-                            <span class="sidebar-text"> Music Stems </span>
+                            <span class="sidebar-text"> Music Library </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse {{ request()->routeIs('admin.stems.*') ? 'show' : '' }}" id="sidebarStems">
+                        <div class="collapse {{ request()->routeIs('admin.music.*') ? 'show' : '' }}" id="sidebarMusic">
                             <ul class="nav-second-level">
                                 <li>
-                                    <a href="{{ route('admin.stems.index') }}"
-                                        class="tp-link {{ request()->routeIs('admin.stems.index') ? 'active' : '' }}">
-                                        All Stems
+                                    <a href="{{ route('admin.music.index') }}"
+                                        class="tp-link {{ request()->routeIs('admin.music.index') ? 'active' : '' }}">
+                                        All Music
                                     </a>
                                 </li>
-                                @can('stems.create')
+                                @can('music.create')
                                     <li>
-                                        <a href="{{ route('admin.stems.create') }}"
-                                            class="tp-link {{ request()->routeIs('admin.stems.create') ? 'active' : '' }}">
-                                            Upload Stem
+                                        <a href="{{ route('admin.music.create') }}"
+                                            class="tp-link {{ request()->routeIs('admin.music.create') ? 'active' : '' }}">
+                                            Upload Music
                                         </a>
                                     </li>
                                 @endcan
@@ -257,3 +257,10 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
