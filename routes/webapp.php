@@ -8,7 +8,7 @@ use App\Http\Controllers\WebApp\LikeController;
 use App\Http\Controllers\WebApp\PageController;
 use App\Http\Controllers\WebApp\SearchController;
 use App\Http\Controllers\WebApp\MusicController;
-use App\Http\Controllers\WebApp$musicugReportController;
+use App\Http\Controllers\WebApp\BugReportController;
 
 /*
 |--------------------------------------------------------------------------

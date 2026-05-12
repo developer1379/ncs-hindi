@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades$musicroadcast;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------

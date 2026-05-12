@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin$musiclogController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin$musicodyPartController;
+use App\Http\Controllers\Admin\BodyPartController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CoachController;
 use App\Http\Controllers\Admin\EquipmentController;
@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InteractionController;
 use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\MessageRequestController;
-use App\Http\Controllers\Admin$musicugReportController;
+use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\Admin\MusicController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;

@@ -26,7 +26,7 @@
   array (
     'providers' => 
     array (
-      0 => 'Laravel\$musicreeze\$musicreezeServiceProvider',
+      0 => 'Laravel\\Breeze\\BreezeServiceProvider',
     ),
   ),
   'laravel/pail' => 
@@ -122,9 +122,3 @@
     ),
   ),
 );
-
-
-
-
-
-
