@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models$musiclog;
-use App\Repositories\Contracts$musiclogRepositoryInterface;
+use App\Models\Blog;
+use App\Repositories\Contracts\BlogRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentBlogRepository implements BlogRepositoryInterface

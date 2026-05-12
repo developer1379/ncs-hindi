@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models$musiclog;
+use App\Models\Blog;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface BlogRepositoryInterface

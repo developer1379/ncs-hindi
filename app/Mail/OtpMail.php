@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use Illuminate$musicus\Queueable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;

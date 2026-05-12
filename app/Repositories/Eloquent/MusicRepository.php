@@ -8,7 +8,7 @@ use App\Models\MusicInteraction;
 use App\Notifications\MusicPublishedNotification;
 use App\Services\ImgBBService;
 use App\Repositories\Contracts\MusicRepositoryInterface;
-use Illuminate\Database\Eloquent$musicuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;

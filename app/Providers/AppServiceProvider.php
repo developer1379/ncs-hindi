@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades$musiclade;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\CoachRepositoryInterface;
@@ -19,8 +19,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Category;
-use App\Repositories\Contracts$musiclogCommentRepositoryInterface;
-use App\Repositories\Contracts$musiclogRepositoryInterface;
+use App\Repositories\Contracts\BlogCommentRepositoryInterface;
+use App\Repositories\Contracts\BlogRepositoryInterface;
 use App\Repositories\Contracts\CoachBlogRepositoryInterface;
 use App\Repositories\Contracts\CoachDashboardRepositoryInterface;
 use App\Repositories\Contracts\CoachProfileRepositoryInterface;

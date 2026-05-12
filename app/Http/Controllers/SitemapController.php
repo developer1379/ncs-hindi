@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models$musiclog;
+use App\Models\Blog;
 use App\Models\ForumThread;
 use App\Models\Music;
 use Illuminate\Http\Response;

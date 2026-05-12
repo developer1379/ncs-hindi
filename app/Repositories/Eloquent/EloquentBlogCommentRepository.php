@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models$musiclogComment;
-use App\Repositories\Contracts$musiclogCommentRepositoryInterface;
+use App\Models\BlogComment;
+use App\Repositories\Contracts\BlogCommentRepositoryInterface;
 
 class EloquentBlogCommentRepository implements BlogCommentRepositoryInterface
 {

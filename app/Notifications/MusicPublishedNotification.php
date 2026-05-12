@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Music;
-use Illuminate$musicus\Queueable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
 class MusicPublishedNotification extends Notification
