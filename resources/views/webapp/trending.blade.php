@@ -364,7 +364,7 @@
             </div>
 
             <div class="mt-8 flex justify-center">
-                {{ $trendingStems->links() }}
+                {{ $trendingStems->links('layouts.partials.webapp.pagination') }}
             </div>
         @else
             <div class="glass-panel rounded-[24px] p-6 md:p-8 text-center">

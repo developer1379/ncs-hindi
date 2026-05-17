@@ -164,7 +164,7 @@
     </section>
 
     <div class="mt-12">
-        {{ $music->links() }}
+        {{ $music->links('layouts.partials.webapp.pagination') }}
     </div>
 </x-webapp-layout>
 

@@ -33,7 +33,7 @@
                 @endforelse
 
                 <div class="mt-6">
-                    {{ $threads->appends(['query' => $query, 'stems_page' => $music->currentPage()])->links() }}
+                    {{ $threads->appends(['query' => $query, 'stems_page' => $music->currentPage()])->links('layouts.partials.webapp.pagination') }}
                 </div>
             </div>
 
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="mt-6">
-                    {{ $music->appends(['query' => $query, 'threads_page' => $threads->currentPage()])->links() }}
+                    {{ $music->appends(['query' => $query, 'threads_page' => $threads->currentPage()])->links('layouts.partials.webapp.pagination') }}
                 </div>
             </div>
 
