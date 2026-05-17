@@ -80,8 +80,8 @@
 
             <div class="space-y-1">
                 @forelse ($sidebarCategories ?? [] as $category)
-                    <a href="{{ route('webapp.trending', ['category' => $category->id]) }}"
-                        class="flex items-center justify-between px-4 py-2 rounded-xl hover:bg-zinc-900/30 group transition-all {{ request('category') == $category->id ? 'bg-zinc-900/40 border border-amber-500/20' : '' }}">
+                    <a href="{{ route('webapp.music.genre', $category->slug) }}"
+                        class="flex items-center justify-between px-4 py-2 rounded-xl hover:bg-zinc-900/30 group transition-all {{ (request('category') == $category->slug || request()->route('slug') == $category->slug) ? 'bg-zinc-900/40 border border-amber-500/20' : '' }}">
                         <div class="flex items-center gap-3 min-w-0">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.5)] shrink-0"></span>
                             <span class="text-xs text-zinc-500 group-hover:text-zinc-200 transition-colors truncate">

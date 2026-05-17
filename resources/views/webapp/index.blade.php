@@ -96,7 +96,7 @@
 
                     {{-- Post Body --}}
                     <div class="max-w-4xl">
-                        <a href="{{ route('webapp.forum.show', $post->id) }}">
+                        <a href="{{ route('webapp.forum.show', $post->slug) }}">
                             <h2 class="font-brand text-2xl md:text-3xl font-black italic uppercase text-white leading-tight mb-4 group-hover:translate-x-1 transition-transform duration-300">
                                 {{ $post->title }}
                             </h2>
@@ -130,7 +130,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('webapp.forum.show', $post->id) }}"
+                        <a href="{{ route('webapp.forum.show', $post->slug) }}"
                            class="w-full sm:w-auto px-10 py-3.5 rounded-xl bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-amber-500 hover:text-white transition-all duration-300 text-center shadow-xl shadow-white/5">
                             Open Discussion
                         </a>

@@ -102,8 +102,7 @@ Route::prefix('community')->middleware('auth')->group(function () {
 Route::get('/vault/download/{id}', [MusicController::class, 'download'])->name('webapp.music.download');
 Route::get('/search', [SearchController::class, 'search'])->name('webapp.search');
 Route::get('/search-all', [SearchController::class, 'index'])->name('webapp.search.index');
-// Ensure this exists
-Route::get('/forum/thread/{slug}', [PageController::class, 'show'])->name('forum.show');
+Route::get('/forum/thread/{slug}', [PageController::class, 'show']);
 
 /*
 |--------------------------------------------------------------------------
@@ -118,6 +117,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/vault/create', [PageController::class, 'createThread'])->name('webapp.forum.create');
     Route::post('/vault/store', [PageController::class, 'storeThread'])->name('webapp.forum.store');
+    Route::post('/vault/upload-editor-image', [PageController::class, 'uploadEditorImage'])->name('webapp.upload-image');
     Route::get('/vault/report-bug', [BugReportController::class, 'create'])->name('webapp.bug-reports.create');
     Route::post('/vault/report-bug', [BugReportController::class, 'store'])->name('webapp.bug-reports.store');
 
@@ -144,6 +144,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('music')->name('webapp.')->group(function () {
     Route::get('/', [MusicController::class, 'index'])->name('streams');
+    Route::get('/genre/{slug}', [MusicController::class, 'genre'])->name('music.genre');
     Route::get('/{id}/download', [MusicController::class, 'download'])->name('music.download');
     Route::get('/{slug}', [MusicController::class, 'show'])->name('music.show');
     Route::post('/{id}/increment-download', [MusicController::class, 'incrementDownload'])->name('music.increment-download');
@@ -159,7 +160,7 @@ Route::prefix('vault')->name('webapp.')->group(function () {
     Route::get('/trending', [PageController::class, 'trending'])->name('trending');
     Route::get('/streams', [PageController::class, 'streams'])->name('streams');
     Route::get('/faq', [PageController::class, 'faq'])->name('faq');
-    Route::get('/forum/{id}', [PageController::class, 'showForum'])->name('forum.show');
+    Route::get('/forum/{slug}', [PageController::class, 'show'])->name('forum.show');
 });
 
 

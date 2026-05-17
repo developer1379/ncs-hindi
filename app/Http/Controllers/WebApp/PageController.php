@@ -54,18 +54,32 @@ class PageController extends Controller
         $topCreators = $this->musicRepo->getTrendingCreators($filters);
         $trendingStats = $this->musicRepo->getTrendingStats($filters);
         $categories = Category::where('is_active', 1)
-            ->withCount(['music' => function ($query) use ($filters) {
-                $query->where('is_public', true);
-                if (!empty($filters['search'])) {
-                    $search = $filters['search'];
-                    $query->where(function ($q) use ($search) {
-                        $q->where('title', 'LIKE', "%{$search}%")
-                            ->orWhere('artist_name', 'LIKE', "%{$search}%")
-                            ->orWhere('album_movie_name', 'LIKE', "%{$search}%")
-                            ->orWhere('tags_keywords', 'LIKE', "%{$search}%");
-                    });
+            ->withCount([
+                'music as stems_count' => function ($query) use ($filters) {
+                    $query->where('is_public', true);
+                    if (!empty($filters['search'])) {
+                        $search = $filters['search'];
+                        $query->where(function ($q) use ($search) {
+                            $q->where('title', 'LIKE', "%{$search}%")
+                                ->orWhere('artist_name', 'LIKE', "%{$search}%")
+                                ->orWhere('album_movie_name', 'LIKE', "%{$search}%")
+                                ->orWhere('tags_keywords', 'LIKE', "%{$search}%");
+                        });
+                    }
+                },
+                'music as music_count' => function ($query) use ($filters) {
+                    $query->where('is_public', true);
+                    if (!empty($filters['search'])) {
+                        $search = $filters['search'];
+                        $query->where(function ($q) use ($search) {
+                            $q->where('title', 'LIKE', "%{$search}%")
+                                ->orWhere('artist_name', 'LIKE', "%{$search}%")
+                                ->orWhere('album_movie_name', 'LIKE', "%{$search}%")
+                                ->orWhere('tags_keywords', 'LIKE', "%{$search}%");
+                        });
+                    }
                 }
-            }])
+            ])
             ->orderBy('name')
             ->get();
 
@@ -191,6 +205,25 @@ class PageController extends Controller
         ]);
         $thread = $this->forumRepo->storeThread($validData);
         return redirect()->route('home')->with('success', 'Post published to the Vault!');
+    }
+
+    public function uploadEditorImage(Request $request, \App\Services\ImgBBService $imgBBService)
+    {
+        $request->validate([
+            'file' => 'required|image|max:10240', // 10MB max
+        ]);
+
+        if ($request->hasFile('file')) {
+            $url = $imgBBService->upload($request->file('file'));
+
+            if ($url) {
+                return response()->json([
+                    'location' => $url
+                ]);
+            }
+        }
+
+        return response()->json(['error' => 'Image upload failed.'], 400);
     }
 
     private function getUserStemActivity(string $userId, string $type, int $limit = 6): Collection

@@ -38,7 +38,14 @@ class MusicRepository implements MusicRepositoryInterface
         }
 
         if (!empty($filters['category_id'])) {
-            $query->where('category_id', $filters['category_id']);
+            $catVal = $filters['category_id'];
+            if (\Illuminate\Support\Str::isUuid($catVal)) {
+                $query->where('category_id', $catVal);
+            } else {
+                $query->whereHas('category', function ($q) use ($catVal) {
+                    $q->where('slug', $catVal);
+                });
+            }
         }
 
         return $query;
@@ -211,7 +218,14 @@ class MusicRepository implements MusicRepositoryInterface
         }
 
         if (!empty($filters['category_id'])) {
-            $query->where('category_id', $filters['category_id']);
+            $catVal = $filters['category_id'];
+            if (\Illuminate\Support\Str::isUuid($catVal)) {
+                $query->where('category_id', $catVal);
+            } else {
+                $query->whereHas('category', function ($q) use ($catVal) {
+                    $q->where('slug', $catVal);
+                });
+            }
         }
 
         if (($filters['sort'] ?? '') === 'popular') {

@@ -82,9 +82,14 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.partials.webapp.sidebar', function ($view) {
             $view->with('sidebarCategories', Category::where('is_active', true)
-                ->withCount(['music as public_music_count' => function ($query) {
-                    $query->where('is_public', true);
-                }])
+                ->withCount([
+                    'music as public_music_count' => function ($query) {
+                        $query->where('is_public', true);
+                    },
+                    'music as public_stems_count' => function ($query) {
+                        $query->where('is_public', true);
+                    }
+                ])
                 ->orderByDesc('public_music_count')
                 ->orderBy('name')
                 ->limit(6)

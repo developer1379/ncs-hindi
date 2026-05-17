@@ -9,9 +9,9 @@ class EloquentBlogCommentRepository implements BlogCommentRepositoryInterface
 {
     protected $model;
 
-    public function __construct(BlogComment)
+    public function __construct(BlogComment $model)
     {
-        $this->model = new BlogComment();
+        $this->model = $model;
     }
 
     public function getAll(array $filters = [])

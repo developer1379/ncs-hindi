@@ -40,7 +40,7 @@
                 class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-4 py-4 text-xs text-zinc-400 focus:border-amber-500 outline-none cursor-pointer appearance-none">
                 <option value="">All Categories</option>
                 @foreach (\App\Models\Category::where('is_active', 1)->get() as $cat)
-                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                    <option value="{{ $cat->slug }}" {{ (request('category') == $cat->slug || (isset($category) && $category->id == $cat->id)) ? 'selected' : '' }}>
                         {{ $cat->name }}</option>
                 @endforeach
             </select>

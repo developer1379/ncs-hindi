@@ -174,7 +174,7 @@
                         <select name="category" class="w-full rounded-2xl bg-black/40 soft-border px-3.5 py-2.5 text-[13px] text-zinc-300 outline-none focus:border-amber-500/50">
                             <option value="">All categories</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
                                     {{ $category->name }} ({{ number_format($category->stems_count) }})
                                 </option>
                             @endforeach
@@ -232,8 +232,8 @@
                     All
                 </a>
                 @foreach ($categories->take(8) as $category)
-                    <a href="{{ route('webapp.trending', array_merge(request()->except('page'), ['category' => $category->id])) }}"
-                        class="shrink-0 px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] transition {{ request('category') == $category->id ? 'bg-amber-500 text-black' : 'bg-white/5 text-zinc-400 hover:text-white' }}">
+                    <a href="{{ route('webapp.trending', array_merge(request()->except('page'), ['category' => $category->slug])) }}"
+                        class="shrink-0 px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] transition {{ request('category') == $category->slug ? 'bg-amber-500 text-black' : 'bg-white/5 text-zinc-400 hover:text-white' }}">
                         {{ $category->name }}
                         <span class="ml-1.5 text-[8px] opacity-70">{{ number_format($category->stems_count) }}</span>
                     </a>

@@ -47,6 +47,41 @@
             </div>
         </form>
     </div>
+
+    <style>
+        /* Light Mode Premium Edit Profile Overrides */
+        html.light .max-w-3xl h1.text-white {
+            color: #09090b !important;
+        }
+        html.light .max-w-3xl a.bg-zinc-900 {
+            background-color: var(--panel) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light .max-w-3xl a.bg-zinc-900:hover {
+            color: #b45309 !important;
+            border-color: #b45309 !important;
+        }
+        html.light .max-w-3xl input.bg-black,
+        html.light .max-w-3xl textarea.bg-black {
+            background-color: var(--card) !important;
+            border-color: var(--border) !important;
+            color: #09090b !important;
+        }
+        html.light .max-w-3xl input.bg-black:focus,
+        html.light .max-w-3xl textarea.bg-black:focus {
+            border-color: #b45309 !important;
+        }
+        html.light .max-w-3xl a.border-zinc-800 {
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light .max-w-3xl a.border-zinc-800:hover {
+            background-color: var(--panel) !important;
+            color: #b45309 !important;
+            border-color: #b45309 !important;
+        }
+    </style>
 </x-webapp-layout>
 
 

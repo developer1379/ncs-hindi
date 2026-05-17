@@ -33,6 +33,23 @@ class MusicController extends Controller
         return view('webapp.streams', compact('music'));
     }
 
+    public function genre(Request $request, $slug)
+    {
+        $category = \App\Models\Category::where('slug', $slug)
+            ->orWhere('id', $slug)
+            ->firstOrFail();
+
+        $filters = [
+            'search' => $request->search,
+            'category_id' => $category->id,
+            'sort' => $request->sort ?? 'latest'
+        ];
+
+        $music = $this->musicRepo->getLibraryMusic($filters);
+
+        return view('webapp.streams', compact('music', 'category'));
+    }
+
     public function show($slug)
     {
         $music = Music::with('category')

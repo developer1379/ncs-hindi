@@ -52,13 +52,6 @@
     </a>
 </nav>
 
-@auth
-    <a href="{{ route('webapp.bug-reports.create') }}"
-        class="lg:hidden fixed right-5 bottom-32 z-[95] flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black shadow-2xl shadow-amber-500/20">
-        <i class="fa-solid fa-bug"></i>
-        Report Bug
-    </a>
-@endauth
 
 <div id="notificationGateModal"
     class="fixed inset-0 z-[200] hidden items-center justify-center px-4 py-6 bg-black/70 backdrop-blur-sm">

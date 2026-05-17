@@ -35,6 +35,63 @@
         .ql-snow .ql-picker {
             color: #71717a !important;
         }
+
+        /* Light Mode Premium Bug Report Page Overrides */
+        html.light .max-w-4xl h1.text-white {
+            color: #09090b !important;
+        }
+        html.light .max-w-4xl a.bg-zinc-900 {
+            background-color: var(--panel) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light .max-w-4xl a.bg-zinc-900:hover {
+            color: #b45309 !important;
+            border-color: #b45309 !important;
+        }
+        html.light .max-w-4xl input.bg-black {
+            background-color: var(--card) !important;
+            border-color: var(--border) !important;
+            color: #09090b !important;
+        }
+        html.light .max-w-4xl input.bg-black:focus {
+            border-color: #b45309 !important;
+        }
+        html.light .ql-toolbar.ql-snow {
+            border: 1px solid var(--border) !important;
+            background: var(--panel) !important;
+        }
+        html.light .ql-container.ql-snow {
+            border: 1px solid var(--border) !important;
+            background: var(--card) !important;
+            color: #09090b !important;
+        }
+        html.light .ql-editor.ql-blank::before {
+            color: #71717a !important;
+        }
+        html.light .ql-snow .ql-stroke {
+            stroke: #374151 !important;
+        }
+        html.light .ql-snow .ql-fill {
+            fill: #374151 !important;
+        }
+        html.light .ql-snow .ql-picker {
+            color: #374151 !important;
+        }
+        html.light div.rounded-\[2rem\].border-zinc-800 {
+            background-color: var(--panel) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light .max-w-4xl a.border-zinc-800 {
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light .max-w-4xl a.border-zinc-800:hover {
+            background-color: var(--panel) !important;
+            color: #b45309 !important;
+            border-color: #b45309 !important;
+        }
     </style>
 
     <div class="max-w-4xl mx-auto pb-24">

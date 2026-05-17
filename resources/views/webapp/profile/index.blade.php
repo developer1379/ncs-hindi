@@ -139,6 +139,11 @@
                             <span class="text-sm font-bold text-white">Browse music library</span>
                             <i class="fa-solid fa-box-open text-zinc-500"></i>
                         </a>
+                        <a href="{{ route('webapp.bug-reports.create') }}"
+                            class="flex items-center justify-between rounded-2xl bg-white/5 border border-white/5 px-4 py-3 hover:border-amber-500/30 transition">
+                            <span class="text-sm font-bold text-white">Report website bug</span>
+                            <i class="fa-solid fa-bug text-zinc-500"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -260,6 +265,84 @@
             </div>
         </section>
     </div>
+
+    <style>
+        /* Light Mode Premium Profile Overrides */
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] {
+            background: linear-gradient(135deg, var(--card), var(--panel)) !important;
+            border-color: var(--border) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02) !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] h1 {
+            color: #09090b !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] p.text-zinc-300 {
+            color: #27272a !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] div.bg-black\/40 {
+            background-color: var(--card) !important;
+            border-color: var(--border) !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] div.bg-black\/40 p.text-white {
+            color: #09090b !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] div.bg-black\/35 {
+            background-color: var(--card) !important;
+            border-color: var(--border) !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] div.bg-black\/35 span.text-white {
+            color: #09090b !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] a.bg-white\/5 {
+            background-color: var(--panel) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light section.bg-gradient-to-br.from-\[\#100b08\] a.bg-white\/5:hover {
+            border-color: #b45309 !important;
+            color: #b45309 !important;
+        }
+
+        /* Song & Activity Cards in Light Mode */
+        html.light div.rounded-\[24px\].bg-black\/35 {
+            background-color: var(--card) !important;
+            border-color: var(--border) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01) !important;
+        }
+        html.light div.rounded-\[24px\].bg-black\/35 h4.text-white {
+            color: #09090b !important;
+        }
+        html.light div.rounded-\[24px\].bg-black\/35 span.bg-white\/5 {
+            background-color: var(--panel) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light div.rounded-\[24px\].bg-black\/35 a.bg-white\/5 {
+            background-color: var(--panel) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light div.rounded-\[24px\].bg-black\/35 a.bg-white\/5:hover {
+            border-color: #b45309 !important;
+            color: #b45309 !important;
+        }
+
+        /* Quick Action Blocks */
+        html.light div.forum-card a.bg-white\/5 {
+            background-color: var(--panel) !important;
+            border-color: var(--border) !important;
+            color: var(--text) !important;
+        }
+        html.light div.forum-card a.bg-white\/5 span {
+            color: #09090b !important;
+        }
+        html.light div.forum-card a.bg-white\/5:hover {
+            border-color: #b45309 !important;
+        }
+        html.light div.forum-card a.bg-white\/5:hover span {
+            color: #b45309 !important;
+        }
+    </style>
 </x-webapp-layout>
 
 
