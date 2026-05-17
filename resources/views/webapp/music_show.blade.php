@@ -12,37 +12,37 @@
             ->values();
     @endphp
     {{-- 1. Hero Player & Dynamic Background --}}
-    <section class="relative mb-10 rounded-[40px] overflow-hidden border border-zinc-800 bg-zinc-900/40 group">
+    <section class="relative mb-10 rounded-3xl md:rounded-[40px] overflow-hidden border border-zinc-800 bg-zinc-900/40 group">
         <div
             class="absolute inset-0 bg-gradient-to-br from-amber-600/20 via-transparent to-black opacity-60 transition-opacity group-hover:opacity-80">
         </div>
 
-        <div class="relative p-6 md:p-10 lg:p-16 flex flex-col md:flex-row items-center md:items-end gap-8 lg:gap-14">
+        <div class="relative p-4 sm:p-10 lg:p-16 flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 lg:gap-14">
             {{-- Artwork with Hover Effect --}}
-            <div class="relative w-56 h-56 lg:w-72 lg:h-72 flex-shrink-0">
+            <div class="relative w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 flex-shrink-0">
                 <div class="absolute -inset-4 bg-amber-500/20 blur-3xl rounded-full opacity-50"></div>
                 @if ($music->featured_image)
                     <img src="{{ $music->featured_image }}"
-                        class="relative w-full h-full object-cover rounded-3xl border border-zinc-700 shadow-2xl transition-transform duration-500 hover:scale-105"
+                        class="relative w-full h-full object-cover rounded-2xl md:rounded-3xl border border-zinc-700 shadow-2xl transition-transform duration-500 hover:scale-105"
                         alt="{{ $music->title }}">
                 @else
                     <div
-                        class="relative w-full h-full bg-zinc-800 rounded-3xl flex items-center justify-center border border-zinc-700">
-                        <i class="fa-solid fa-compact-disc text-6xl text-zinc-600 animate-spin-slow"></i>
+                        class="relative w-full h-full bg-zinc-800 rounded-2xl md:rounded-3xl flex items-center justify-center border border-zinc-700">
+                        <i class="fa-solid fa-compact-disc text-5xl md:text-6xl text-zinc-600 animate-spin-slow"></i>
                     </div>
                 @endif
             </div>
 
             {{-- Metadata Content --}}
-            <div class="flex-1 text-center md:text-left z-10">
-                <div class="flex flex-wrap justify-center md:justify-start items-center gap-3 mb-4">
+            <div class="flex-1 text-center md:text-left z-10 w-full min-w-0">
+                <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-3">
                     <span
-                        class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
+                        class="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase tracking-widest border border-amber-500/20">
                         {{ $music->category->name ?? 'Music Release' }}
                     </span>
                     @if ($stemLanguages->isNotEmpty())
                         <span
-                            class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-400 text-[10px] font-bold uppercase border border-zinc-700">
+                            class="px-2.5 py-0.5 rounded-full bg-zinc-800 text-zinc-400 text-[9px] font-bold uppercase border border-zinc-700">
                             <i class="fa-solid fa-earth-asia mr-1"></i> {{ $stemLanguages->first() }}
                             @if ($stemLanguages->count() > 1)
                                 +{{ $stemLanguages->count() - 1 }}
@@ -52,7 +52,7 @@
                 </div>
 
                 <h1
-                    class="text-4xl lg:text-6xl font-brand font-black text-white uppercase tracking-tighter mb-3 leading-none">
+                    class="text-2xl sm:text-4xl lg:text-6xl font-brand font-black text-white uppercase tracking-tighter mb-2 leading-none truncate">
                     {{ $music->title }}
                 </h1>
 
@@ -122,7 +122,7 @@
 
         {{-- Technical Specifications Card --}}
         <div class="lg:col-span-2 space-y-8">
-            <div class="bg-zinc-900/40 border border-zinc-800 rounded-[32px] p-6 md:p-10 backdrop-blur-sm">
+            <div class="bg-zinc-900/40 border border-zinc-800 rounded-[32px] p-4 sm:p-10 backdrop-blur-sm">
                 <div class="flex items-center justify-between mb-8">
                     <h3
                         class="text-white font-brand font-bold text-xl uppercase tracking-tight flex items-center gap-3">
@@ -163,7 +163,7 @@
 
             {{-- New: Licensing & Usage Card --}}
             <div
-                class="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-[32px] p-8 relative overflow-hidden">
+                class="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-[32px] p-5 md:p-8 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-8 opacity-10">
                     <i class="fa-solid fa-shield-halved text-7xl text-white"></i>
                 </div>

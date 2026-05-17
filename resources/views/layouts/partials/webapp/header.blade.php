@@ -1,4 +1,4 @@
-<header class="h-20 flex items-center justify-between px-8 bg-black/50 backdrop-blur-xl border-b border-white/5 z-50">
+<header class="h-16 md:h-20 flex items-center justify-between px-4 md:px-8 bg-black/50 backdrop-blur-xl border-b border-white/5 z-50">
     <h2 class="font-brand text-lg font-bold">Discussion & Music</h2>
     <div class="flex items-center gap-4">
         <div class="relative hidden md:block" id="search-container">
