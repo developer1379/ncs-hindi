@@ -156,7 +156,7 @@
                 statusbar: false,
                 plugins: 'lists link image media code wordcount',
                 toolbar: 'undo redo | blocks | bold italic underline | bullist numlist | link image media | code',
-                skin: false,
+                skin: document.documentElement.classList.contains('light') ? 'oxide' : 'oxide-dark',
                 skin_url: document.documentElement.classList.contains('light')
                     ? 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/skins/ui/oxide'
                     : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/skins/ui/oxide-dark',
