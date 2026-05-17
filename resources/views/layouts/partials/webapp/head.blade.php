@@ -25,7 +25,7 @@
     <meta property="og:site_name" content="NCS Hindi">
     <meta property="og:title" content="{{ $title ?? 'NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks' }}">
     <meta property="og:description" content="{{ $description ?? 'Discover and download premium, studio-grade Hindi NCS music assets. Perfect for YouTube videos, streams, and content creation.' }}">
-    <meta property="og:image" content="{{ $ogImage ?? $settings->getImageUrl('logo') ?: $settings->getImageUrl('favicon') }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('assets/images/logo-dark.png') }}">
     <meta property="og:url" content="{{ $canonicalUrl ?? url()->current() }}">
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
 
@@ -33,7 +33,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title ?? 'NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks' }}">
     <meta name="twitter:description" content="{{ $description ?? 'Discover and download premium, studio-grade Hindi NCS music assets. Perfect for YouTube videos, streams, and content creation.' }}">
-    <meta name="twitter:image" content="{{ $ogImage ?? $settings->getImageUrl('logo') ?: $settings->getImageUrl('favicon') }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? asset('assets/images/logo-dark.png') }}">
 
     {{-- Schema.org Structured Data (JSON-LD) for Search Engine Rich Snippets --}}
     <script type="application/ld+json">
@@ -49,7 +49,7 @@
       }
     }
     </script>
-    <link rel="icon" type="image/x-icon" href="{{ $settings->getImageUrl('favicon') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @stack('heads')
