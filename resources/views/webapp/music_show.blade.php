@@ -1,8 +1,8 @@
 <x-webapp-layout
-    title="{{ $music->title }} | {{ $music->artist_name ?: 'NCS Artist' }} - NCS Hindi"
-    description="{{ Str::limit(strip_tags($music->description ?: 'Download ' . $music->title . ' by ' . ($music->artist_name ?: 'NCS Artist') . ' on NCS Hindi. Royalty-free, non-copyright Hindi music for creators.'), 155) }}"
-    keywords="{{ $music->tags_keywords ?: 'ncs hindi, ' . $music->title . ', ' . $music->artist_name . ', royalty free' }}"
-    og-image="{{ $music->featured_image ?: '' }}"
+    :title="$music->title . ' | ' . ($music->artist_name ?: 'NCS Artist') . ' - NCS Hindi'"
+    :description="\Illuminate\Support\Str::limit(strip_tags($music->description ?: 'Download ' . $music->title . ' by ' . ($music->artist_name ?: 'NCS Artist') . ' on NCS Hindi. Royalty-free, non-copyright Hindi music for creators.'), 155)"
+    :keywords="$music->tags_keywords ?: 'ncs hindi, ' . $music->title . ', ' . $music->artist_name . ', royalty free'"
+    :og-image="$music->featured_image ?: ''"
     og-type="music.song"
 >
     @php
