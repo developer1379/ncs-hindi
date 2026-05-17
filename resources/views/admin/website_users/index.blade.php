@@ -43,7 +43,7 @@
                     <div class="card">
                         <div class="card-body table-card">
                             <div class="table-responsive">
-                                <table class="table table-centered mb-0 table-nowrap">
+                                <table class="table table-centered mb-0 table-nowrap table-sm">
                                     <thead class="table-light">
                                         <tr>
                                             <th>User Info</th>
@@ -51,6 +51,7 @@
                                             <th class="text-center">Forum Threads</th>
                                             <th class="text-center">Replies Posted</th>
                                             <th class="text-center">Music Likes</th>
+                                            <th class="text-center">FCM Push</th>
                                             <th>Status</th>
                                             <th>Joined Date</th>
                                             <th class="text-end">Action</th>
@@ -67,10 +68,10 @@
                                                         @endphp
                                                         <img src="{{ $avatarUrl }}"
                                                             class="rounded-circle avatar-sm me-3" alt="user-avatar"
-                                                            style="width: 40px; height: 40px; object-cover: cover;">
+                                                            style="width: 32px; height: 32px; object-fit: cover;">
                                                         <div>
-                                                            <h5 class="m-0 font-14">{{ $user->name }}</h5>
-                                                            <span class="badge bg-amber-500/10 text-amber-600 font-10 mt-1">
+                                                            <h5 class="m-0 font-13">{{ $user->name }}</h5>
+                                                            <span class="badge bg-amber-500/10 text-amber-600 font-9 px-1.5 py-0.5">
                                                                 Community Member
                                                             </span>
                                                         </div>
@@ -78,36 +79,48 @@
                                                 </td>
 
                                                 <td>
-                                                    <div class="d-flex flex-column">
+                                                    <div class="d-flex flex-column font-12">
                                                         <span><i class="mdi mdi-email-outline me-1 text-muted"></i>{{ $user->email }}</span>
                                                         @if ($user->phone)
-                                                            <span class="mt-1"><i class="mdi mdi-phone-outline me-1 text-muted"></i>{{ $user->phone }}</span>
+                                                            <span class="mt-0.5"><i class="mdi mdi-phone-outline me-1 text-muted"></i>{{ $user->phone }}</span>
                                                         @else
-                                                            <span class="mt-1 text-muted fs-11">-- No Phone --</span>
+                                                            <span class="mt-0.5 text-muted fs-11">-- No Phone --</span>
                                                         @endif
                                                     </div>
                                                 </td>
 
                                                 <td class="text-center font-semibold text-zinc-700">
-                                                    <span class="badge bg-primary-subtle text-primary px-2.5 py-1.5 fs-12">
+                                                    <span class="badge bg-primary-subtle text-primary px-2 py-1 fs-11">
                                                         {{ number_format($user->threads_count) }}
                                                     </span>
                                                 </td>
 
                                                 <td class="text-center font-semibold text-zinc-700">
-                                                    <span class="badge bg-success-subtle text-success px-2.5 py-1.5 fs-12">
+                                                    <span class="badge bg-success-subtle text-success px-2 py-1 fs-11">
                                                         {{ number_format($user->replies_count) }}
                                                     </span>
                                                 </td>
 
                                                 <td class="text-center font-semibold text-zinc-700">
-                                                    <span class="badge bg-danger-subtle text-danger px-2.5 py-1.5 fs-12">
+                                                    <span class="badge bg-danger-subtle text-danger px-2 py-1 fs-11">
                                                         {{ number_format($user->interactions_count) }}
                                                     </span>
                                                 </td>
 
+                                                <td class="text-center">
+                                                    @if ($user->fcm_tokens_count > 0)
+                                                        <span class="badge bg-success-subtle text-success px-2.5 py-1 fs-11" title="Registered for Push Notifications">
+                                                            <i class="mdi mdi-bell-ring-outline me-1"></i>Active
+                                                        </span>
+                                                    @else
+                                                        <span class="badge bg-light text-muted px-2.5 py-1 fs-11" title="No registered FCM tokens">
+                                                            <i class="mdi mdi-bell-off-outline me-1"></i>Inactive
+                                                        </span>
+                                                    @endif
+                                                </td>
+
                                                 <td>
-                                                    <div class="form-check form-switch">
+                                                    <div class="form-check form-switch font-12">
                                                         <input class="form-check-input status-toggle" type="checkbox"
                                                             role="switch" id="status_{{ $user->id }}"
                                                             data-id="{{ $user->id }}"
@@ -118,7 +131,7 @@
                                                     </div>
                                                 </td>
 
-                                                <td>
+                                                <td class="font-12">
                                                     {{ $user->created_at->format('d M Y') }} <br>
                                                     <small class="text-muted">{{ $user->created_at->format('h:i A') }}</small>
                                                 </td>
@@ -127,7 +140,7 @@
                                                     <div class="d-flex justify-content-end gap-2">
                                                         <!-- View Details Button -->
                                                         <a href="{{ route('admin.website-users.show', $user->id) }}"
-                                                            class="btn btn-sm btn-soft-primary" title="View Activity Details">
+                                                            class="btn btn-xs btn-soft-primary" title="View Activity Details">
                                                             <i class="mdi mdi-eye"></i> View Profile
                                                         </a>
 
@@ -137,7 +150,7 @@
                                                             onsubmit="return confirm('Are you sure you want to delete this website user?');">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-soft-danger" title="Delete">
+                                                            <button type="submit" class="btn btn-xs btn-soft-danger" title="Delete">
                                                                 <i class="mdi mdi-trash-can"></i>
                                                             </button>
                                                         </form>
@@ -146,7 +159,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-4">
+                                                <td colspan="9" class="text-center py-4">
                                                     <div class="text-muted">
                                                         <i class="mdi mdi-account-off fs-24 d-block mb-2"></i>
                                                         No website users found.

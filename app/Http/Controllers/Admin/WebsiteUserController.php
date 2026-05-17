@@ -18,7 +18,7 @@ class WebsiteUserController extends Controller
 
         // 2. Build Query for Website Users (user_type = 3)
         $query = User::where('user_type', 3)
-            ->withCount(['threads', 'replies', 'interactions']);
+            ->withCount(['threads', 'replies', 'interactions', 'fcmTokens']);
 
         // Filter by Search (Name or Email)
         if ($request->filled('search')) {
@@ -36,7 +36,7 @@ class WebsiteUserController extends Controller
         }
 
         // 3. Execute with Pagination
-        $users = $query->latest()->paginate(10)->withQueryString();
+        $users = $query->latest()->paginate(30)->withQueryString();
 
         return view('admin.website_users.index', compact('users'));
     }
