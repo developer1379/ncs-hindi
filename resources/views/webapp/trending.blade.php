@@ -1,4 +1,8 @@
-<x-webapp-layout title="Trending Music | NCS Hindi">
+<x-webapp-layout
+    title="Trending Music Charts | NCS Hindi"
+    description="Discover the most played, liked, and downloaded royalty-free Hindi music on the official NCS Hindi chart. Live rank updates and creator highlights."
+    keywords="trending hindi music, top ncs hindi, non copyright music chart, most downloaded hindi music, creator music chart"
+>
     @push('heads')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <style>

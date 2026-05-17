@@ -1,4 +1,8 @@
-<x-webapp-layout>
+<x-webapp-layout
+    title="NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks"
+    description="Welcome to NCS Hindi, the premier community & library of royalty-free Hindi music, non-copyright soundtracks, and creator-focused audio assets. Free from copyright strikes."
+    keywords="ncs hindi, royalty free hindi music, non copyright bgm, background music for creators, copyright free hindi songs, download studio audio"
+>
     @inject('settings', 'App\Services\SettingService')
     {{-- 1. Premium Category Navigation --}}
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">

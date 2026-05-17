@@ -13,8 +13,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="google-site-verification" content="w2VijygYi0N-dJzLst6_6XwTUwn3gx3Am9OWf2dfAdg" />
-<title>{{ $title ?? 'NCS Hindi | Discovery Feeds' }}</title>
-<link rel="icon" type="image/x-icon" href="{{ $settings->getImageUrl('favicon') }}">
+<title>{{ $title ?? 'NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks' }}</title>
+    
+    {{-- Search Engine Optimization (SEO) Meta Tags --}}
+    <meta name="description" content="{{ $description ?? 'NCS Hindi is the ultimate hub for premium, royalty-free Hindi music, non-copyright soundtracks, and studio-grade audio assets for content creators.' }}">
+    <meta name="keywords" content="{{ $keywords ?? 'ncs hindi, royalty free music, non copyright music, non copyright hindi music, creator music, hindi background music, royalty free sound effects' }}">
+    <link rel="canonical" href="{{ $canonicalUrl ?? url()->current() }}">
+    <meta name="robots" content="{{ $robots ?? 'index, follow' }}">
+
+    {{-- Open Graph (OG) Meta Tags (Facebook, LinkedIn, Discord, etc.) --}}
+    <meta property="og:site_name" content="NCS Hindi">
+    <meta property="og:title" content="{{ $title ?? 'NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks' }}">
+    <meta property="og:description" content="{{ $description ?? 'Discover and download premium, studio-grade Hindi NCS music assets. Perfect for YouTube videos, streams, and content creation.' }}">
+    <meta property="og:image" content="{{ $ogImage ?? $settings->getImageUrl('logo') ?: $settings->getImageUrl('favicon') }}">
+    <meta property="og:url" content="{{ $canonicalUrl ?? url()->current() }}">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+
+    {{-- Twitter Cards Meta Tags --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title ?? 'NCS Hindi | Premium Royalty-Free Hindi Music & Soundtracks' }}">
+    <meta name="twitter:description" content="{{ $description ?? 'Discover and download premium, studio-grade Hindi NCS music assets. Perfect for YouTube videos, streams, and content creation.' }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? $settings->getImageUrl('logo') ?: $settings->getImageUrl('favicon') }}">
+
+    {{-- Schema.org Structured Data (JSON-LD) for Search Engine Rich Snippets --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "NCS Hindi",
+      "url": "{{ url('/') }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ url('/search-all') }}?query={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <link rel="icon" type="image/x-icon" href="{{ $settings->getImageUrl('favicon') }}">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @stack('heads')

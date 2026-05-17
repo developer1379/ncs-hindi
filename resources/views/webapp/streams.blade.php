@@ -1,4 +1,8 @@
-<x-webapp-layout>
+<x-webapp-layout
+    title="Music Library | Royalty-Free Tracks - NCS Hindi"
+    description="Browse and download official studio-grade Hindi NCS music assets. Perfect for YouTube videos, streaming, and creative projects with zero copyright strikes."
+    keywords="ncs hindi library, download royalty free music, no copyright hindi songs, studio grade audio, creators music download"
+>
     {{-- 1. Library Search & Stats --}}
     <section class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12 px-2">
         <div class="flex-1">

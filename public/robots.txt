@@ -1,4 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /coach/
+Disallow: /seeker/
+Disallow: /login
+Disallow: /register
 
 Sitemap: /sitemap.xml

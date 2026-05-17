@@ -1,4 +1,8 @@
-<x-webapp-layout>
+<x-webapp-layout
+    title="{{ $post->title }} | Forum Discussion - NCS Hindi"
+    description="{{ Str::limit(strip_tags($post->content), 155) }}"
+    keywords="{{ $post->category->name ?? 'forum' }}, ncs hindi, discussion, {{ $post->title }}"
+>
     {{-- 1. Quill Assets --}}
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
