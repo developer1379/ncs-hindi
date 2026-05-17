@@ -38,12 +38,12 @@
     {{-- Schema.org Structured Data (JSON-LD) for Search Engine Rich Snippets --}}
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
+      "@@context": "https://schema.org",
+      "@@type": "WebSite",
       "name": "NCS Hindi",
       "url": "{{ url('/') }}",
       "potentialAction": {
-        "@type": "SearchAction",
+        "@@type": "SearchAction",
         "target": "{{ url('/search-all') }}?query={search_term_string}",
         "query-input": "required name=search_term_string"
       }
