@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\MessageRequestController;
 use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\Admin\MusicController;
+use App\Http\Controllers\Admin\WebsiteUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -112,6 +113,10 @@ Route::middleware('auth', 'role:0,1')->group(function () {
         Route::resource('users', UserController::class);
         Route::post('users/update-status', [UserController::class, 'updateStatus'])
             ->name('users.update-status');
+
+        Route::resource('website-users', WebsiteUserController::class)->only(['index', 'show', 'destroy']);
+        Route::post('website-users/update-status', [WebsiteUserController::class, 'updateStatus'])
+            ->name('website-users.update-status');
 
 
         Route::resource('roles', RoleController::class);

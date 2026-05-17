@@ -104,6 +104,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(BugReport::class);
     }
+
+    public function threads()
+    {
+        return $this->hasMany(ForumThread::class, 'user_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(ForumReply::class, 'user_id');
+    }
 }
 
 

@@ -41,18 +41,19 @@
                     <li class="menu-title mt-2">User Management</li>
                     <li>
                         <a href="#sidebarUsers" data-bs-toggle="collapse"
-                            class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                            class="{{ request()->routeIs(['admin.users.*', 'admin.website-users.*']) ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <iconify-icon icon="tabler:users"></iconify-icon>
                             </span>
                             <span class="sidebar-text"> Users </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse {{ request()->routeIs('admin.users.*') ? 'show' : '' }}" id="sidebarUsers">
+                        <div class="collapse {{ request()->routeIs(['admin.users.*', 'admin.website-users.*']) ? 'show' : '' }}" id="sidebarUsers">
                             <ul class="nav-second-level">
                                 <li><a href="{{ route('admin.users.index') }}"
-                                        class="tp-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">All
-                                        Users</a></li>
+                                        class="tp-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">All Staff</a></li>
+                                <li><a href="{{ route('admin.website-users.index') }}"
+                                        class="tp-link {{ request()->routeIs('admin.website-users.*') ? 'active' : '' }}">Website Users</a></li>
                                 @can('users.create')
                                     <li><a href="{{ route('admin.users.create') }}"
                                             class="tp-link {{ request()->routeIs('admin.users.create') ? 'active' : '' }}">Add

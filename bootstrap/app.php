@@ -28,7 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
         );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->respond(function ($response) {
+            if ($response->getStatusCode() === 419) {
+                return redirect()->back()->withInput()->with('error', 'Your session expired. Please resubmit the form.');
+            }
+            return $response;
+        });
     })->create();
 
 
