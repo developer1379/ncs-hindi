@@ -1,13 +1,15 @@
 <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+@if(request()->routeIs('webapp.community.chat*'))
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.4/dist/echo.iife.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging-compat.js"></script>
+@endif
+<script defer src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging-compat.js"></script>
 
 @stack('scripts')
 <script>
     // Initialize Laravel Echo for WebSocket communication
-    @if(config('broadcasting.default') !== 'null' && config('broadcasting.default') !== 'log')
+    @if(request()->routeIs('webapp.community.chat*') && config('broadcasting.default') !== 'null' && config('broadcasting.default') !== 'log')
         @if(config('broadcasting.default') === 'pusher')
             window.Echo = new Echo({
                 broadcaster: 'pusher',
@@ -29,7 +31,7 @@
             });
         @endif
     @else
-        // For log or null drivers, create a mock Echo object
+        // For log or null drivers, or non-chat routes, create a mock Echo object
         window.Echo = {
             channel: function(name) {
                 return {
@@ -44,7 +46,7 @@
                 };
             }
         };
-        console.log('Broadcasting driver is set to "{{ config('broadcasting.default') }}". Real-time updates are disabled. For development, consider using Pusher or Reverb.');
+        console.log('Broadcasting is inactive on this page.');
     @endif
 
     $.ajaxSetup({
@@ -340,6 +342,7 @@
     }
 
     $(document).on('click', '[data-notification-gate]', function(e) {
+        e.preventDefault();
         const $btn = $(this);
         const actionUrl = $btn.data('actionUrl') || $btn.attr('href') || '';
         const isDownload = $btn.data('musicAction') === 'download';
@@ -348,8 +351,6 @@
         if (localStorage.getItem(notificationGateKey) || localStorage.getItem(notificationPromptKey)) {
             if (actionUrl) {
                 if (isDownload) {
-                    const stemId = $btn.data('music-id');
-                    if (stemId) $.post(`/music/${stemId}/increment-download`);
                     window.open(actionUrl, '_blank');
                 } else {
                     window.location.href = actionUrl;
@@ -357,8 +358,6 @@
             }
             return;
         }
-
-        e.preventDefault();
 
         openNotificationGate({
             title: $btn.data('notificationTitle') || 'Get release alerts',
@@ -425,10 +424,6 @@
         if (!actionUrl) {
             closeNotificationGate();
             return;
-        }
-
-        if (actionType === 'download' && stemId) {
-            $.post(`/music/${stemId}/increment-download`);
         }
 
         // Set prompt as seen/dismissed for this session to avoid showing on every page change

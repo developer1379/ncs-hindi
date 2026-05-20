@@ -3,7 +3,7 @@
     <div class="flex items-center gap-4">
         <div class="relative hidden md:block" id="search-container">
             <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-xs"></i>
-            <input type="text" id="vault-search" placeholder="Search the Threads..."
+            <input type="text" id="vault-search" placeholder="Search the Threads..." aria-label="Search threads and music"
                 class="bg-zinc-900/50 border border-zinc-800 rounded-full py-2 px-12 text-sm focus:border-amber-700 outline-none w-64 transition">
 
             <div id="search-results"
@@ -16,7 +16,7 @@
             <i class="fa-solid fa-moon text-sm" id="theme-toggle-dark-icon"></i>
             <i class="fa-solid fa-sun text-sm hidden" id="theme-toggle-light-icon"></i>
         </button>
-        <a href="{{ route('webapp.forum.create') }}" class="hidden md:inline-flex btn-vault px-6 py-2.5 text-[10px] uppercase font-black">
+        <a href="{{ route('webapp.forum.create') }}" aria-label="Create New Thread" class="hidden md:inline-flex btn-vault px-6 py-2.5 text-[10px] uppercase font-black">
             New Thread
         </a>
     </div>
@@ -24,7 +24,6 @@
 
 
 @push('scripts')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         $(document).ready(function() {
             const $searchInput = $('#vault-search');

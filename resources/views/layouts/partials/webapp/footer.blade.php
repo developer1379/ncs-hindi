@@ -2,14 +2,16 @@
 
     {{-- Feeds Feed --}}
     <a href="{{ route('home') }}"
-        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('home') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
+        aria-label="Thread Feed"
+        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('home') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-400' }}">
         <i class="fa-solid fa-layer-group text-lg md:text-xl"></i>
         <span class="text-[6px] md:text-[7px] font-black uppercase tracking-[0.15em] mt-0.5 md:mt-1">Feeds</span>
     </a>
 
     {{-- Community Chat --}}
     <a href="{{ route('webapp.community.chat') }}"
-        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.community.chat*') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
+        aria-label="Community Chat"
+        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.community.chat*') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-400' }}">
         <div class="relative">
             <i class="fa-solid fa-comments text-lg md:text-xl"></i>
             {{-- Optional Notification Dot --}}
@@ -21,6 +23,7 @@
     {{-- Floating Center Action: Create --}}
     <div class="relative -mt-10 md:-mt-14">
         <a href="{{ route('webapp.forum.create') }}"
+           aria-label="Create New Thread"
            class="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-500 via-amber-600 to-red-600 rounded-2xl md:rounded-[22px] shadow-[0_8px_24px_rgba(245,158,11,0.3)] border-[4px] md:border-[5px] border-[#08080a] text-white active:scale-90 transition-all duration-300">
             <i class="fa-solid fa-plus text-lg md:text-2xl"></i>
         </a>
@@ -28,14 +31,16 @@
 
     {{-- Audio Library --}}
     <a href="{{ route('webapp.streams') }}"
-        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.streams') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
+        aria-label="Audio Library"
+        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.streams') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-400' }}">
         <i class="fa-solid fa-box-open text-lg md:text-xl"></i>
         <span class="text-[6px] md:text-[7px] font-black uppercase tracking-[0.15em] mt-0.5 md:mt-1">Audio</span>
     </a>
 
     {{-- User Profile --}}
     <a href="{{ route('webapp.profile') }}"
-        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.profile') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-500' }}">
+        aria-label="User Profile"
+        class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl transition-all duration-300 {{ request()->routeIs('webapp.profile') ? 'text-amber-500 bg-amber-500/10' : 'text-zinc-400' }}">
         @auth
             @php
                 $userAvatar = Auth::user()->profile_image && strlen(Auth::user()->profile_image) > 20
