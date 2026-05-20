@@ -170,7 +170,7 @@
             {{-- Premium Header Welcome Banner --}}
             <div class="dashboard-banner d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
                 <div>
-                    <h2 class="fw-black m-0 text-white font-brand uppercase tracking-tight">Studio Vault Desk</h2>
+                    <h2 class="fw-black m-0 text-white font-brand uppercase tracking-tight">Music Desk</h2>
                     <p class="text-white-50 mt-1 mb-0 fs-14">Real-time engagement analysis, content rankings, and platform telemetry.</p>
                 </div>
                 <div>
