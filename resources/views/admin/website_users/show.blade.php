@@ -19,19 +19,23 @@
                     <div class="card text-center py-4">
                         <div class="card-body">
                             @php
-                                $avatarUrl = $user->profile_image ?:
-                                    'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=f59e0b&color=fff';
+                                $avatarUrl =
+                                    $user->profile_image ?:
+                                    'https://ui-avatars.com/api/?name=' .
+                                        urlencode($user->name) .
+                                        '&background=f59e0b&color=fff';
                             @endphp
                             <img src="{{ $avatarUrl }}" class="rounded-circle avatar-xl img-thumbnail mb-3"
                                 alt="profile-image" style="width: 120px; height: 120px; object-fit: cover;">
-                            
+
                             <h4 class="mb-1 fw-semibold">{{ $user->name }}</h4>
                             <p class="text-muted fs-13 mb-3">@NCS_Community_Member</p>
 
                             <div class="d-flex flex-column gap-2 text-start bg-light p-3 rounded-3">
                                 <div>
                                     <span class="text-muted fs-11 uppercase d-block">Email Address</span>
-                                    <span class="text-zinc-800 fw-semibold fs-13"><i class="mdi mdi-email-outline me-1"></i>{{ $user->email }}</span>
+                                    <span class="text-zinc-800 fw-semibold fs-13"><i
+                                            class="mdi mdi-email-outline me-1"></i>{{ $user->email }}</span>
                                 </div>
                                 <hr class="my-1 border-zinc-200">
                                 <div>
@@ -44,7 +48,8 @@
                                 <div>
                                     <span class="text-muted fs-11 uppercase d-block">Joined Date</span>
                                     <span class="text-zinc-800 fw-semibold fs-13">
-                                        <i class="mdi mdi-calendar-range me-1"></i>{{ $user->created_at->format('d M Y, h:i A') }}
+                                        <i
+                                            class="mdi mdi-calendar-range me-1"></i>{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y, h:i A') }}
                                     </span>
                                 </div>
                                 <hr class="my-1 border-zinc-200">
@@ -67,17 +72,20 @@
                             <ul class="nav nav-tabs nav-bordered" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#threads" role="tab">
-                                        <i class="mdi mdi-forum-outline me-1"></i> Forum Threads ({{ $user->threads->count() }})
+                                        <i class="mdi mdi-forum-outline me-1"></i> Forum Threads
+                                        ({{ $user->threads->count() }})
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#replies" role="tab">
-                                        <i class="mdi mdi-comment-multiple-outline me-1"></i> Comments/Replies ({{ $user->replies->count() }})
+                                        <i class="mdi mdi-comment-multiple-outline me-1"></i> Comments/Replies
+                                        ({{ $user->replies->count() }})
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#likes" role="tab">
-                                        <i class="mdi mdi-music-note me-1"></i> Music Likes ({{ $user->interactions->where('type', 'like')->count() }})
+                                        <i class="mdi mdi-music-note me-1"></i> Music Likes
+                                        ({{ $user->interactions->where('type', 'like')->count() }})
                                     </a>
                                 </li>
                             </ul>
@@ -100,7 +108,8 @@
                                                 @forelse($user->threads as $thread)
                                                     <tr>
                                                         <td>
-                                                            <a href="{{ route('webapp.forum.show', $thread->slug) }}" target="_blank" class="fw-semibold text-primary">
+                                                            <a href="{{ route('webapp.forum.show', $thread->slug) }}"
+                                                                target="_blank" class="fw-semibold text-primary">
                                                                 {{ Str::limit($thread->title, 40) }}
                                                             </a>
                                                         </td>
@@ -111,7 +120,8 @@
                                                         </td>
                                                         <td>{{ $thread->created_at->format('d M Y') }}</td>
                                                         <td>
-                                                            <span class="badge bg-light text-muted">{{ $thread->replies->count() }}</span>
+                                                            <span
+                                                                class="badge bg-light text-muted">{{ $thread->replies->count() }}</span>
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -146,8 +156,9 @@
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            @if($reply->thread)
-                                                                <a href="{{ route('webapp.forum.show', $reply->thread->slug) }}" target="_blank" class="text-primary font-semibold">
+                                                            @if ($reply->thread)
+                                                                <a href="{{ route('webapp.forum.show', $reply->thread->slug) }}"
+                                                                    target="_blank" class="text-primary font-semibold">
                                                                     {{ Str::limit($reply->thread->title, 35) }}
                                                                 </a>
                                                             @else
@@ -182,25 +193,32 @@
                                             </thead>
                                             <tbody>
                                                 @forelse($user->interactions as $interaction)
-                                                    @if($interaction->music)
+                                                    @if ($interaction->music)
                                                         <tr>
                                                             <td>
                                                                 <div class="d-flex align-items-center">
-                                                                    <div class="bg-amber-500/10 p-1.5 rounded-lg me-2 text-amber-600">
+                                                                    <div
+                                                                        class="bg-amber-500/10 p-1.5 rounded-lg me-2 text-amber-600">
                                                                         <i class="mdi mdi-music-note fs-16"></i>
                                                                     </div>
-                                                                    <a href="{{ route('webapp.music.show', $interaction->music->id) }}" target="_blank" class="fw-semibold text-primary">
+                                                                    <a href="{{ route('webapp.music.show', $interaction->music->id) }}"
+                                                                        target="_blank"
+                                                                        class="fw-semibold text-primary">
                                                                         {{ $interaction->music->title }}
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            <td>{{ $interaction->music->artist_name ?: 'NCS Artist' }}</td>
+                                                            <td>{{ $interaction->music->artist_name ?: 'NCS Artist' }}
+                                                            </td>
                                                             <td>
-                                                                <span class="badge bg-danger-subtle text-danger text-uppercase px-2 py-1 fs-10 font-bold">
-                                                                    <i class="mdi mdi-heart me-1"></i>{{ $interaction->type }}
+                                                                <span
+                                                                    class="badge bg-danger-subtle text-danger text-uppercase px-2 py-1 fs-10 font-bold">
+                                                                    <i
+                                                                        class="mdi mdi-heart me-1"></i>{{ $interaction->type }}
                                                                 </span>
                                                             </td>
-                                                            <td>{{ $interaction->created_at->format('d M Y, h:i A') }}</td>
+                                                            <td>{{ $interaction->created_at->format('d M Y, h:i A') }}
+                                                            </td>
                                                         </tr>
                                                     @endif
                                                 @empty
