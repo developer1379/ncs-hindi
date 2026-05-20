@@ -5,4 +5,4 @@ Disallow: /seeker/
 Disallow: /login
 Disallow: /register
 
-Sitemap: /sitemap.xml
+Sitemap: https://ncshindi.com/sitemap.xml

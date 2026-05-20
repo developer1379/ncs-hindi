@@ -42,24 +42,25 @@ class SitemapController extends Controller
             ];
         }
 
-        // 3. Blogs (if any)
-        $blogs = Blog::where('status', 'published')->latest()->get();
-        foreach ($blogs as $blog) {
-            // Assuming blog route is 'webapp.blogs.show' if it exists, or similar
-            // Since I don't see frontend blog routes, I'll skip for now or use a placeholder if I find it
-            // $urls[] = [
-            //     'loc' => route('webapp.blogs.show', $blog->slug),
-            //     'lastmod' => $blog->updated_at->toAtomString(),
-            //     'changefreq' => 'weekly',
-            //     'priority' => '0.7',
-            // ];
+        // 3. Blogs (safely skipped as there are no public frontend routes for blogs yet)
+        // $blogs = Blog::where('status', 'published')->latest()->get();
+
+        // 4. Category / Genre Pages
+        $categories = \App\Models\Category::where('is_active', 1)->get();
+        foreach ($categories as $category) {
+            $urls[] = [
+                'loc' => route('webapp.music.genre', $category->slug),
+                'lastmod' => $category->updated_at ? $category->updated_at->toAtomString() : $now,
+                'changefreq' => 'weekly',
+                'priority' => '0.7',
+            ];
         }
 
-        // 4. Forum Threads
+        // 5. Forum Threads
         $threads = ForumThread::latest()->get();
         foreach ($threads as $thread) {
             $urls[] = [
-                'loc' => route('forum.show', $thread->slug),
+                'loc' => route('webapp.forum.show', $thread->slug),
                 'lastmod' => $thread->updated_at->toAtomString(),
                 'changefreq' => 'daily',
                 'priority' => '0.6',
