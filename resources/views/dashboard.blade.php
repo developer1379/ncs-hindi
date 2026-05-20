@@ -68,7 +68,7 @@
             font-weight: 800;
             font-size: 0.75rem;
         }
-        
+
         .rank-1 { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
         .rank-2 { background: rgba(108, 117, 125, 0.15); color: #6c757d; }
         .rank-3 { background: rgba(184, 115, 51, 0.15); color: #b87333; }
@@ -151,7 +151,7 @@
             background: rgba(255, 255, 255, 0.03);
             pointer-events: none;
         }
-        
+
         .music-thumb {
             width: 40px;
             height: 40px;
@@ -281,7 +281,7 @@
                                 <h4 class="fw-bold text-dark mb-0">Engagement Rankings</h4>
                                 <p class="text-muted fs-12 mb-0">Leaderboards tracking the most viewed, liked, and downloaded music stems.</p>
                             </div>
-                            
+
                             {{-- Tab Headers --}}
                             <div class="bg-light p-1 rounded-3 d-inline-flex">
                                 <ul class="nav nav-pills" id="rankingsTab" role="tablist">
@@ -498,13 +498,13 @@
                             <h4 class="fw-bold text-dark mb-0">Platform Interaction Feed</h4>
                             <p class="text-muted fs-12 mb-0">Chronological telemetry of guest and authenticated user operations.</p>
                         </div>
-                        
+
                         <div class="activity-timeline">
                             @forelse($recentInteractions as $interaction)
                                 @php
                                     $userLabel = $interaction->user->name ?? 'Guest User';
                                     $songTitle = $interaction->music->title ?? 'Unknown Track';
-                                    
+
                                     // Set style and icon by interaction type
                                     $iconType = 'mdi:eye-outline';
                                     $iconColor = '#0dcaf0'; // Cyan
@@ -523,15 +523,15 @@
                                         $actionText = 'liked';
                                     }
                                 @endphp
-                                
+
                                 <div class="activity-item">
                                     <div class="activity-icon" style="background-color: {{ $iconBg }}; color: {{ $iconColor }}; border-color: {{ $iconColor }};">
                                         <iconify-icon icon="{{ $iconType }}" width="12" height="12"></iconify-icon>
                                     </div>
                                     <div class="ms-1">
                                         <p class="fs-13 mb-1 text-dark">
-                                            <strong class="text-secondary">{{ $userLabel }}</strong> 
-                                            <span class="text-muted">{{ $actionText }}</span> 
+                                            <strong class="text-secondary">{{ $userLabel }}</strong>
+                                            <span class="text-muted">{{ $actionText }}</span>
                                             <strong class="text-dark">{{ $songTitle }}</strong>
                                         </p>
                                         <div class="fs-11 text-muted d-flex align-items-center gap-1">

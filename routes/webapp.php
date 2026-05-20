@@ -9,6 +9,7 @@ use App\Http\Controllers\WebApp\PageController;
 use App\Http\Controllers\WebApp\SearchController;
 use App\Http\Controllers\WebApp\MusicController;
 use App\Http\Controllers\WebApp\BugReportController;
+use App\Http\Controllers\WebApp\MusicCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,6 +150,10 @@ Route::prefix('music')->name('webapp.')->group(function () {
     Route::get('/{slug}', [MusicController::class, 'show'])->name('music.show');
     Route::post('/{id}/increment-download', [MusicController::class, 'incrementDownload'])->name('music.increment-download');
     Route::post('/{id}/like', [MusicController::class, 'toggleLike'])->name('music.like');
+    // Comment routes
+    Route::post('/{id}/comments', [MusicCommentController::class, 'store'])->name('music.comments.store');
+    Route::post('/comments/{commentId}/react', [MusicCommentController::class, 'react'])->name('music.comments.react');
+    Route::post('/comments/upload-image', [MusicCommentController::class, 'uploadImage'])->name('music.comments.upload-image');
 });
 
 /*

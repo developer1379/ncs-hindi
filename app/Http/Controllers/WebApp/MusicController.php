@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Music;
+use App\Models\MusicComment;
 
 class MusicController extends Controller
 {
@@ -60,7 +61,33 @@ class MusicController extends Controller
         // Log the view interaction (works for both guests and authenticated users now)
         $this->musicRepo->logInteraction($music->id, Auth::id(), 'view');
 
-        return view('webapp.music_show', compact('music'));
+        // Load top-level approved comments with replies, user, and reactions
+        $comments = MusicComment::where('music_id', $music->id)
+            ->whereNull('parent_id')
+            ->where('status', 'approved')
+            ->with([
+                'user',
+                'reactions',
+                'replies.user',
+                'replies.reactions',
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $userReactions = [];
+        if (Auth::check()) {
+            $commentIds = $comments->pluck('id')
+                ->merge($comments->flatMap(fn($c) => $c->replies->pluck('id')))
+                ->unique();
+            \App\Models\MusicCommentReaction::whereIn('music_comment_id', $commentIds)
+                ->where('user_id', Auth::id())
+                ->get()
+                ->each(function ($r) use (&$userReactions) {
+                    $userReactions[$r->music_comment_id] = $r->type;
+                });
+        }
+
+        return view('webapp.music_show', compact('music', 'comments', 'userReactions'));
     }
 
     public function download($id)
