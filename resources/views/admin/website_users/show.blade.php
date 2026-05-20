@@ -217,7 +217,8 @@
                                                                         class="mdi mdi-heart me-1"></i>{{ $interaction->type }}
                                                                 </span>
                                                             </td>
-                                                            <td>{{ $interaction->created_at->format('d M Y, h:i A') }}
+                                                            <td>{{ \Carbon\Carbon::parse($interaction->created_at)->format('d M Y, h:i A') }}
+                                                            </td>
                                                             </td>
                                                         </tr>
                                                     @endif
