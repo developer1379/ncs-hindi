@@ -22,8 +22,39 @@
         {{-- Game Container --}}
         <div id="canvas-container" class="relative w-full flex-1">
             
+            {{-- Tour Guide Overlay (Only shows for first-time players) --}}
+            <div id="tour-guide-overlay" class="absolute inset-0 z-50 hidden flex-col items-center justify-center bg-[#0a0a0c]/95 backdrop-blur-xl transition-opacity duration-500 p-4">
+                <div class="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                    {{-- Decorative glowing orb --}}
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-amber-500/20 blur-[50px] rounded-full"></div>
+                    
+                    <div class="flex items-center gap-3 mb-6 relative z-10">
+                        <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                            <i class="fa-solid fa-map text-black"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Tutorial</p>
+                            <h3 id="tour-title" class="text-xl font-black font-brand uppercase tracking-wider text-white">Welcome!</h3>
+                        </div>
+                    </div>
+                    
+                    <p id="tour-text" class="text-zinc-300 text-sm md:text-base leading-relaxed mb-8 min-h-[80px] relative z-10">
+                        Get ready to test your reflexes and feel the beat. Let's take a quick tour!
+                    </p>
+                    
+                    <div class="flex items-center justify-between relative z-10">
+                        <div class="flex gap-1" id="tour-dots">
+                            {{-- Dots injected by JS --}}
+                        </div>
+                        <button id="tour-next-btn" class="px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold uppercase tracking-widest rounded-xl transition-colors border border-zinc-700">
+                            Next <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             {{-- Start Screen Overlay --}}
-            <div id="game-overlay" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-[#0a0a0c]/90 backdrop-blur-md transition-opacity duration-300">
+            <div id="game-overlay" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-[#0a0a0c]/90 backdrop-blur-md transition-opacity duration-300 hidden">
                 <div class="text-center mb-8">
                     <h1 class="font-brand text-5xl md:text-7xl font-black italic uppercase tracking-tighter title-text drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] text-white">
                         NCS <span class="text-amber-500">Rhythm</span>
@@ -37,11 +68,6 @@
 
                 <h2 id="game-status" class="text-2xl md:text-3xl font-black text-white font-brand uppercase tracking-widest mb-4">Are you ready?</h2>
                 <p class="text-zinc-400 text-sm md:text-base font-medium tracking-widest uppercase text-center px-4">Controls: D, F, J, K or Tap the screen</p>
-                
-                {{-- First time player tip --}}
-                <div class="mt-8 bg-zinc-900/80 border border-amber-500/30 rounded-2xl p-4 max-w-sm text-center mx-4">
-                    <p class="text-xs text-zinc-300"><strong>New Player Tip:</strong> Let the neon tiles fall all the way into the strike zone boxes at the bottom before tapping. Accuracy matters!</p>
-                </div>
             </div>
 
             {{-- Canvas --}}
@@ -60,6 +86,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const overlay = document.getElementById('game-overlay');
+            const tourOverlay = document.getElementById('tour-guide-overlay');
             const canvas = document.getElementById('rhythm-canvas');
             const ctx = canvas.getContext('2d');
             const startBtnCircle = document.getElementById('start-btn-circle');
@@ -72,6 +99,65 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
+            // Tour Guide Logic
+            const tourSteps = [
+                { title: "Welcome to NCS Rhythm!", text: "Get ready to test your reflexes to the beat of NCS Hindi! Let's take a quick 4-step tour to learn how to play." },
+                { title: "Falling Notes", text: "During the game, glowing neon tiles will fall from the top of the screen down the 4 lanes." },
+                { title: "The Strike Zone", text: "Don't tap too early! Wait patiently until the notes enter the glowing Strike Zone box at the very bottom." },
+                { title: "The Controls", text: "Use the D, F, J, and K keys on your keyboard, or simply tap the lanes directly on your screen." },
+                { title: "Combos", text: "Accuracy matters! Chain 'Perfect' hits together to multiply your score. Missing a note resets your combo to zero. Good luck!" }
+            ];
+            let currentTourStep = 0;
+            const tourTitle = document.getElementById('tour-title');
+            const tourText = document.getElementById('tour-text');
+            const tourNextBtn = document.getElementById('tour-next-btn');
+            const tourDots = document.getElementById('tour-dots');
+
+            let isFirstTimePlaying = localStorage.getItem('ncs_rhythm_tour_completed') !== 'true';
+
+            function updateTourUI() {
+                tourTitle.textContent = tourSteps[currentTourStep].title;
+                tourText.textContent = tourSteps[currentTourStep].text;
+                
+                if (currentTourStep === tourSteps.length - 1) {
+                    tourNextBtn.innerHTML = 'Play Now <i class="fa-solid fa-gamepad ml-1"></i>';
+                    tourNextBtn.classList.replace('bg-zinc-800', 'bg-amber-500');
+                    tourNextBtn.classList.replace('text-white', 'text-black');
+                }
+                
+                tourDots.innerHTML = '';
+                for(let i=0; i<tourSteps.length; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = `w-2 h-2 rounded-full ${i === currentTourStep ? 'bg-amber-500 w-4 transition-all' : 'bg-zinc-700'}`;
+                    tourDots.appendChild(dot);
+                }
+            }
+
+            if (isFirstTimePlaying) {
+                tourOverlay.classList.remove('hidden');
+                tourOverlay.classList.add('flex');
+                updateTourUI();
+            } else {
+                overlay.classList.remove('hidden');
+            }
+
+            tourNextBtn.addEventListener('click', () => {
+                if (currentTourStep < tourSteps.length - 1) {
+                    currentTourStep++;
+                    updateTourUI();
+                } else {
+                    localStorage.setItem('ncs_rhythm_tour_completed', 'true');
+                    tourOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        tourOverlay.classList.add('hidden');
+                        tourOverlay.classList.remove('flex');
+                        overlay.classList.remove('hidden');
+                    }, 500);
+                }
+            });
+
+
+            // Audio Context
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             let audioCtx;
             const laneFrequencies = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
@@ -102,9 +188,6 @@
             let score = 0;
             let combo = 0;
             let maxCombo = localStorage.getItem('ncs_rhythm_max_combo') || 0;
-            
-            // First time player check
-            let isFirstTimePlaying = localStorage.getItem('ncs_rhythm_played') !== 'true';
             
             const laneColors = ['#ef4444', '#3b82f6', '#eab308', '#22c55e'];
             const laneKeys = ['D', 'F', 'J', 'K'];
@@ -179,12 +262,6 @@
                     if (dist < hitTolerance) {
                         targetNote.active = false;
                         targetNote.scored = true;
-                        
-                        // Once they hit their first note, they are no longer a first-timer
-                        if (isFirstTimePlaying) {
-                            isFirstTimePlaying = false;
-                            localStorage.setItem('ncs_rhythm_played', 'true');
-                        }
                         
                         let hitType = '';
                         let points = 0;
@@ -353,17 +430,6 @@
                 ctx.strokeStyle = 'rgba(255,255,255,0.1)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-                
-                // Dynamic Instruction for First Time Players
-                if (isPlaying && isFirstTimePlaying) {
-                    ctx.fillStyle = `rgba(245, 158, 11, ${0.5 + Math.sin(lastTime / 150) * 0.5})`; // Pulsing amber
-                    ctx.font = '900 20px "Inter", sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.shadowColor = 'rgba(245, 158, 11, 0.8)';
-                    ctx.shadowBlur = 10;
-                    ctx.fillText('WAIT FOR NOTE TO REACH BOX', canvas.width / 2, STRIKE_ZONE_Y - 20);
-                    ctx.shadowBlur = 0;
-                }
 
                 // Notes
                 for (let note of notes) {
