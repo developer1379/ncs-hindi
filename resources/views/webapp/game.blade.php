@@ -4,26 +4,26 @@
     keywords="{{ $seo['keywords'] ?? 'music game online, rhythm tapper' }}"
 >
     <style>
+        /* Override layout padding and spacing to force perfect fullscreen game */
         main {
             padding: 0 !important;
             margin: 0 !important;
             overflow: hidden !important;
+            position: relative !important;
+        }
+        main > * + * {
+            margin-top: 0 !important;
         }
     </style>
 
-    {{-- Game Wrapper --}}
-    <div id="game-theme-wrapper" class="w-full h-full flex flex-col transition-colors duration-500 bg-[#0f0f13] text-white relative overflow-hidden">
+    {{-- Game Wrapper: Absolute inset-0 to perfectly fill the main container without gaps --}}
+    <div id="game-theme-wrapper" class="absolute inset-0 flex flex-col bg-[#0a0a0c] text-white overflow-hidden">
         
-        {{-- Theme Toggle --}}
-        <button id="theme-toggle" class="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-zinc-800/80 backdrop-blur-md text-amber-500 hover:bg-zinc-700 transition shadow-2xl flex items-center justify-center outline-none border border-zinc-700/50">
-            <i class="fa-solid fa-moon text-xl" id="theme-icon"></i>
-        </button>
-
         {{-- Game Container --}}
-        <div id="canvas-container" class="relative w-full flex-1 transition-colors duration-500">
+        <div id="canvas-container" class="relative w-full flex-1">
             
             {{-- Start Screen Overlay --}}
-            <div id="game-overlay" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300">
+            <div id="game-overlay" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-[#0a0a0c]/90 backdrop-blur-md transition-opacity duration-300">
                 <div class="text-center mb-8">
                     <h1 class="font-brand text-5xl md:text-7xl font-black italic uppercase tracking-tighter title-text drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] text-white">
                         NCS <span class="text-amber-500">Rhythm</span>
@@ -36,7 +36,12 @@
                 </div>
 
                 <h2 id="game-status" class="text-2xl md:text-3xl font-black text-white font-brand uppercase tracking-widest mb-4">Are you ready?</h2>
-                <p class="text-zinc-400 text-sm md:text-base font-medium tracking-widest uppercase text-center px-4">Controls: D, F, J, K or Tap</p>
+                <p class="text-zinc-400 text-sm md:text-base font-medium tracking-widest uppercase text-center px-4">Controls: D, F, J, K or Tap the screen</p>
+                
+                {{-- First time player tip --}}
+                <div class="mt-8 bg-zinc-900/80 border border-amber-500/30 rounded-2xl p-4 max-w-sm text-center mx-4">
+                    <p class="text-xs text-zinc-300"><strong>New Player Tip:</strong> Let the neon tiles fall all the way into the strike zone boxes at the bottom before tapping. Accuracy matters!</p>
+                </div>
             </div>
 
             {{-- Canvas --}}
@@ -54,37 +59,10 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const themeBtn = document.getElementById('theme-toggle');
-            const themeIcon = document.getElementById('theme-icon');
-            const wrapper = document.getElementById('game-theme-wrapper');
             const overlay = document.getElementById('game-overlay');
-            const titleTexts = document.querySelectorAll('.title-text');
-
-            let isLightMode = false;
-
-            themeBtn.addEventListener('click', () => {
-                isLightMode = !isLightMode;
-                if (isLightMode) {
-                    themeIcon.classList.replace('fa-moon', 'fa-sun');
-                    wrapper.classList.replace('bg-[#0f0f13]', 'bg-slate-50');
-                    overlay.classList.replace('bg-black/80', 'bg-slate-100/90');
-                    titleTexts.forEach(el => el.classList.replace('text-white', 'text-slate-900'));
-                    themeBtn.classList.replace('bg-zinc-800/80', 'bg-white/90');
-                    themeBtn.classList.replace('border-zinc-700/50', 'border-slate-300');
-                } else {
-                    themeIcon.classList.replace('fa-sun', 'fa-moon');
-                    wrapper.classList.replace('bg-slate-50', 'bg-[#0f0f13]');
-                    overlay.classList.replace('bg-slate-100/90', 'bg-black/80');
-                    titleTexts.forEach(el => el.classList.replace('text-slate-900', 'text-white'));
-                    themeBtn.classList.replace('bg-white/90', 'bg-zinc-800/80');
-                    themeBtn.classList.replace('border-slate-300', 'border-zinc-700/50');
-                }
-            });
-
             const canvas = document.getElementById('rhythm-canvas');
             const ctx = canvas.getContext('2d');
             const startBtnCircle = document.getElementById('start-btn-circle');
-            const statusText = document.getElementById('game-status');
 
             function resizeCanvas() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -124,6 +102,9 @@
             let score = 0;
             let combo = 0;
             let maxCombo = localStorage.getItem('ncs_rhythm_max_combo') || 0;
+            
+            // First time player check
+            let isFirstTimePlaying = localStorage.getItem('ncs_rhythm_played') !== 'true';
             
             const laneColors = ['#ef4444', '#3b82f6', '#eab308', '#22c55e'];
             const laneKeys = ['D', 'F', 'J', 'K'];
@@ -199,14 +180,20 @@
                         targetNote.active = false;
                         targetNote.scored = true;
                         
+                        // Once they hit their first note, they are no longer a first-timer
+                        if (isFirstTimePlaying) {
+                            isFirstTimePlaying = false;
+                            localStorage.setItem('ncs_rhythm_played', 'true');
+                        }
+                        
                         let hitType = '';
                         let points = 0;
                         let isPerfect = false;
                         
-                        if (dist < 25) {
+                        if (dist < 30) {
                             hitType = 'PERFECT'; points = 100; isPerfect = true; combo++;
                             spawnParticles(laneCenter, zoneCenter, laneColors[lane]);
-                        } else if (dist < 60) {
+                        } else if (dist < 65) {
                             hitType = 'GOOD'; points = 50; combo++;
                             spawnParticles(laneCenter, zoneCenter, '#ffffff');
                         } else {
@@ -289,11 +276,11 @@
 
             function draw() {
                 // Background
-                ctx.fillStyle = isLightMode ? '#f8fafc' : '#0a0a0c'; 
+                ctx.fillStyle = '#0a0a0c'; 
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Grid/Ambient Background Effect
-                ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.03)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 for(let i=0; i<canvas.height; i+=40) {
@@ -311,7 +298,7 @@
                 const STRIKE_ZONE_H = 80;
 
                 // Track Background
-                ctx.fillStyle = isLightMode ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.02)';
+                ctx.fillStyle = 'rgba(255,255,255,0.02)';
                 ctx.fillRect(offsetX, 0, trackWidth, canvas.height);
 
                 for (let i = 0; i < 4; i++) {
@@ -321,7 +308,7 @@
                     ctx.beginPath();
                     ctx.moveTo(laneX, 0);
                     ctx.lineTo(laneX, canvas.height);
-                    ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+                    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
                     ctx.lineWidth = i === 0 ? 3 : 1;
                     ctx.stroke();
 
@@ -335,7 +322,7 @@
 
                     // Strike Pad Key Text
                     const padY = STRIKE_ZONE_Y;
-                    ctx.fillStyle = isLightMode ? '#64748b' : '#64748b';
+                    ctx.fillStyle = '#64748b';
                     ctx.font = '900 24px "Inter", sans-serif';
                     ctx.textAlign = 'center';
                     ctx.fillText(laneKeys[i], laneX + laneWidth/2, padY + STRIKE_ZONE_H/2 + 8);
@@ -355,7 +342,7 @@
                 // Strike Zone Box
                 ctx.beginPath();
                 ctx.roundRect(offsetX, STRIKE_ZONE_Y, trackWidth, STRIKE_ZONE_H, 12);
-                ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
                 ctx.lineWidth = 4;
                 ctx.stroke();
                 
@@ -363,9 +350,20 @@
                 ctx.beginPath();
                 ctx.moveTo(offsetX, STRIKE_ZONE_Y + STRIKE_ZONE_H/2);
                 ctx.lineTo(offsetX + trackWidth, STRIKE_ZONE_Y + STRIKE_ZONE_H/2);
-                ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
+                
+                // Dynamic Instruction for First Time Players
+                if (isPlaying && isFirstTimePlaying) {
+                    ctx.fillStyle = `rgba(245, 158, 11, ${0.5 + Math.sin(lastTime / 150) * 0.5})`; // Pulsing amber
+                    ctx.font = '900 20px "Inter", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = 'rgba(245, 158, 11, 0.8)';
+                    ctx.shadowBlur = 10;
+                    ctx.fillText('WAIT FOR NOTE TO REACH BOX', canvas.width / 2, STRIKE_ZONE_Y - 20);
+                    ctx.shadowBlur = 0;
+                }
 
                 // Notes
                 for (let note of notes) {
@@ -375,7 +373,7 @@
                     
                     ctx.fillStyle = color;
                     ctx.shadowColor = color;
-                    ctx.shadowBlur = isLightMode ? 8 : 25;
+                    ctx.shadowBlur = 25;
                     
                     ctx.beginPath();
                     ctx.roundRect(x, note.y, w, note.h, 12);
@@ -408,14 +406,14 @@
                     ctx.globalAlpha = Math.max(0, t.life);
                     ctx.font = '900 36px "Inter", sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.shadowColor = isLightMode ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.8)';
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
                     ctx.shadowBlur = 8;
                     ctx.fillText(t.text, 0, 0);
                     ctx.restore();
                 }
 
                 // HUD (Score & Combo)
-                ctx.fillStyle = isLightMode ? '#0f172a' : '#ffffff';
+                ctx.fillStyle = '#ffffff';
                 ctx.font = '900 32px "Inter", sans-serif';
                 ctx.textAlign = 'left';
                 
@@ -427,9 +425,9 @@
                 
                 // Right HUD
                 ctx.textAlign = 'right';
-                ctx.fillStyle = isLightMode ? '#0f172a' : '#ffffff';
+                ctx.fillStyle = '#ffffff';
                 ctx.fillText(`MAX COMBO: ${maxCombo}`, canvas.width - 30, hudY);
-                ctx.fillStyle = combo > 10 ? '#ef4444' : (isLightMode ? '#3b82f6' : '#38bdf8');
+                ctx.fillStyle = combo > 10 ? '#ef4444' : '#38bdf8';
                 ctx.font = `900 ${32 + Math.min(20, combo/2)}px "Inter", sans-serif`;
                 ctx.fillText(`${combo}x COMBO`, canvas.width - 30, hudY + 40);
             }
