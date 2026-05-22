@@ -19,10 +19,10 @@
                 <p class="text-2xl font-black text-white leading-none">{{ $music->total() }}</p>
                 <p class="text-[8px] text-zinc-500 uppercase font-black tracking-tighter mt-1">Tracks</p>
             </div>
-            <div class="px-6 py-1 text-center">
+            {{-- <div class="px-6 py-1 text-center">
                 <p class="text-2xl font-black text-amber-500 leading-none">320</p>
                 <p class="text-[8px] text-zinc-500 uppercase font-black tracking-tighter mt-1">KBPS</p>
-            </div>
+            </div> --}}
         </div>
     </section>
 
