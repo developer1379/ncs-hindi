@@ -226,6 +226,11 @@ class PageController extends Controller
         return response()->json(['error' => 'Image upload failed.'], 400);
     }
 
+    public function game()
+    {
+        return view('webapp.game');
+    }
+
     private function getUserStemActivity(string $userId, string $type, int $limit = 6): Collection
     {
         $stemIds = MusicInteraction::query()

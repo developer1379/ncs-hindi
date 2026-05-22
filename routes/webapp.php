@@ -166,6 +166,7 @@ Route::prefix('vault')->name('webapp.')->group(function () {
     Route::get('/streams', [PageController::class, 'streams'])->name('streams');
     Route::get('/faq', [PageController::class, 'faq'])->name('faq');
     Route::get('/forum/{slug}', [PageController::class, 'show'])->name('forum.show');
+    Route::get('/game', [PageController::class, 'game'])->name('game');
 });
 
 
