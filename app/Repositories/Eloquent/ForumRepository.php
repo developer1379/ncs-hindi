@@ -12,6 +12,7 @@ class ForumRepository implements ForumRepositoryInterface
     public function getAllThreads()
     {
         return ForumThread::with(['author', 'category'])
+            ->withCount('replies')
             ->latest()
             ->get();
     }
