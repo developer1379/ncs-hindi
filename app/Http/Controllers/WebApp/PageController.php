@@ -228,7 +228,12 @@ class PageController extends Controller
 
     public function game()
     {
-        return view('webapp.game');
+        $seo = [
+            'title' => 'NCS Rhythm Tapper | Play Online Free Music Game',
+            'description' => 'Play the highly addictive NCS Rhythm Tapper! A free, online, neon-styled music rhythm game. Tap the beats, score combos, and test your reflexes with royalty-free soundtracks.',
+            'keywords' => 'music game online, rhythm tapper, piano tiles alternative, ncs hindi games, play music games free, royalty free beats game, neon rhythm'
+        ];
+        return view('webapp.game', compact('seo'));
     }
 
     private function getUserStemActivity(string $userId, string $type, int $limit = 6): Collection
