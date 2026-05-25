@@ -124,13 +124,16 @@
             <div class="forum-card p-6 sm:p-8 border-dashed border-zinc-800 bg-zinc-900/20">
                 <div class="flex flex-col items-center justify-center text-center py-4">
                     <div class="w-16 h-16 rounded-2xl bg-zinc-900 flex items-center justify-center mb-4 text-amber-500">
-                        <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                        <i class="fa-regular fa-image text-2xl"></i>
                     </div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-tight">Upload music Zip</h4>
-                    <input type="file" name="stem_file" class="hidden" id="stem_file">
-                    <button type="button" onclick="document.getElementById('stem_file').click()"
+                    <h4 class="text-sm font-bold text-white uppercase tracking-tight">Upload Image</h4>
+                    <input type="file" name="featured_image" accept="image/*" class="hidden" id="featured_image" onchange="previewImage(this)">
+                    <div id="image-preview-container" class="mt-4 hidden">
+                        <img id="image-preview" src="" class="max-h-40 rounded-xl" />
+                    </div>
+                    <button type="button" onclick="document.getElementById('featured_image').click()"
                         class="mt-6 px-6 py-2 rounded-xl border border-zinc-700 text-[10px] font-black text-zinc-400 hover:text-white hover:bg-zinc-800 transition uppercase tracking-widest">
-                        Select File
+                        Select Image
                     </button>
                 </div>
             </div>
@@ -147,6 +150,16 @@
     {{-- TinyMCE Library --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').setAttribute('src', e.target.result);
+                    document.getElementById('image-preview-container').classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         document.addEventListener('DOMContentLoaded', function() {
             tinymce.init({
                 selector: '#editor-container',

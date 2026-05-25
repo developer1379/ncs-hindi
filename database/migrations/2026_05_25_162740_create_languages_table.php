@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('music_stems', function (Blueprint $table) {
-            $table->text('license_text')->nullable()->after('description');
+        Schema::create('languages', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 
@@ -21,15 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('music_stems', function (Blueprint $table) {
-            $table->dropColumn('license_text');
-        });
+        Schema::dropIfExists('languages');
     }
 };
-
-
-
-
-
-
-

@@ -208,7 +208,7 @@ class MusicRepository implements MusicRepositoryInterface
     }
     public function getLibraryMusic($filters = [])
     {
-        $query = Music::with('category');
+        $query = Music::with('category')->where('is_public', true);
 
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {

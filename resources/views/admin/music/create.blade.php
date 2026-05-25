@@ -5,20 +5,6 @@
     @endpush
 
     @php
-        $languageOptions = [
-            'Hindi',
-            'English',
-            'Punjabi',
-            'Bengali',
-            'Tamil',
-            'Telugu',
-            'Marathi',
-            'Gujarati',
-            'Kannada',
-            'Malayalam',
-            'Urdu',
-            'Instrumental',
-        ];
     @endphp
 
     <div class="py-4">
@@ -73,7 +59,7 @@
                                         <label class="form-label fw-bold small text-uppercase text-secondary">Languages
                                             <span class="text-muted">(multi-select)</span></label>
                                         <div id="language_options" class="d-flex flex-wrap gap-2">
-                                            @foreach ($languageOptions as $language)
+                                            @foreach ($languages as $language)
                                                 <input type="checkbox" class="btn-check"
                                                     id="lang_{{ \Illuminate\Support\Str::slug($language) }}"
                                                     value="{{ $language }}" autocomplete="off">

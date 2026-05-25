@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Music;
 use App\Models\Category;
+use App\Models\Language;
 
 class MusicController extends Controller
 {
@@ -49,7 +50,8 @@ class MusicController extends Controller
     public function create()
     {
         $categories = Category::where('is_active', 1)->get();
-        return view('admin.music.create', compact('categories'));
+        $languages = Language::where('is_active', 1)->orderBy('name')->pluck('name')->toArray();
+        return view('admin.music.create', compact('categories', 'languages'));
     }
 
     public function store(Request $request)
@@ -98,7 +100,8 @@ class MusicController extends Controller
         try {
             $music = Music::findOrFail($id);
             $categories = Category::where('is_active', 1)->get();
-            return view('admin.music.edit', compact('music', 'categories'));
+            $languages = Language::where('is_active', 1)->orderBy('name')->pluck('name')->toArray();
+            return view('admin.music.edit', compact('music', 'categories', 'languages'));
         } catch (\Exception $e) {
             return redirect()->route('admin.music.index')->with('error', 'Asset not found.');
         }

@@ -121,7 +121,8 @@ Route::middleware('auth', 'role:0,1')->group(function () {
 
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
-          Route::resource('categories', CategoryController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('languages', \App\Http\Controllers\Admin\LanguageController::class);
 
 
         // Page Routes

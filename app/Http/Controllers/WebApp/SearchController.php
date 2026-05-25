@@ -26,9 +26,12 @@ class SearchController extends Controller
             ->get(['id', 'title', 'slug']);
 
         // Search Music music
-        $music = Music::where('title', 'LIKE', "%{$query}%")
-            ->orWhere('artist_name', 'LIKE', "%{$query}%")
-            ->orWhere('tags_keywords', 'LIKE', "%{$query}%")
+        $music = Music::where('is_public', true)
+            ->where(function($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('artist_name', 'LIKE', "%{$query}%")
+                  ->orWhere('tags_keywords', 'LIKE', "%{$query}%");
+            })
             ->limit(5)
             ->get(['id', 'title', 'slug', 'artist_name', 'featured_image']);
 
@@ -50,6 +53,7 @@ class SearchController extends Controller
 
         // Fetch Music music
         $music = DB::table('music_stems')
+            ->where('is_public', true)
             ->where('title', 'LIKE', "%{$query}%")
             ->paginate(12, ['*'], 'stems_page');
 

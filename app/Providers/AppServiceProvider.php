@@ -63,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ForumRepositoryInterface::class, ForumRepository::class);
         $this->app->bind(ContractsMusicRepositoryInterface::class, MusicRepository::class);
         $this->app->bind(ContractsProfileRepositoryInterface::class, ProfileRepository::class);
+        $this->app->bind(\App\Repositories\Contracts\LanguageRepositoryInterface::class, \App\Repositories\Eloquent\EloquentLanguageRepository::class);
     }
 
     /**

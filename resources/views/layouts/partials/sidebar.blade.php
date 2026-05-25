@@ -91,6 +91,8 @@
                                 <li><a href="{{ route('admin.categories.index') }}"
                                         class="tp-link {{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">All
                                         Categories</a></li>
+                                <li><a href="{{ route('admin.languages.index') }}"
+                                        class="tp-link {{ request()->routeIs('admin.languages.*') ? 'active' : '' }}">Languages</a></li>
                                 @can('categories.create')
                                     <li><a href="{{ route('admin.categories.create') }}"
                                             class="tp-link {{ request()->routeIs('admin.categories.create') ? 'active' : '' }}">Add

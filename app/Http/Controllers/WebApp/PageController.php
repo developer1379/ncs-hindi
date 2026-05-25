@@ -196,13 +196,22 @@ class PageController extends Controller
         $categories = Category::where('is_active', 1)->get();
         return view('webapp.forum.create', compact('categories'));
     }
-    public function storeThread(Request $request)
+    public function storeThread(Request $request, \App\Services\ImgBBService $imgBBService)
     {
         $validData = $request->validate([
             'title'       => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'content'     => 'required|string',
+            'featured_image'=> 'nullable|image|max:10240',
         ]);
+
+        if ($request->hasFile('featured_image')) {
+            $url = $imgBBService->upload($request->file('featured_image'));
+            if ($url) {
+                $validData['content'] = '<img src="' . $url . '" alt="' . $validData['title'] . '" class="w-full rounded-xl mb-4" />' . $validData['content'];
+            }
+        }
+
         $thread = $this->forumRepo->storeThread($validData);
         return redirect()->route('home')->with('success', 'Post published to the Vault!');
     }
